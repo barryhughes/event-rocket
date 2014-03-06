@@ -61,3 +61,5 @@ class EventRocketWidgetShortcodes
 new EventRocketWidgetShortcodes( 'TribeEventsMiniCalendarWidget', 'event_rocket_calendar' );
 new EventRocketWidgetShortcodes( 'TribeEventsListWidget', 'event_rocket_list' );
 new EventRocketWidgetShortcodes( 'TribeEventsAdvancedListWidget', 'event_rocket_list' );
+new EventRocketWidgetShortcodes( 'TribeCountdownWidget', 'event_rocket_countdown' );
+new EventRocketWidgetShortcodes( 'TribeVenueWidget', 'event_rocket_venue' );
