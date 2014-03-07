@@ -6,7 +6,14 @@ class EventRocketWidgetShortcodes
 	 *
 	 * @var string
 	 */
-	protected $class;
+	protected $class = '';
+
+	/**
+	 * Shortcode name.
+	 *
+	 * @var string
+	 */
+	protected $name = '';
 
 	/**
 	 * Default instance arguments to pass to the widget.
@@ -22,10 +29,21 @@ class EventRocketWidgetShortcodes
 	 * @param array $defaults
 	 */
 	public function __construct( $widget_class, $shortcode_name, array $defaults = array() ) {
-		if ( ! class_exists( $widget_class ) ) return;
 		$this->class = $widget_class;
 		$this->defaults = $defaults;
-		add_shortcode( $shortcode_name, array( $this, 'shortcode' ) );
+		$this->name = $shortcode_name;
+		add_action( 'init', array( $this, 'register' ), 50 );
+
+	}
+
+	/**
+	 * Register lateish during init, so the wrapper can be set up before the implementing class
+	 * is actually defined.
+	 */
+	public function register() {
+		if ( ! class_exists( $this->class ) ) return;
+		$shortcode = apply_filters( 'event_rocket_shortcode_name', $this->name );
+		add_shortcode( $shortcode, array( $this, 'shortcode' ) );
 	}
 
 	/**
