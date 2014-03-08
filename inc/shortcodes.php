@@ -64,8 +64,7 @@ class EventRocketWidgetShortcodes
 	}
 
 	/**
-	 * Parses the shortcode attributes and returns an array of two arrays - the first
-	 * containing widget instance data and the second any other widget arguments.
+	 * Return the shortcode attributes array.
 	 *
 	 * @param $src_attrs
 	 * @return array
