@@ -60,7 +60,7 @@ When the time comes to upgrade you need take no special precautions :-)
 = How can I specify the venue or event ID? =
 
 Both the countdown and venue widgets need to know which event or venue you are referring to. All of the following are
-examples of acceptable to pass this information:
+examples of acceptable ways to pass this information:
 
 * `[event_rocket_venue id="123"]` which is nice and short
 * `[event_rocket_venue venue_id="123"]` is also allowed
