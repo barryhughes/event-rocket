@@ -44,6 +44,9 @@ and, ideally, [Events Calendar PRO](http://tri.be/shop/wordpress-events-calendar
 3. Activate the plugin through the 'Plugins' menu in WordPress
 4. You're done!
 
+== Upgrade Notice ==
+
+When the time comes to upgrade you need take no special precautions :-)
 
 == Frequently Asked Questions ==
 
