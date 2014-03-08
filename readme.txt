@@ -57,6 +57,22 @@ When the time comes to upgrade you need take no special precautions :-)
 * `[event_rocket_countdown]` embeds the event countdown widget
 * `[event_rocket_venue]` embeds the featured venue widget
 
+= How can I specify the venue or event ID? =
+
+Both the countdown and venue widgets need to know which event or venue you are referring to. All of the following are
+examples of acceptable to pass this information:
+
+* `[event_rocket_venue id="123"]` which is nice and short
+* `[event_rocket_venue venue_id="123"]` is also allowed
+* `[event_rocket_countdown id="789"]` this time the ID relates to the event
+* `[event_rocket_countdown event_id="789"]` again you can be more explicit if you wish
+
+= How can I make the countdown widget display seconds? *
+
+You can let it know you want the seconds to be displayed by using the `show_seconds` attribute, something like this:
+
+* `[event_rocket_countdown id="789" show_seconds="true"]`
+
 == Screenshots ==
 
 There are no screenshots at this time!
