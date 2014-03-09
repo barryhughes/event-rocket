@@ -4,11 +4,11 @@ Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes
 Requires at least: 3.8
 Tested up to: 3.8.1
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Rocket themed extension for The Events Calendar. Pimps things up with some shortcodes and other stuff.
+Rocket themed extension adding experimental features to The Events Calendar like shortcodes and front-page events.
 
 == Description ==
 
@@ -20,8 +20,8 @@ This is an add-on that builds on top of the following wonderful plugins:
 
 So if you don't already have them installed it behooves you to do so now ;-)
 
-In short, it allows you to add widgets into pages or posts as shortcodes - here's an example showing how you can add
-the calendar widget within your copy for a page or post:
+Right now it does two things. The first is allowing you to add widgets into pages or posts by using some simple
+shortcodes - here's an example showing how you can add the calendar widget within your copy for a page or post:
 
 `[event_rocket_calendar]`
 
@@ -30,7 +30,7 @@ be listed below it:
 
 `[event_rocket_calendar count="3"]`
 
-Other stuff may be added in time.
+It also lets you position the events calendar on the front page, making events front-of-house.
 
 == Installation ==
 
@@ -75,9 +75,16 @@ You can let it know you want the seconds to be displayed by using the `show_seco
 
 == Screenshots ==
 
-There are no screenshots at this time!
+1. Here you can see the new _Main Events Page_ entry in the Reading Settings screen.
+2. Example of embedding a widget - in this case, the countdown widget - within a page or post.
+3. The actual output with the countdown widget embedded in the page. A great example as it also shows the sort of flaws
+in terms of styling that can occur theme to theme (ie, to make things super-seamless some CSS knowledge is going to be
+required).
 
 == Changelog ==
+
+= 1.1 =
+* Project Nosecone: put the main events page on the blog front page
 
 = 1.0 =
 * Initial release (version numbering broadly intended to coincide with The Events Calendar releases).
