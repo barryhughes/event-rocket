@@ -4,7 +4,7 @@ Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes
 Requires at least: 3.8
 Tested up to: 3.8.1
-Stable tag: 1.1
+Stable tag: 1.1.1.dev
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
