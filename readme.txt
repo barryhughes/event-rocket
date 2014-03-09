@@ -50,6 +50,13 @@ When the time comes to upgrade you need take no special precautions :-)
 
 == Frequently Asked Questions ==
 
+= How do I put the main events page on the front page of my site/blog? =
+
+* With Event Rocket activated, visit the Settings → Reading admin screen
+* Choose a static page for the front page
+* Select _Main Events Page_ for the Front Page option
+* Save!
+
 = What are the shortcodes used to embed different widgets in pages/posts? =
 
 * `[event_rocket_calendar]` embeds the calendar widget
