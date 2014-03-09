@@ -74,7 +74,7 @@ examples of acceptable ways to pass this information:
 * `[event_rocket_countdown id="789"]` this time the ID relates to the event
 * `[event_rocket_countdown event_id="789"]` again you can be more explicit if you wish
 
-= How can I make the countdown widget display seconds? *
+= How can I make the countdown widget display seconds? =
 
 You can let it know you want the seconds to be displayed by using the `show_seconds` attribute, something like this:
 
