@@ -59,8 +59,9 @@ class EventRocketNosecone
 	 * If the front page is set to show events, listen out for and intercept the main query.
 	 */
 	protected function events_on_front() {
-		if ( self::FAKE_POST_ID === (int) get_option( 'page_on_front', 0 ) )
-			add_action( 'parse_query', array( $this, 'parse_query' ), 5 );
+		if ( self::FAKE_POST_ID !== (int) get_option( 'page_on_front', 0 ) ) return;
+		add_action( 'parse_query', array( $this, 'parse_query' ), 5 );
+		add_filter( 'tribe_events_getLink', array( $this, 'main_event_page_links' ) );
 	}
 
 	/**
@@ -83,7 +84,60 @@ class EventRocketNosecone
 		$query->set( 'post_type', TribeEvents::POSTTYPE );
 		$query->set( 'eventDisplay', 'default' );
 
+
 		return $query;
+	}
+
+	/**
+	 * Where TEC generates a link to the nominal main events page replace it with a link to the
+	 * front page instead.
+	 *
+	 * We'll only do this if pretty permalinks are in use: those sites aren't cool enough to ride
+	 * rockets.
+	 *
+	 * @param string $url
+	 * @return string
+	 */
+	public function main_event_page_links( $url ) {
+		// Capture the main events URL and break it into its consituent pieces for future comparison
+		static $event_url;
+		static $baseline = array();
+
+		if ( ! isset( $event_url ) ) {
+			$event_url = $this->get_main_events_url();
+			$baseline = parse_url( $event_url );
+		}
+
+		// Don't interfere if we're using ugly permalinks
+		if ( '' === get_option( 'permalink_structure' ) ) return $url;
+
+		// Break apart the requested URL
+		$current = parse_url( $url );
+
+		// If the URLs can't be inspected then bail
+		if ( false === $baseline || false === $current ) return $url;
+
+		// If this is not a request for the main events URL, bail
+		if ( $baseline['path'] !== $current['path'] || $baseline['host'] !== $current['host'] ) return $url;
+
+		// Reform the query
+		$query = ! empty( $current['query'] ) ? '?' . $current['query'] : '';
+		return home_url() . $query;
+	}
+
+	/**
+	 * Supplies the nominal main events page URL (ie, if it was not positioned on the front page
+	 * by Event Rocket).
+	 *
+	 * @return string
+	 */
+	protected function get_main_events_url() {
+		$tribe_events = TribeEvents::instance();
+
+		if ( false !== strpos( get_option( 'permalink_structure' ), 'index.php' ) )
+			return trailingslashit( home_url() . '/index.php/' . sanitize_title( $tribe_events->getOption( 'eventsSlug', 'events' ) ) );
+
+		else return trailingslashit( home_url() . '/' . sanitize_title( $tribe_events->getOption( 'eventsSlug', 'events' ) ) );
 	}
 }
 
