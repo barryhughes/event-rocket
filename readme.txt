@@ -74,6 +74,14 @@ You can let it know you want the seconds to be displayed by using the `show_seco
 
 * `[event_rocket_countdown id="789" show_seconds="true"]`
 
+= How can I edit the coordinates (longitude/latitude) of a venue? =
+
+* Just open the venue in the venue editor
+* You will see a new meta box (check out the screenshots for an example) normally positioned on the right hand side
+* You can adjust these values to any acceptable coordinates you like
+* This is particularly useful where the true venue is not an actual street address (perhaps it is off the beaten track)
+or where it is for instance a distinct location within a large facility (like a university campus)
+
 == Screenshots ==
 
 1. Here you can see the new _Main Events Page_ entry in the Reading Settings screen.
