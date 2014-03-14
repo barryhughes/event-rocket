@@ -4,7 +4,7 @@ Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes
 Requires at least: 3.8
 Tested up to: 3.8.1
-Stable tag: 1.1.1.dev
+Stable tag: 1.2.dev
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -89,6 +89,12 @@ in terms of styling that can occur theme to theme (ie, to make things super-seam
 required).
 
 == Changelog ==
+
+= 1.2 =
+
+* Nosecone improvements (front page support): change all references to the main event page so they "point" to the front
+page instead
+* Project GPS: allow adjustments to stored longitude/latitude data for venues
 
 = 1.1 =
 * Project Nosecone: put the main events page on the blog front page
