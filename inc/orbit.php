@@ -1,6 +1,7 @@
 <?php
 defined( 'EVENT_ROCKET_INC' ) or die();
 
-require EVENT_ROCKET_INC . '/nosecone.php';
-require EVENT_ROCKET_INC . '/shortcodes.php';
-require EVENT_ROCKET_INC . '/gps.php';
+$includes = array( 'nosecone', 'shortcodes', 'gps', '404_laser' );
+
+foreach ( $includes as $component )
+	require EVENT_ROCKET_INC . "/$component.php";
