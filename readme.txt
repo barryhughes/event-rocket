@@ -4,7 +4,7 @@ Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes
 Requires at least: 3.8
 Tested up to: 3.8.1
-Stable tag: 1.2
+Stable tag: 1.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -18,11 +18,12 @@ This is an add-on that builds on top of the following wonderful plugins:
 * [Events Calendar PRO](http://tri.be/shop/wordpress-events-calendar-pro/) (optional but recommended)
 * Version 3.4 or greater for both of the above are suggested
 
-So if you don't already have them installed it behooves you to do so now ;-)
+So if you don't already have them installed it behooves you to do so now. This plugin then adds the following power-ups:
 
-What can this thing do? Right now, three things: deploy widgets as shortcodes, stick the main events page on the front
-page of your blog and allow precise editing of global coordinates for venues (for pinpoint accuracy when using Google
-Maps with venues).
+* It lets you position the main events page on the front page of your blog
+* Precise editing of venue coordinates is allowed
+* A 404 Laser has been added to help blast away pesky 404 issues, especially with regards to empty day views
+* Event widgets can be deployed as shortcodes
 
 Check out the FAQs and screenshots for more examples.
 
@@ -74,14 +75,6 @@ You can let it know you want the seconds to be displayed by using the `show_seco
 
 * `[event_rocket_countdown id="789" show_seconds="true"]`
 
-= How can I edit the coordinates (longitude/latitude) of a venue? =
-
-* Just open the venue in the venue editor
-* You will see a new meta box (check out the screenshots for an example) normally positioned on the right hand side
-* You can adjust these values to any acceptable coordinates you like
-* This is particularly useful where the true venue is not an actual street address (perhaps it is off the beaten track)
-or where it is for instance a distinct location within a large facility (like a university campus)
-
 == Screenshots ==
 
 1. Here you can see the new _Main Events Page_ entry in the Reading Settings screen.
@@ -92,6 +85,10 @@ required).
 4. Editing venue coordinates
 
 == Changelog ==
+
+= 1.3 =
+
+* Project 404 Laser: attempt to force a 200 OK status on empty day views
 
 = 1.2 =
 
