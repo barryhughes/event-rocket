@@ -21,7 +21,7 @@ This is an add-on that builds on top of the following wonderful plugins:
 So if you don't already have them installed it behooves you to do so now. This plugin then adds the following power-ups:
 
 * It lets you position the main events page on the front page of your blog
-* Precise editing of venue coordinates is allowed
+* Precise editing of venue coordinates becomes possible for when street addresses just don't cut it
 * A 404 Laser has been added to help blast away pesky 404 issues, especially with regards to empty day views
 * Event widgets can be deployed as shortcodes
 
