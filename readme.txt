@@ -4,7 +4,7 @@ Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes
 Requires at least: 3.8
 Tested up to: 3.8.1
-Stable tag: 1.3
+Stable tag: 1.3.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -85,6 +85,10 @@ required).
 4. Editing venue coordinates
 
 == Changelog ==
+
+= 1.3.1 =
+
+* Bug fixes (thanks to GonzaloTGEB for highlighting some issues)
 
 = 1.3 =
 

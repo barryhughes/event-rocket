@@ -74,7 +74,7 @@ class EventRocketWidgetShortcodes
 	 * @return array
 	 */
 	protected function attributes( $src_attrs ) {
-		return array_merge( $this->defaults, $src_attrs );
+		return array_merge( $this->defaults, (array) $src_attrs );
 	}
 }
 
@@ -122,3 +122,15 @@ function eventrocket_widget_id_atts( $atts ) {
 add_filter( 'event_rocket_shortcode_tribecountdownwidget_attributes', 'eventrocket_widget_id_atts', 10 );
 add_filter( 'event_rocket_shortcode_tribevenuewidget_attributes', 'eventrocket_widget_id_atts', 10 );
 
+/**
+ * Ensure the minimum expected attributes are available to the countdown widget.
+ *
+ * @param $atts
+ * @return array
+ */
+function eventrocket_countdown_atts( $atts ) {
+	$defaults = array( 'title' => '', 'complete' => false, 'show_seconds' => false );
+	return array_merge( $defaults, (array) $atts );
+}
+
+add_filter( 'event_rocket_shortcode_tribecountdownwidget_attributes', 'eventrocket_countdown_atts', 10 );
