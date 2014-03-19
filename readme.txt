@@ -87,15 +87,12 @@ required).
 == Changelog ==
 
 = 1.3.1 =
-
 * Bug fixes (thanks to GonzaloTGEB for highlighting some issues)
 
 = 1.3 =
-
 * Project 404 Laser: attempt to force a 200 OK status on empty day views
 
 = 1.2 =
-
 * Nosecone improvements (front page support): change all references to the main event page so they "point" to the front
 page instead
 * Project GPS: allow adjustments to stored longitude/latitude data for venues
@@ -104,5 +101,4 @@ page instead
 * Project Nosecone: put the main events page on the blog front page
 
 = 1.0 =
-* Initial release (version numbering broadly intended to coincide with The Events Calendar releases).
-* Another change.
+* Initial release
