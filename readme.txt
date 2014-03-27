@@ -1,5 +1,5 @@
 === Event Rocket ===
-Contributors: barry.hughes
+Contributors: barry.hughes, shane.pearlman
 Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes
 Requires at least: 3.8
