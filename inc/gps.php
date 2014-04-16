@@ -54,7 +54,7 @@ class EventRocketGPS
 	 * Display the meta box.
 	 */
 	public function metabox( $post ) {
-		$template = apply_filters( 'event_rocket_metabox_template', EVENT_ROCKET_INC . '/gps-metabox.php' );
+		$template = apply_filters( 'event_rocket_metabox_template', EVENTROCKET_INC . '/gps-metabox.php' );
 		$latitude = (float) get_post_meta( $post->ID, $this->lat_key, true );
 		$longitude = (float) get_post_meta( $post->ID, $this->lng_key, true );
 		include $template;

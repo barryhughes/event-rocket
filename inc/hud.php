@@ -1,0 +1,86 @@
+<?php
+/**
+ * Provides additional toolbar items to make it easier to reach specific
+ * setting pages.
+ */
+class EventRocketHUD
+{
+	/**
+	 * The toolbar node used as a container for event settings.
+	 */
+	const SETTINGS_PARENT = 'tribe-events-settings';
+
+	/**
+	 * @var WP_Admin_Bar
+	 */
+	protected $toolbar;
+
+	/**
+	 * List of event settings tabs.
+	 *
+	 * @var array
+	 */
+	protected $tabs = array();
+
+
+	public function __construct() {
+		add_action( 'admin_bar_menu', array( $this, 'toolbar' ) );
+		$this->settings_links();
+	}
+
+	public function toolbar( WP_Admin_Bar $toolbar ) {
+		$this->toolbar = $toolbar;
+	}
+
+	protected function settings_links() {
+		// Build a list of the available settings tabs
+		if ( is_admin() ) add_action( 'admin_init', array( $this, 'settings_get_tabs' ), 20 );
+		else add_action( 'init', array( $this, 'settings_get_tabs' ), 20 );
+
+		// Add our links
+		add_action( 'wp_before_admin_bar_render', array( $this, 'settings_add_tablinks' ), 20 );
+	}
+
+	public function settings_get_tabs() {
+		$this->settings_frontend_hack();
+		do_action( 'tribe_settings_do_tabs' );
+
+		$this->tabs = array_merge(
+			(array) apply_filters( 'tribe_settings_all_tabs', array() ),
+			(array) apply_filters( 'tribe_settings_no_save_tabs', array() )
+		);
+	}
+
+	/**
+	 * Outside of the admin environment we need to do a few tricks in order to
+	 * load the list of tabs.
+	 */
+	protected function settings_frontend_hack() {
+		if ( is_admin() ) return;
+		require_once(ABSPATH . 'wp-admin/includes/theme.php');
+		TribeEvents::instance()->initOptions();
+	}
+
+	public function settings_add_tablinks() {
+		$target = $this->toolbar->get_node( self::SETTINGS_PARENT );
+		if ( null === $target ) return;
+
+		foreach ( $this->tabs as $index => $item )
+			$this->settings_add_to_group( $index, $item );
+	}
+
+	public function settings_add_to_group( $index, $item ) {
+		$settings = TribeSettings::instance();
+		$query = array( 'page' => $settings->adminSlug, 'tab' => $index, 'post_type' => TribeEvents::POSTTYPE );
+		$url = apply_filters( 'tribe_settings_url', add_query_arg( $query, admin_url( 'edit.php' ) ) );
+
+		$this->toolbar->add_node( array(
+			'id' => $index,
+			'title' => $item,
+			'parent' => self::SETTINGS_PARENT,
+			'href' => $url
+		) );
+	}
+}
+
+new EventRocketHUD;
