@@ -4,7 +4,7 @@ Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes
 Requires at least: 3.8
 Tested up to: 3.8.1
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -24,6 +24,7 @@ So if you don't already have them installed it behooves you to do so now. This p
 * Precise editing of venue coordinates becomes possible for when street addresses just don't cut it
 * A 404 Laser has been added to help blast away pesky 404 issues, especially with regards to empty day views
 * Event widgets can be deployed as shortcodes
+* You can access all event setting tabs directly from the admin menu
 
 Check out the FAQs and screenshots for more examples.
 
@@ -85,6 +86,9 @@ required).
 4. Editing venue coordinates
 
 == Changelog ==
+
+= 1.3.2 =
+* Project HUD: extends the admin toolbar, initially with direct links to various settings tabs
 
 = 1.3.1 =
 * Bug fixes (thanks to GonzaloTGEB for highlighting some issues)
