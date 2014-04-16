@@ -45,7 +45,7 @@ class EventRocketGPS
 	 * Register the meta box.
 	 */
 	public function setup_metabox() {
-		$title = __( 'Coordinates', 'event-rocket');
+		$title = __( 'Coordinates', 'eventrocket');
 		$callback = array( $this, 'metabox' );
 		add_meta_box( 'event_rocket_gps_coords', $title, $callback, TribeEvents::VENUE_POST_TYPE, 'side' );
 	}

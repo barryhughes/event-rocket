@@ -49,7 +49,7 @@ class EventRocketNosecone
 
 		// Form our custom page_on_front option
 		$selected = self::FAKE_POST_ID === (int) get_option( 'page_on_front', 0 ) ? ' selected="selected"' : '';
-		$new_option = '<option value="' . self::FAKE_POST_ID . '"' . $selected . '>' . __( 'Main events page', 'event-rocket' ) . '</option>';
+		$new_option = '<option value="' . self::FAKE_POST_ID . '"' . $selected . '>' . __( 'Main events page', 'eventrocket' ) . '</option>';
 
 		// Insert and return
 		return str_replace( '</select>', $new_option . '</select>', $html);
