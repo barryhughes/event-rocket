@@ -84,6 +84,7 @@ You can let it know you want the seconds to be displayed by using the `show_seco
 in terms of styling that can occur theme to theme (ie, to make things super-seamless some CSS knowledge is going to be
 required).
 4. Editing venue coordinates
+5. Enhanced admin toolbar options
 
 == Changelog ==
 
