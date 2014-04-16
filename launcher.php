@@ -20,7 +20,7 @@ function eventrocket_launch() {
 	}
 
 	define( 'EVENTROCKET_INC', dirname( __FILE__ ) . '/inc' );
-	require EVENTROCKET_INC . '/orbit.php';
+	require EVENTROCKET_INC . '/groundcontrol.php';
 }
 
 function eventrocket_abort_launch() {

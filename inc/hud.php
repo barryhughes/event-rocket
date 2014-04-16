@@ -42,21 +42,23 @@ class EventRocketHUD
 	}
 
 	public function settings_get_tabs() {
-		/**
-		 * @todo Tribe settings code calls WP API functions that are not yet available: adjust this!
-		 *
-		 * get_page_templates() which is not yet avaiable will be called by Tribe settings code
-		 * (ie, get_page_templates()).
-		 */
-		if ( ! is_admin() ) {
-			TribeEvents::instance()->initOptions();
-			do_action( 'tribe_settings_do_tabs' );
-		}
+		$this->settings_frontend_hack();
+		do_action( 'tribe_settings_do_tabs' );
 
 		$this->tabs = array_merge(
 			(array) apply_filters( 'tribe_settings_all_tabs', array() ),
 			(array) apply_filters( 'tribe_settings_no_save_tabs', array() )
 		);
+	}
+
+	/**
+	 * Outside of the admin environment we need to do a few tricks in order to
+	 * load the list of tabs.
+	 */
+	protected function settings_frontend_hack() {
+		if ( is_admin() ) return;
+		require_once(ABSPATH . 'wp-admin/includes/theme.php');
+		TribeEvents::instance()->initOptions();
 	}
 
 	public function settings_add_tablinks() {
@@ -68,10 +70,15 @@ class EventRocketHUD
 	}
 
 	public function settings_add_to_group( $index, $item ) {
+		$settings = TribeSettings::instance();
+		$query = array( 'page' => $settings->adminSlug, 'tab' => $index, 'post_type' => TribeEvents::POSTTYPE );
+		$url = apply_filters( 'tribe_settings_url', add_query_arg( $query, admin_url( 'edit.php' ) ) );
+
 		$this->toolbar->add_node( array(
 			'id' => $index,
 			'title' => $item,
-			'parent' => self::SETTINGS_PARENT
+			'parent' => self::SETTINGS_PARENT,
+			'href' => $url
 		) );
 	}
 }
