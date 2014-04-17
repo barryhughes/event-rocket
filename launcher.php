@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Event Rocket
  * Description: Adds shortcodes and other tools to help build sites with The Events Calendar/Events Calendar PRO.
- * Version: 1.3.4
+ * Version: 1.4.0-dev
  * Author: Barry Hughes
  * Author URI: http://codingkills.me
  * License: GPLv3 or later
@@ -15,6 +15,7 @@ add_action( 'plugins_loaded', 'eventrocket_launch' );
 
 function eventrocket_launch() {
 	define( 'EVENTROCKET_INC', dirname( __FILE__ ) . '/inc' );
+	define( 'EVENTROCKET_URL', plugin_dir_url( __FILE__ ) );
 
 	if ( ! class_exists( 'TribeEvents' ) || version_compare( TribeEvents::VERSION, '3.4', '<' ) ) {
 		eventrocket_abort_launch();
