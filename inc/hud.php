@@ -24,6 +24,7 @@ class EventRocketHUD
 
 
 	public function __construct() {
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) return;
 		add_action( 'admin_bar_menu', array( $this, 'toolbar' ) );
 		$this->settings_links();
 	}
