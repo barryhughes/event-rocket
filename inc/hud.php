@@ -45,11 +45,7 @@ class EventRocketHUD
 	public function settings_get_tabs() {
 		$this->settings_frontend_hack();
 		do_action( 'tribe_settings_do_tabs' );
-
-		$this->tabs = array_merge(
-			(array) apply_filters( 'tribe_settings_all_tabs', array() ),
-			(array) apply_filters( 'tribe_settings_no_save_tabs', array() )
-		);
+		$this->tabs = (array) apply_filters( 'tribe_settings_all_tabs', array() );
 	}
 
 	/**
@@ -74,7 +70,7 @@ class EventRocketHUD
 	public function settings_add_tablinks() {
 		$target = $this->toolbar->get_node( self::SETTINGS_PARENT );
 		if ( null === $target ) return;
-
+		asort( $this->tabs );
 		foreach ( $this->tabs as $index => $item )
 			$this->settings_add_to_group( $index, $item );
 	}
