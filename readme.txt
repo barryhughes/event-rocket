@@ -86,7 +86,7 @@ Where 987 would be replaced with the actual category ID you wish to use.
 
 You can let it know you want the seconds to be displayed by using the `show_seconds` attribute, something like this:
 
-* `[event_rocket_countdown id="789" show_seconds="true"]`
+`[event_rocket_countdown id="789" show_seconds="true"]`
 
 == Screenshots ==
 
