@@ -4,7 +4,7 @@ Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes
 Requires at least: 3.8
 Tested up to: 3.8.1
-Stable tag: 1.3.2
+Stable tag: 1.3.4
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -99,6 +99,12 @@ required).
 5. Enhanced admin toolbar options
 
 == Changelog ==
+
+= 1.3.4 =
+* Fixes bug in Project HUD: conflict with Community Events (thanks to mimi.cummins for highlighting this one!)
+
+= 1.3.3 =
+* Fixes bug in Project HUD: attempting to build list of settings tabs fails during ajax requests
 
 = 1.3.2 =
 * Project HUD: extends the admin toolbar, initially with direct links to various settings tabs

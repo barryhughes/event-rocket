@@ -58,8 +58,17 @@ class EventRocketHUD
 	 */
 	protected function settings_frontend_hack() {
 		if ( is_admin() ) return;
+		$this->community_compatibility_fix();
 		require_once(ABSPATH . 'wp-admin/includes/theme.php');
 		TribeEvents::instance()->initOptions();
+	}
+
+	/**
+	 * Ensure compatibility with Community Events, should it be installed.
+	 */
+	protected function community_compatibility_fix() {
+		if ( ! class_exists( 'TribeCommunityEvents' ) ) return;
+		require_once(ABSPATH . 'wp-admin/includes/user.php');
 	}
 
 	public function settings_add_tablinks() {
