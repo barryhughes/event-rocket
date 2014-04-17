@@ -60,6 +60,9 @@ When the time comes to upgrade you need take no special precautions :-)
 * `[event_rocket_countdown]` embeds the event countdown widget
 * `[event_rocket_venue]` embeds the featured venue widget
 
+Please note however that if you are not using Events Calendar PRO then any widgets specific to that plugin (such as the
+countdown and calendar widget) will *not* be available.
+
 = How can I specify the venue or event ID? =
 
 Both the countdown and venue widgets need to know which event or venue you are referring to. All of the following are
@@ -69,6 +72,15 @@ examples of acceptable ways to pass this information:
 * `[event_rocket_venue venue_id="123"]` is also allowed
 * `[event_rocket_countdown id="789"]` this time the ID relates to the event
 * `[event_rocket_countdown event_id="789"]` again you can be more explicit if you wish
+
+= How do I specify a category (when embedding the list widget)? =
+
+The list widget allows you to specify a category of events. This is also possible via the corresponding shortcode,
+simply do this:
+
+`[event_rocket_list category="987"]`
+
+Where 987 would be replaced with the actual category ID you wish to use.
 
 = How can I make the countdown widget display seconds? =
 
