@@ -5,8 +5,10 @@
 class EventRocket404Laser
 {
 	public function __construct() {
-		if ( true === get_option( 'event_rocket_404_laser_on', true ) )
-			add_action( 'status_header', array( $this, 'http_status_radar' ) );
+		if ( false === get_option( 'event_rocket_404_laser_on', true ) ) return;
+		add_action( 'status_header', array( $this, 'http_status_radar' ) );
+		add_action( 'activate_plugin', array( $this, 'plugin_listener' ) );
+		add_action( 'wp_loaded', array( $this, 'proactive_cleanup' ) );
 	}
 
 	public function http_status_radar( $status ) {
@@ -24,6 +26,22 @@ class EventRocket404Laser
 	protected function is_day() {
 		global $wp_query;
 		return isset( $wp_query->tribe_is_day ) && $wp_query->tribe_is_day;
+	}
+
+	/**
+	 * Plugins may add their own rewrite rules and displace existing ones, causing problems.
+	 * We listen for this, pause to count, and then flush the rewrite rules.
+	 */
+	public function plugin_listener() {
+		set_transient( 'eventrocket_plugin_alert', 1, ( 60 * 30 ) );
+	}
+
+	public function proactive_cleanup() {
+		$count = (int) get_transient( 'eventrocket_plugin_alert' );
+		if ( 1 === $count ) set_transient( 'eventrocket_plugin_alert', 2, ( 60 * 30 ) );
+		if ( 2 !== $count ) return; // We wait until a count of 2 so as not to cleanup too early
+		delete_transient( 'eventrocket_plugin_alert' );
+		flush_rewrite_rules();
 	}
 }
 
