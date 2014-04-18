@@ -5,7 +5,6 @@
 class EventRocket404Laser
 {
 	public function __construct() {
-		if ( false === get_option( 'event_rocket_404_laser_on', true ) ) return;
 		add_action( 'status_header', array( $this, 'http_status_radar' ) );
 		add_action( 'activate_plugin', array( $this, 'plugin_listener' ) );
 		add_action( 'wp_loaded', array( $this, 'proactive_cleanup' ) );
