@@ -4,7 +4,7 @@ defined( 'EVENTROCKET_INC' ) or die();
 /**
  * Manages the list of rocket modules that will be loaded.
  */
-class EventrocketModules
+class EventRocketModules
 {
 	protected static $modules = array(
 		'nosecone',
