@@ -62,6 +62,7 @@ class EventRocketNosecone
 		if ( self::FAKE_POST_ID !== (int) get_option( 'page_on_front', 0 ) ) return;
 		add_action( 'parse_query', array( $this, 'parse_query' ), 5 );
 		add_filter( 'tribe_events_getLink', array( $this, 'main_event_page_links' ) );
+		add_filter( 'tribe_events_current_view_template', array( $this, 'list_view_helper' ) );
 	}
 
 	/**
@@ -83,7 +84,7 @@ class EventRocketNosecone
 		$query->set( 'page_id', 0 );
 		$query->set( 'post_type', TribeEvents::POSTTYPE );
 		$query->set( 'eventDisplay', 'default' );
-
+		$query->set( 'eventrocket_frontpage', true );
 
 		return $query;
 	}
@@ -138,6 +139,28 @@ class EventRocketNosecone
 			return trailingslashit( home_url() . '/index.php/' . sanitize_title( $tribe_events->getOption( 'eventsSlug', 'events' ) ) );
 
 		else return trailingslashit( home_url() . '/' . sanitize_title( $tribe_events->getOption( 'eventsSlug', 'events' ) ) );
+	}
+
+	/**
+	 * Help to ensure the list view works on the front page (when it is set to be the
+	 * default view).
+	 *
+	 * @param $template
+	 * @return string
+	 */
+	public function list_view_helper( $template ) {
+		global $wp_query;
+
+		// Determine if it's appropriate to interfere
+		$events_frontpage = $wp_query->get( 'eventrocket_frontpage' );
+		$is_list = tribe_is_list_view();
+		$single_template_chosen = ( false !== strpos( $template, 'single-event.php' ) );
+
+		// Bow out gracefully if we're not needed here
+		if ( ! ( $events_frontpage && $is_list && $single_template_chosen )	) return $template;
+
+		// Otherwise, try to enforce use of the list view template
+		return TribeEventsTemplates::getTemplateHierarchy( 'list', array( 'disable_view_check' => true ) );
 	}
 }
 
