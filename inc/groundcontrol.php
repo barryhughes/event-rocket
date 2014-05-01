@@ -11,7 +11,8 @@ class EventrocketModules
 		'shortcodes',
 		'gps',
 		'404_laser',
-		'hud'
+		'hud',
+		'radio'
 	);
 
 
