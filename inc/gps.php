@@ -47,14 +47,14 @@ class EventRocketGPS
 	public function setup_metabox() {
 		$title = __( 'Coordinates', 'eventrocket');
 		$callback = array( $this, 'metabox' );
-		add_meta_box( 'event_rocket_gps_coords', $title, $callback, TribeEvents::VENUE_POST_TYPE, 'side' );
+		add_meta_box( 'eventrocket_gps_coords', $title, $callback, TribeEvents::VENUE_POST_TYPE, 'side' );
 	}
 
 	/**
 	 * Display the meta box.
 	 */
 	public function metabox( $post ) {
-		$template = apply_filters( 'event_rocket_metabox_template', EVENTROCKET_INC . '/gps-metabox.php' );
+		$template = apply_filters( 'eventrocket_metabox_template', EVENTROCKET_INC . '/gps-metabox.php' );
 		$latitude = (float) get_post_meta( $post->ID, $this->lat_key, true );
 		$longitude = (float) get_post_meta( $post->ID, $this->lng_key, true );
 		include $template;
