@@ -4,7 +4,7 @@ Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes
 Requires at least: 3.8
 Tested up to: 3.8.1
-Stable tag: 1.3.4
+Stable tag: 1.4.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -16,7 +16,7 @@ This is an add-on that builds on top of the following wonderful plugins:
 
 * [The Events Calendar](http://wordpress.org/plugins/the-events-calendar/) (required)
 * [Events Calendar PRO](http://tri.be/shop/wordpress-events-calendar-pro/) (optional but recommended)
-* Version 3.4 or greater for both of the above are suggested
+* Version 3.5 or greater for both of the above are suggested
 
 So if you don't already have them installed it behooves you to do so now. This plugin then adds the following power-ups:
 
@@ -25,6 +25,7 @@ So if you don't already have them installed it behooves you to do so now. This p
 * A 404 Laser has been added to help blast away pesky 404 issues, especially with regards to empty day views
 * Event widgets can be deployed as shortcodes
 * You can access all event setting tabs directly from the admin menu
+* Clean up and remove events data if you decide you don't need it any longer
 
 Check out the FAQs and screenshots for more examples.
 
@@ -88,6 +89,12 @@ You can let it know you want the seconds to be displayed by using the `show_seco
 
 `[event_rocket_countdown id="789" show_seconds="true"]`
 
+= How can I cleanup events data? =
+
+A new menu option will appear in the WordPress _tools_ menu labelled 'Cleanup events data' - by default this *only*
+appears when The Events Calendar is deactivated. You are strongly cautioned to make a full and complete backup before
+using this tool (and, of course, should make yourself aware of the steps needed to restore that backup).
+
 == Screenshots ==
 
 1. Here you can see the new _Main Events Page_ entry in the Reading Settings screen.
@@ -97,8 +104,16 @@ in terms of styling that can occur theme to theme (ie, to make things super-seam
 required).
 4. Editing venue coordinates
 5. Enhanced admin toolbar options
+6. Cleanup tools menu entry (will not normally appear unless The Events Calendar has been deactivated)
+7. The actual cleanup screen
 
 == Changelog ==
+
+= 1.4.0 =
+* Project Jettison: adds clean up tools - after deactivating core (The Events Calendar) clean up tools are added
+(to the Tools admin menu) to enable removal of event data
+* Fixes bug in Project Nosecone: list view wasn't rendering as expected when added to the front page (thanks to Leah
+for highlighting this!)
 
 = 1.3.4 =
 * Fixes bug in Project HUD: conflict with Community Events (thanks to mimi.cummins for highlighting this one!)
