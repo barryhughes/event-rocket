@@ -13,6 +13,7 @@ class EventRocketEmbedEventsShortcode
 	protected $to = '';
 	protected $limit = 20;
 	protected $template = '';
+	protected $output = '';
 
 
 	public function __construct() {
@@ -42,16 +43,32 @@ class EventRocketEmbedEventsShortcode
 		echo $this->shortcode( $params, $content );
 	}
 
+	/**
+	 * Shortcode handler.
+	 *
+	 * @param $params
+	 * @param $content
+	 * @return string
+	 */
 	public function shortcode( $params, $content ) {
 		if ( ! empty( $params ) && is_array( $params ) ) $this->params = $params;
 		$this->content = $content;
-		$this->parse();
-		print_r($this->events);
-		print_r($this->ignore_events);
-		print_r($this->categories);
-		print_r($this->ignore_categories);
+		$this->execute();
+		return $this->output;
 	}
 
+	/**
+	 * Parse the provided parameters, run the resulting query and build the output.
+	 */
+	protected function execute() {
+		$this->parse();
+		$this->query();
+		$this->build();
+	}
+
+	/**
+	 * Pre-process and get what we need from any parameters that were provided.
+	 */
 	protected function parse() {
 		$this->collect_post_tax_refs();
 		$this->separate_ignore_values();
@@ -189,10 +206,24 @@ class EventRocketEmbedEventsShortcode
 	protected function typify( &$value ) {
 		$value = is_numeric( $value ) ? (int) $value : (string) $value;
 	}
+
+	/**
+	 * Retrieve the events based on the parameters provided.
+	 */
+	protected function query() {
+
+	}
+
+	/**
+	 * Take the query result set and build the actual output.
+	 */
+	protected function build() {
+
+	}
 }
 
 // Set the shortcode up and/or possibly define the event_embed() helper
-if ( ! function_exists( 'event_embed' ) ) new EventRocketEmbedEventsShortcode;
+if ( function_exists( 'event_embed' ) ) new EventRocketEmbedEventsShortcode;
 else return;
 
 /**
