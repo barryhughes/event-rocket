@@ -20,6 +20,28 @@ class EventRocketEmbedEventsShortcode
 		add_shortcode( $shortcode, array( $this, 'shortcode' ) );
 	}
 
+	/**
+	 * Provides a programmatic means of using the event embed shortcode, returning
+	 * the shortcode output as a string.
+	 *
+	 * @param array $params
+	 * @param string $content
+	 */
+	public function get( array $params, $content = '' ) {
+		return $this->shortcode( $params, $content );
+	}
+
+	/**
+	 * Provides a programmatic means of using the event embed shortcode, printing
+	 * the shortcode output directly.
+	 *
+	 * @param array $params
+	 * @param string $content
+	 */
+	public function render( array $params, $content = '' ) {
+		echo $this->shortcode( $params, $content );
+	}
+
 	public function shortcode( $params, $content ) {
 		if ( ! empty( $params ) && is_array( $params ) ) $this->params = $params;
 		$this->content = $content;
@@ -169,4 +191,18 @@ class EventRocketEmbedEventsShortcode
 	}
 }
 
-new EventRocketEmbedEventsShortcode;
+// Set the shortcode up and/or possibly define the event_embed() helper
+if ( ! function_exists( 'event_embed' ) ) new EventRocketEmbedEventsShortcode;
+else return;
+
+/**
+ * @return EventRocketEmbedEventsShortcode
+ */
+function event_embed() {
+	static $object = null;
+	if ( null === $object ) $object = new EventRocketEmbedEventsShortcode;
+	return $object;
+}
+
+// Call once to ensure the [event-embed] object is created
+event_embed();
