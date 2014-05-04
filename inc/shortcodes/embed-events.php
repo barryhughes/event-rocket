@@ -321,7 +321,7 @@ class EventRocketEmbedEventsShortcode
 	protected function build() {
 		ob_start();
 		foreach ( $this->results as $this->event_post ) $this->build_item();
-		$this->output = ob_get_clean();
+		$this->output = apply_filters( 'eventrocket_embed_event_output', ob_get_clean() );
 	}
 
 	/**
@@ -333,8 +333,12 @@ class EventRocketEmbedEventsShortcode
 		$GLOBALS['post'] = $this->event_post;
 		setup_postdata( $GLOBALS['post'] );
 
+		ob_start();
+
 		if ( ! empty( $this->template ) ) include $this->template;
 		elseif ( ! empty( $this->content ) ) $this->build_inline_output();
+
+		return apply_filters( 'eventrocket_embed_event_single_output', ob_get_clean() );
 	}
 
 	protected function build_inline_output() {
