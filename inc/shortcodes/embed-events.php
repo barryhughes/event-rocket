@@ -30,6 +30,7 @@ class EventRocketEmbedEventsShortcode
 	 *
 	 * @param array $params
 	 * @param string $content
+	 * @return string
 	 */
 	public function get( array $params, $content = '' ) {
 		return $this->shortcode( $params, $content );
