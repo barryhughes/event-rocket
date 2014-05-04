@@ -41,4 +41,20 @@ class EventRocketEmbeddedEventTemplateParser
 
 		$this->output = $content;
 	}
+
+	public function start_date() {
+		return tribe_get_start_date( null, false, get_option( 'date_format', 'j F Y' ) );
+	}
+
+	public function start_time() {
+		return tribe_get_start_date( null, false, get_option( 'time_format', 'H:i' ) );
+	}
+
+	public function end_date() {
+		return tribe_get_end_date( null, false, get_option( 'date_format', 'j F Y' ) );
+	}
+
+	public function end_time() {
+		return tribe_get_end_date( null, false, get_option( 'time_format', 'H:i' ) );
+	}
 }
