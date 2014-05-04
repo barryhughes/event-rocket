@@ -39,7 +39,7 @@ class EventRocketEmbeddedEventTemplateParser
 			$content = str_replace( $tag, $value, $content );
 		}
 
-		$this->output = $content;
+		$this->output = apply_filters( 'eventrocket_embedded_event_output', $content );
 	}
 
 	public function start_date() {
