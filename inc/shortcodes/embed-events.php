@@ -290,14 +290,28 @@ class EventRocketEmbedEventsShortcode
 	 * Populate the post (event) and taxonomy query arguments.
 	 */
 	protected function args_post_tax() {
+		$tax_args = array();
+
 		if ( ! empty( $this->events ) ) $this->args['post__in'] = $this->events;
 		if ( ! empty( $this->ignore_events ) ) $this->args['post__not_in'] = $this->ignore_events;
 
-		if ( ! empty( $this->categories ) ) $this->args['category__in'] = $this->categories;
-		if ( ! empty( $this->ignore_categories ) ) $this->args['category__not_in'] = $this->ignore_categories;
+		if ( ! empty( $this->categories ) ) $tax_args[] = array(
+			'taxonomy' => TribeEvents::TAXONOMY,
+			'field' => 'id',
+			'terms' => $this->categories
+		);
+
+		if ( ! empty( $this->ignore_categories ) ) $tax_args[] = array(
+			'taxonomy' => TribeEvents::TAXONOMY,
+			'field' => 'id',
+			'terms' => $this->ignore_categories,
+			'operator' => 'NOT IN'
+		);
 
 		if ( ! empty( $this->tags) ) $this->args['tag__in'] = $this->tags;
 		if ( ! empty( $this->ignore_tags ) ) $this->args['tag__not_in'] = $this->ignore_tags;
+
+		if ( ! empty( $tax_args ) ) $this->args['tax_query'] = $tax_args;
 	}
 
 	protected function args_time() {
@@ -334,12 +348,11 @@ class EventRocketEmbedEventsShortcode
 		$GLOBALS['post'] = $this->event_post;
 		setup_postdata( $GLOBALS['post'] );
 
-		ob_start();
-
 		if ( ! empty( $this->template ) ) include $this->template;
 		elseif ( ! empty( $this->content ) ) $this->build_inline_output();
 
-		return apply_filters( 'eventrocket_embed_event_single_output', ob_get_clean() );
+		echo apply_filters( 'eventrocket_embed_event_single_output', ob_get_clean() );
+		wp_reset_postdata();
 	}
 
 	protected function build_inline_output() {
