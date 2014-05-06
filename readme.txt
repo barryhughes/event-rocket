@@ -4,11 +4,11 @@ Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes
 Requires at least: 3.8
 Tested up to: 3.8.1
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Rocket themed extension adding experimental features to The Events Calendar like shortcodes and front-page events.
+Experimental extension for The Events Calendar and Events Calendar PRO adding shortcodes, front page events and more.
 
 == Description ==
 
@@ -16,14 +16,14 @@ This is an add-on that builds on top of the following wonderful plugins:
 
 * [The Events Calendar](http://wordpress.org/plugins/the-events-calendar/) (required)
 * [Events Calendar PRO](http://tri.be/shop/wordpress-events-calendar-pro/) (optional but recommended)
-* Version 3.5 or greater for both of the above are suggested
+* Version 3.6 or greater for both of the above are suggested
 
 So if you don't already have them installed it behooves you to do so now. This plugin then adds the following power-ups:
 
 * It lets you position the main events page on the front page of your blog
 * Precise editing of venue coordinates becomes possible for when street addresses just don't cut it
 * A 404 Laser has been added to help blast away pesky 404 issues, especially with regards to empty day views
-* Event widgets can be deployed as shortcodes
+* Event widgets can be deployed as shortcodes and you can embed events inline *anywhere* using the `[event-embed]` shortcode
 * You can access all event setting tabs directly from the admin menu
 * Clean up and remove events data if you decide you don't need it any longer
 
@@ -47,6 +47,11 @@ When the time comes to upgrade you need take no special precautions :-)
 
 == Frequently Asked Questions ==
 
+= How can I find out more? =
+
+[The wiki](https://github.com/barryhughes/event-rocket/wiki) contains more detail on various topics
+and is often worth looking at if you need more information.
+
 = How do I put the main events page on the front page of my site/blog? =
 
 * With Event Rocket activated, visit the Settings → Reading admin screen
@@ -64,6 +69,14 @@ When the time comes to upgrade you need take no special precautions :-)
 Please note however that if you are not using Events Calendar PRO then any widgets specific to that plugin (such as the
 countdown and calendar widget) will *not* be available.
 
+= Can I embed arbitrary events with a shortcode? =
+
+Yes - you can use the `[event-embed]` shortcode to do this (please [see here](https://github.com/barryhughes/event-rocket/wiki/Embed-Events)).
+Examples:
+
+* `[event-embed from="2014-07-01" to="2014-07-31"]` grab events in July
+* `[event-embed from="2014-10-01" category="fruit"]` grab events starting in October that belong to the category _fruit_
+*
 = How can I specify the venue or event ID? =
 
 Both the countdown and venue widgets need to know which event or venue you are referring to. All of the following are
