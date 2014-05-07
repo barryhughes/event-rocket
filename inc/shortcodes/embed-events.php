@@ -283,7 +283,7 @@ class EventRocketEmbedEventsShortcode
 		$this->args_time();
 		$this->args_limit();
 		$this->args_display_type();
-		$this->results = get_posts( $this->args );
+		$this->results = tribe_get_events( $this->args );
 	}
 
 	/**
@@ -327,7 +327,8 @@ class EventRocketEmbedEventsShortcode
 	 * Set the eventDisplay query argument appropriately.
 	 */
 	protected function args_display_type() {
-		$this->args['eventDisplay'] = 'custom';
+		$this->args['eventDisplay'] = ( isset( $this->args['start_date'] ) || isset( $this->args['end_date'] ) )
+			? 'custom' : 'upcoming';
 	}
 
 	/**
@@ -336,7 +337,8 @@ class EventRocketEmbedEventsShortcode
 	protected function build() {
 		ob_start();
 		foreach ( $this->results as $this->event_post ) $this->build_item();
-		$this->output = apply_filters( 'eventrocket_embed_event_output', ob_get_clean() );
+		$this->output = ob_get_clean();
+		$this->output = apply_filters( 'eventrocket_embed_event_output', $this->output );
 	}
 
 	/**
@@ -347,11 +349,12 @@ class EventRocketEmbedEventsShortcode
 		if ( ! is_a( $this->event_post, 'WP_Post' ) ) return;
 		$GLOBALS['post'] = $this->event_post;
 		setup_postdata( $GLOBALS['post'] );
+		ob_start();
 
 		if ( ! empty( $this->template ) ) include $this->template;
 		elseif ( ! empty( $this->content ) ) $this->build_inline_output();
 
-		echo apply_filters( 'eventrocket_embed_event_single_output', ob_get_clean() );
+		echo apply_filters( 'eventrocket_embed_event_single_output', ob_get_clean(), get_the_ID() );
 		wp_reset_postdata();
 	}
 
