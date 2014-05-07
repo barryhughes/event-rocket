@@ -71,11 +71,11 @@ countdown and calendar widget) will *not* be available.
 
 = Can I embed arbitrary events with a shortcode? =
 
-Yes - you can use the `[event-embed]` shortcode to do this (please [see here](https://github.com/barryhughes/event-rocket/wiki/Embed-Events)).
+Yes - you can use the `[event_embed]` shortcode to do this (please [see here](https://github.com/barryhughes/event-rocket/wiki/Embed-Events)).
 Examples:
 
-* `[event-embed from="2014-07-01" to="2014-07-31"]` grab events in July
-* `[event-embed from="2014-10-01" category="fruit"]` grab events starting in October that belong to the category _fruit_
+* `[event_embed from="2014-07-01" to="2014-07-31"]` grab events in July
+* `[event_embed from="2014-10-01" category="fruit"]` grab events starting in October that belong to the category _fruit_
 
 = How can I specify the venue or event ID? =
 
