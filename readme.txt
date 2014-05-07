@@ -76,7 +76,7 @@ Examples:
 
 * `[event-embed from="2014-07-01" to="2014-07-31"]` grab events in July
 * `[event-embed from="2014-10-01" category="fruit"]` grab events starting in October that belong to the category _fruit_
-*
+
 = How can I specify the venue or event ID? =
 
 Both the countdown and venue widgets need to know which event or venue you are referring to. All of the following are
@@ -121,6 +121,10 @@ required).
 7. The actual cleanup screen
 
 == Changelog ==
+
+= 1.4.1 =
+* Shortcode enhancements: `[event-embed]` added
+* Fix for potential issue with venue coordinate inputs in Chrome (thanks to Leah for noticing this!)
 
 = 1.4.0 =
 * Project Jettison: adds clean up tools - after deactivating core (The Events Calendar) clean up tools are added
