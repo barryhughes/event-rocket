@@ -235,8 +235,9 @@ class EventRocketEmbedEventsShortcode
 	 * Set the number of posts to retreive
 	 */
 	protected function set_limit() {
-		$this->limit = isset( $this->args['limit'] )
-			? (int) $this->args['limit'] : (int) get_option( 'posts_per_page', 20 );
+		$this->limit = isset( $this->params['limit'] )
+			? (int) $this->params['limit']
+			: (int) get_option( 'posts_per_page', 20 );
 	}
 
 	/**
@@ -247,20 +248,19 @@ class EventRocketEmbedEventsShortcode
 	 */
 	protected function set_template() {
 		$this->template = ''; // Wipe clean
-		$template = false;
 		$fallback = EVENTROCKET_INC . '/shortcodes/embed-events-template.php';
 
 		// If there is no template and no inner content, assume the regular single event template
-		if ( ! isset( $this->args['template'] ) && empty( $this->content ) ) $this->args['template'] = $fallback;
-		elseif ( ! isset( $this->args['template'] ) ) return;
+		if ( ! isset( $this->params['template'] ) && empty( $this->content ) ) $this->template = $fallback;
+		elseif ( ! isset( $this->params['template'] ) ) return;
 
 		// If not an absolute filepath use Tribe's template finder
-		if ( 0 !== strpos( $this->args['template'], '/' ) )
-			$template = TribeEventsTemplates::getTemplateHierarchy( $this->args['template'] );
+		if ( isset( $this->params['template'] ) && 0 !== strpos( $this->params['template'], '/' ) )
+			$this->template = TribeEventsTemplates::getTemplateHierarchy( $this->params['template'] );
 
 		// Ensure the template exists
-		if ( ! $template && file_exists( $this->args['template'] ) ) $template = $this->args['template'];
-		$this->template = (string) $template;
+		if ( ! $this->template && file_exists( $this->params['template'] ) )
+			$this->template = (string) $this->params['template'];
 	}
 
 	/**
