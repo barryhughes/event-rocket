@@ -86,6 +86,10 @@ class EventRocketNosecone
 		$query->set( 'eventDisplay', 'default' );
 		$query->set( 'eventrocket_frontpage', true );
 
+		// Some extra tricks required to help avoid problems when the default view is list view
+		$query->is_page = false;
+		$query->is_singular = false;
+
 		return $query;
 	}
 
