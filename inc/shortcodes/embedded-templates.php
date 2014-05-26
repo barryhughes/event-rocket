@@ -8,9 +8,12 @@ class EventRocketEmbeddedEventTemplateParser
 	public $output = '';
 
 	protected $placeholders = array(
+		'{link}' => 'get_permalink',
+		'{url}' => 'get_permalink',
 		'{title}' => 'get_the_title',
 		'{name}' => 'get_the_title',
 		'{content}' => 'get_the_content',
+		'{description}' => 'get_the_content',
 		'{excerpt}' => 'get_the_excerpt',
 		'{thumbnail}' => 'tribe_event_featured_image',
 		'{start_date}' => array( '__this__', 'start_date' ),
