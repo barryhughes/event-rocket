@@ -123,7 +123,7 @@ required).
 == Changelog ==
 
 = 1.4.4 =
-* Link to single events via the default `[event_embed]` template
+* Link to single events via the default `[event_embed]` template (thanks to ddggccaa for highlighting this!)
 
 = 1.4.3 =
 * Fixes to help smoother use of list view on the homepage (thanks to chwebdev for pointing out this issue)
