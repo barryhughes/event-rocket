@@ -4,7 +4,7 @@ Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes
 Requires at least: 3.8
 Tested up to: 3.8.1
-Stable tag: 1.4.3
+Stable tag: 1.4.4
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -121,6 +121,9 @@ required).
 7. The actual cleanup screen
 
 == Changelog ==
+
+= 1.4.4 =
+* Link to single events via the default `[event_embed]` template
 
 = 1.4.3 =
 * Fixes to help smoother use of list view on the homepage (thanks to chwebdev for pointing out this issue)
