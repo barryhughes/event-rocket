@@ -1,4 +1,7 @@
 <?php
+defined( 'ABSPATH' ) or exit();
+
+
 /**
  * Provides additional toolbar items to make it easier to reach specific
  * setting pages.

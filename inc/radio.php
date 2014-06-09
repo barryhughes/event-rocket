@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) or exit();
+
 // Dependencies
 require_once __DIR__ . '/radio/queryrequest.php';
 require_once __DIR__ . '/radio/transmitter.php';

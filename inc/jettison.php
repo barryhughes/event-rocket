@@ -1,4 +1,7 @@
 <?php
+defined( 'ABSPATH' ) or exit();
+
+
 /**
  * The jettison module provides tools to remove all events data from a WordPress
  * installation.

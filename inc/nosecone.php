@@ -1,4 +1,7 @@
 <?php
+defined( 'ABSPATH' ) or exit();
+
+
 /**
  * Facilitates a means of positioning the main events page on the blog front page.
  */

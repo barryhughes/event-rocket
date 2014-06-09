@@ -1,4 +1,7 @@
 <?php
+defined( 'ABSPATH' ) or exit();
+
+
 class EventRocketEmbedEventsShortcode
 {
 	// Inputs

@@ -1,4 +1,7 @@
 <?php
+defined( 'ABSPATH' ) or exit();
+
+
 /**
  * Adds support for direct manipulation of venue co-ordinates via the venue editor.
  */
@@ -101,7 +104,7 @@ class EventRocketGPS
 	 * Display the meta box.
 	 */
 	public function metabox( $post ) {
-		$template = apply_filters( 'eventrocket_metabox_template', EVENTROCKET_INC . '/gps-metabox.php' );
+		$template = apply_filters( 'eventrocket_metabox_template', EVENTROCKET_INC . '/gps/metabox.php' );
 		$latitude = (float) get_post_meta( $post->ID, $this->lat_key, true );
 		$longitude = (float) get_post_meta( $post->ID, $this->lng_key, true );
 		include $template;
