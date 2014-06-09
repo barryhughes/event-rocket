@@ -4,7 +4,7 @@ Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes
 Requires at least: 3.8
 Tested up to: 3.8.1
-Stable tag: 1.4.4
+Stable tag: 1.5.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -121,6 +121,10 @@ required).
 7. The actual cleanup screen
 
 == Changelog ==
+
+= 1.5.0 =
+* Project GPS enhancements: replace single event/venue embedded maps to use coordinate-based positioning (thanks
+to mcreighton for the suggestion)
 
 = 1.4.4 =
 * Link to single events via the default `[event_embed]` template (thanks to ddggccaa for highlighting this!)
