@@ -64,10 +64,15 @@ class EventRocketGPS
 	 * Set up meta box and listeners for updates.
 	 */
 	public function __construct() {
+		$this->coords_metabox();
+		$this->embedded_maps();
+	}
+
+	protected function coords_metabox() {
+		if ( ! apply_filters( 'eventrocket_gps_metabox', true ) ) return;
 		add_action( 'add_meta_boxes', array( $this, 'setup_metabox' ) );
 		add_action( 'init', array( $this, 'set_long_lat_keys' ) );
 		add_action( 'save_post', array( $this, 'save' ) );
-		add_filter( 'tribe_get_embedded_map', array( $this, 'single_post_map' ) );
 	}
 
 	/**
@@ -138,6 +143,11 @@ class EventRocketGPS
 		return current_user_can( 'edit_post', $id );
 	}
 
+	protected function embedded_maps() {
+		if ( apply_filters( 'eventrocket_replace_embedded_maps', true ) )
+			add_filter( 'tribe_get_embedded_map', array( $this, 'single_post_map' ) );
+	}
+
 	/**
 	 * Replaces the embedded map on single post/venues with one that uses lat/long rather
 	 * than the street address.
@@ -175,8 +185,11 @@ class EventRocketGPS
 		end( $this->embedded_maps );
 		$index = key( $this->embedded_maps );
 
+		$template = locate_template( 'tribe-events/eventrocket/embedded-map.php' );
+		if ( empty( $template ) ) $template = EVENTROCKET_INC . '/gps/embedded-map.php';
+
 		ob_start();
-		include EVENTROCKET_INC . '/gps/embedded-map.php';
+		include $template;
 		$html = ob_get_clean();
 
 		$this->setup_script();
