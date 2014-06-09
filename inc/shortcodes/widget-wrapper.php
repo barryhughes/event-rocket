@@ -77,6 +77,3 @@ class EventRocketWidgetShortcodes
 		return array_merge( $this->defaults, (array) $src_attrs );
 	}
 }
-
-
-
