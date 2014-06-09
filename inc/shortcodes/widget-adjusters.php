@@ -1,4 +1,7 @@
 <?php
+defined( 'ABSPATH' ) or exit();
+
+
 /**
  * Allow the venue or ID for widgets to be specified using any of these forms, according
  * to what makes sense in a given context:

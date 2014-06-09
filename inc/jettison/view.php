@@ -1,3 +1,5 @@
+<?php defined( 'ABSPATH' ) or exit() ?>
+
 <div class="wrap eventrocket cleanup">
 	<h2> <?php _e( 'Event Data Cleanup', 'eventrocket' ) ?> </h2>
 

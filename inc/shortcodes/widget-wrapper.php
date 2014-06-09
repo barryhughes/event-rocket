@@ -1,4 +1,7 @@
 <?php
+defined( 'ABSPATH' ) or exit();
+
+
 /**
  * Generic shortcode wrapper: allows widgets to be bundled up and delivered via
  * shortcodes.

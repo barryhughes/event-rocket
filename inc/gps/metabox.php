@@ -1,4 +1,7 @@
 <?php
+defined( 'ABSPATH' ) or exit();
+
+
 $longitude = isset( $longitude ) ? (float) $longitude : 0;
 $latitude = isset( $latitude ) ? (float) $latitude : 0;
 

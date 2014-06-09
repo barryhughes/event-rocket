@@ -1,4 +1,7 @@
 <?php
+defined( 'ABSPATH' ) or exit();
+
+
 /**
  * Adds support for direct manipulation of venue co-ordinates via the venue editor.
  */

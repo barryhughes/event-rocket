@@ -1,4 +1,7 @@
 <?php
+defined( 'ABSPATH' ) or exit();
+
+
 class EventRocketQueryRequest
 {
 	protected $data = array(

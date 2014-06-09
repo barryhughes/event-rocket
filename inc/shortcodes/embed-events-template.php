@@ -1,3 +1,5 @@
+<?php defined( 'ABSPATH' ) or exit() ?>
+
 <div class="eventrocket embedded-event post">
 	<div class="post-thumb"> <?php tribe_event_featured_image() ?> </div>
 	<h3> <a href="<?php the_permalink() ?>"><?php the_title() ?></a> </h3>

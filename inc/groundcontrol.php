@@ -1,5 +1,5 @@
 <?php
-defined( 'EVENTROCKET_INC' ) or die();
+defined( 'ABSPATH' ) or exit();
 
 /**
  * Manages the list of rocket modules that will be loaded.

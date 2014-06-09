@@ -1,4 +1,7 @@
 <?php
+defined( 'ABSPATH' ) or exit();
+
+
 require_once EVENTROCKET_INC . '/shortcodes/widget-wrapper.php';
 require_once EVENTROCKET_INC . '/shortcodes/widget-adjusters.php';
 require_once EVENTROCKET_INC . '/shortcodes/embedded-templates.php';
