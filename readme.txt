@@ -125,6 +125,10 @@ required).
 = 1.5.0 =
 * Project GPS enhancements: replace single event/venue embedded maps to use coordinate-based positioning (thanks
 to mcreighton for the suggestion)
+* Project GPS enhancements: flip order of lat/long fields in venue editor meta box (thanks to Casey Driscoll for the
+suggestion)
+* Widget shortcodes: new attributes to make specifying tags and categories easier - impacts on the calendar widget
+and advanced (PRO) list widget
 
 = 1.4.4 =
 * Link to single events via the default `[event_embed]` template (thanks to ddggccaa for highlighting this!)
