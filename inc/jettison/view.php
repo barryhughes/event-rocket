@@ -40,6 +40,8 @@
 			<dd> <?php echo esc_html( $current_data['venues'] ) ?> </dd>
 			<dt> <?php _e( 'Organizer objects', 'eventrocket' ) ?> </dt>
 			<dd> <?php echo esc_html( $current_data['organizers'] ) ?> </dd>
+			<dt> <?php _e( 'User capabilities', 'eventrocket' ) ?> </dt>
+			<dd> <?php echo esc_html( $current_data['capabilities'] ) ?> </dd>
 			<dt> <?php _e( 'Other settings', 'eventrocket' ) ?> </dt>
 			<dd> <?php echo esc_html( $current_data['options'] ) ?> </dd>
 		</dl>

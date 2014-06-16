@@ -18,6 +18,8 @@ class EventRocketJettisonTool
 	protected $batch = 40;
 	protected $in_progress = false;
 
+	protected $cap_count = 0;
+
 
 	public function __construct() {
 		$this->min_capability = apply_filters( 'eventrocket_cleanup_data_cap', $this->min_capability );
@@ -51,7 +53,8 @@ class EventRocketJettisonTool
 			'events' => $this->count_up( self::EVENTS ),
 			'venues' => $this->count_up( self::VENUES ),
 			'organizers' => $this->count_up( self::ORGANIZERS ),
-			'options' => $this->settings_count()
+			'options' => $this->settings_count(),
+			'capabilities' => $this->caps_count()
 		);
 	}
 
@@ -65,6 +68,12 @@ class EventRocketJettisonTool
 		global $wpdb;
 		$query = "SELECT COUNT(*) FROM $wpdb->options WHERE `option_name` LIKE '%tribe%events%';";
 		return absint( $wpdb->get_var( $query ) );
+	}
+
+	protected function caps_count() {
+		$this->cap_count = 0;
+		$this->foreach_cap( array( $this, 'count_each_cap' ) );
+		return $this->cap_count;
 	}
 
 	protected function action_url() {
@@ -103,6 +112,7 @@ class EventRocketJettisonTool
 		if ( $counts['events'] > 0 ) $this->clean( self::EVENTS );
 		elseif ( $counts['venues'] > 0 ) $this->clean( self::VENUES );
 		elseif ( $counts['organizers'] > 0 ) $this->clean( self::ORGANIZERS );
+		elseif ( $counts['capabilities'] > 0 ) $this->clean_caps();
 		elseif ( $counts['options'] > 0 ) $this->clean_options();
 	}
 
@@ -112,6 +122,37 @@ class EventRocketJettisonTool
 		$post_ids = $wpdb->get_col( $wpdb->prepare( $query, $post_type, $this->batch ) );
 		if ( !is_array( $post_ids ) || empty( $post_ids) ) return;
 		foreach ( $post_ids as $id ) wp_delete_post( $id, true );
+	}
+
+	protected function clean_caps() {
+		$this->foreach_cap( array( $this, 'clean_cap' ) );
+	}
+
+	protected function foreach_cap( $callback ) {
+		global $wp_roles;
+
+		foreach ( $wp_roles->roles as $role_slug => $user_role )
+			foreach ( $user_role['capabilities'] as $capability => $on )
+				if ($this->looks_tribal($capability)) call_user_func($callback, $role_slug, $capability);
+	}
+
+	protected function looks_tribal( $string ) {
+		$string = strtolower( $string );
+		if ( false === strpos( $string, 'tribe' ) ) return false;
+		if ( false !== strpos( $string, 'event' ) ) return true;
+		if ( false !== strpos( $string, 'venue' ) ) return true;
+		if ( false !== strpos( $string, 'organizer' ) ) return true;
+		return false;
+	}
+
+	protected function count_each_cap() {
+		$this->cap_count++;
+	}
+
+	protected function clean_cap( $role, $capability ) {
+		$role = get_role( $role );
+		if ( null === $role ) return;
+		$role->remove_cap( $capability );
 	}
 
 	protected function clean_options() {
