@@ -5,7 +5,7 @@ if ("function" === typeof jQuery) jQuery(document).ready( function($) {
 
 		// Map setup
 		var options = {
-			zoom: 8,
+			zoom: parseInt(eventrocket_map.zoom),
 			center: coords
 		};
 
@@ -15,15 +15,15 @@ if ("function" === typeof jQuery) jQuery(document).ready( function($) {
 		});
 
 		// Create the map and add the marker
-		var map = new google.maps.Map(element, options);
-		marker.setMap(map);
+		eventrocket_map.embedded_map = new google.maps.Map(element, options);
+		marker.setMap(eventrocket_map.embedded_map);
 	};
 
 	// We need the map data array to exist
-	if ("undefined" === typeof eventrocket_map_data) return;
+	if ("undefined" === typeof eventrocket_map) return;
 
 	// Iterate through available map data and try to find each corresponding map placeholder
-	$.each(eventrocket_map_data, function(index, value) {
+	$.each(eventrocket_map.markers, function(index, value) {
 		var map_holder = document.getElementById("eventrocket_map_" + index);
 		if (null !== map_holder) setup_map(map_holder, value[0], value[1]);
 	});
