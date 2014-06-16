@@ -201,7 +201,10 @@ class EventRocketGPS
 
 	protected function setup_script() {
 		if ( ! $this->map_script_enqueued ) $this->enqueue_map_scripts();
-		wp_localize_script( self::MAP_HANDLER, 'eventrocket_map_data', $this->embedded_maps );
+		wp_localize_script( self::MAP_HANDLER, 'eventrocket_map', array(
+			'markers' => $this->embedded_maps,
+			'zoom' => apply_filters( 'eventrocket_map_zoom_level', (int) tribe_get_option( 'embedGoogleMapsZoom', 8 ) )
+		));
 	}
 
 	/**
