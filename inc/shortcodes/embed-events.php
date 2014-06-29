@@ -427,10 +427,6 @@ class EventRocketEmbedEventsShortcode
 	}
 }
 
-// Set the shortcode up and/or possibly define the event_embed() helper
-if ( function_exists( 'event_embed' ) ) new EventRocketEmbedEventsShortcode;
-else return;
-
 /**
  * @return EventRocketEmbedEventsShortcode
  */
