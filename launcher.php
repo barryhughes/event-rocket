@@ -24,7 +24,7 @@ function eventrocket_launch() {
 
 	require_once EVENTROCKET_INC . '/404_laser.php';
 	require_once EVENTROCKET_INC . '/hud.php';
-	require_once EVENTROCKET_INC . '/jettison.php';
+	require_once EVENTROCKET_INC . '/clean-up.php';
 	require_once EVENTROCKET_INC . '/front-page-events.php';
 	require_once EVENTROCKET_INC . '/shortcodes.php';
 }

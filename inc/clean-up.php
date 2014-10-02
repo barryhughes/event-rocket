@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) or exit();
  * The jettison module provides tools to remove all events data from a WordPress
  * installation.
  */
-class EventRocketJettisonTool
+class EventRocket_CleanUpTool
 {
 	const EVENTS = 'tribe_events';
 	const VENUES = 'tribe_venue';
@@ -41,11 +41,11 @@ class EventRocketJettisonTool
 	}
 
 	public function screen() {
-		wp_enqueue_script( 'eventrocket_cleanup', EVENTROCKET_URL . '/inc/jettison/cleanup.js', 'jquery', false, true );
+		wp_enqueue_script( 'eventrocket_cleanup', EVENTROCKET_URL . '/inc/cleanup/cleanup.js', 'jquery', false, true );
 		$current_data = $this->existing_data();
 		$action_url = $this->action_url();
 		$in_progress = $this->in_progress;
-		include EVENTROCKET_INC . '/jettison/view.php';
+		include EVENTROCKET_INC . '/cleanup/view.php';
 	}
 
 	protected function existing_data() {
@@ -161,4 +161,4 @@ class EventRocketJettisonTool
 	}
 }
 
-new EventRocketJettisonTool;
+new EventRocket_CleanUpTool;
