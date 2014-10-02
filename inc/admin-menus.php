@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) or exit();
  * Provides additional toolbar items to make it easier to reach specific
  * setting pages.
  */
-class EventRocketHUD
+class EventRocket_AdminMenus
 {
 	/**
 	 * The toolbar node used as a container for event settings.
@@ -92,4 +92,4 @@ class EventRocketHUD
 	}
 }
 
-new EventRocketHUD;
+new EventRocket_AdminMenus;
