@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or exit();
 
 
-class EventRocketEmbedEventsShortcode
+class EventRocket_EmbedEventsShortcode
 {
 	// Inputs
 	protected $params = array();
@@ -27,6 +27,10 @@ class EventRocketEmbedEventsShortcode
 	protected $to = '';
 	protected $limit = 20;
 	protected $template = '';
+
+	// Nothing found fallbacks
+	protected $nothing_found_text = '';
+	protected $nothing_found_template = '';
 
 	// Internal
 	protected $args = array();
@@ -102,6 +106,7 @@ class EventRocketEmbedEventsShortcode
 		$this->set_time_constraints();
 		$this->set_limit();
 		$this->set_template();
+		$this->set_fallbacks();
 	}
 
 	/**
@@ -293,7 +298,27 @@ class EventRocketEmbedEventsShortcode
 
 		// Ensure the template exists
 		if ( ! $this->template && file_exists( $this->params['template'] ) )
-			$this->template = (string) $this->params['template'];
+			$this->template = $this->params['template'];
+	}
+
+	/**
+	 * Set the message to display - or template to pull in - should no results be found.
+	 */
+	protected function set_fallbacks() {
+		// Has a (usually short) piece of text been provided, ie "Nothing found"?
+		if ( isset( $this->params['nothing_found_text'] ) && is_string( $this->params['nothing_found_text'] ) )
+				$this->nothing_found_text = $this->params['nothing_found_text'];
+
+		// Has a template path been provided?
+		if ( ! isset( $this->params['nothing_found_template'] ) ) return;
+
+		// If not an absolute filepath use Tribe's template finder
+		if ( isset( $this->params['nothing_found_template'] ) && 0 !== strpos( $this->params['nothing_found_template'], '/' ) )
+			$this->nothing_found_template = TribeEventsTemplates::getTemplateHierarchy( $this->params['nothing_found_template'] );
+
+		// Ensure the template exists
+		if ( ! $this->nothing_found_template && file_exists( $this->params['nothing_found_template'] ) )
+			$this->nothing_found_template = $this->params['nothing_found_template'];
 	}
 
 	/**
@@ -396,10 +421,33 @@ class EventRocketEmbedEventsShortcode
 	 * Take the query result set and build the actual output.
 	 */
 	protected function build() {
+		if ( ! empty( $this->results ) ) $this->build_normal();
+		else $this->build_no_results();
+	}
+
+	/**
+	 * Builds the output when we have some results from the query.
+	 */
+	protected function build_normal() {
 		ob_start();
 		foreach ( $this->results as $this->event_post ) $this->build_item();
 		$this->output = ob_get_clean();
 		$this->output = apply_filters( 'eventrocket_embed_event_output', $this->output );
+	}
+
+	/**
+	 * Builds the output where no results were returned.
+	 */
+	protected function build_no_results() {
+		if ( ! empty( $this->nothing_found_text ) )
+			$this->output = apply_filters( 'eventrocket_embed_event_output', $this->nothing_found_text );
+
+		elseif ( ! empty( $this->nothing_found_template ) ) {
+			ob_start();
+			include $this->nothing_found_template;
+			$this->output = ob_get_clean();
+			$this->output = apply_filters( 'eventrocket_embed_event_output', $this->output );
+		}
 	}
 
 	/**
@@ -421,18 +469,18 @@ class EventRocketEmbedEventsShortcode
 
 	protected function build_inline_output() {
 		static $parser = null;
-		if ( null === $parser ) $parser = new EventRocketEmbeddedEventTemplateParser;
+		if ( null === $parser ) $parser = new EventRocket_EmbeddedEventTemplateParser;
 		$parser->process( $this->content );
 		print do_shortcode( $parser->output );
 	}
 }
 
 /**
- * @return EventRocketEmbedEventsShortcode
+ * @return EventRocket_EmbedEventsShortcode
  */
 function event_embed() {
 	static $object = null;
-	if ( null === $object ) $object = new EventRocketEmbedEventsShortcode;
+	if ( null === $object ) $object = new EventRocket_EmbedEventsShortcode;
 	return $object;
 }
 
