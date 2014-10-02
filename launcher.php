@@ -27,6 +27,7 @@ function eventrocket_launch() {
 	require_once EVENTROCKET_INC . '/clean-up.php';
 	require_once EVENTROCKET_INC . '/front-page-events.php';
 	require_once EVENTROCKET_INC . '/shortcodes.php';
+	require_once EVENTROCKET_INC . '/venue-positioning.php';
 }
 
 function eventrocket_abort_launch() {

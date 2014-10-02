@@ -2,8 +2,8 @@
 Contributors: barry.hughes, shane.pearlman
 Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes
-Requires at least: 3.8
-Tested up to: 3.8.1
+Requires at least: 3.9
+Tested up to: 4.0
 Stable tag: 2.0dev
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -22,7 +22,7 @@ So if you don't already have them installed it behooves you to do so now. This p
 
 * It lets you position the main events page on the front page of your blog
 * Precise editing of venue coordinates becomes possible for when street addresses just don't cut it
-* A 404 Laser has been added to help blast away pesky 404 issues, especially with regards to empty day views
+* A 404 Laser has been added to help blast away pesky 404 issues
 * Event widgets can be deployed as shortcodes and you can embed events inline *anywhere* using the `[event_embed]` shortcode
 * You can access all event setting tabs directly from the admin menu
 * Clean up and remove events data if you decide you don't need it any longer
@@ -121,6 +121,10 @@ required).
 7. The actual cleanup screen
 
 == Changelog ==
+
+= 2.0 =
+* Codebase reorganized
+* Superfluous components as of The Events Calendar 3.8 release removed
 
 = 1.5.1 =
 * Single event maps now respect default zoom setting (thanks to lord_dev for the idea)

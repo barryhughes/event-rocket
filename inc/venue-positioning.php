@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or exit();
 /**
  * Adds support for direct manipulation of venue co-ordinates via the venue editor.
  */
-class EventRocketGPS
+class EventRocket_VenuePositioning
 {
 	/**
 	 * Script handle for Event Rocket's own embedded map script.
@@ -104,7 +104,7 @@ class EventRocketGPS
 	 * Display the meta box.
 	 */
 	public function metabox( $post ) {
-		$template = apply_filters( 'eventrocket_metabox_template', EVENTROCKET_INC . '/gps/metabox.php' );
+		$template = apply_filters( 'eventrocket_metabox_template', EVENTROCKET_INC . '/venue-positioning/metabox.php' );
 		$latitude = (float) get_post_meta( $post->ID, $this->lat_key, true );
 		$longitude = (float) get_post_meta( $post->ID, $this->lng_key, true );
 		include $template;
@@ -189,7 +189,7 @@ class EventRocketGPS
 		$index = key( $this->embedded_maps );
 
 		$template = locate_template( 'tribe-events/eventrocket/embedded-map.php' );
-		if ( empty( $template ) ) $template = EVENTROCKET_INC . '/gps/embedded-map.php';
+		if ( empty( $template ) ) $template = EVENTROCKET_INC . '/venue-positioning/embedded-map.php';
 
 		ob_start();
 		include $template;
@@ -222,7 +222,7 @@ class EventRocketGPS
 	 * could be useful to force it to a new address or to append an API key.
 	 */
 	protected function enqueue_map_scripts() {
-		$url = EVENTROCKET_URL . 'inc/gps/map-embed.js';
+		$url = EVENTROCKET_URL . 'inc/venue-positioning/map-embed.js';
 		wp_enqueue_script( self::MAP_HANDLER, $url, array( 'jquery' ), '1.4.4', true );
 
 		if ( apply_filters( 'eventrocket_gps_add_gmap_api', true ) ) {
@@ -235,4 +235,4 @@ class EventRocketGPS
 }
 
 // Project GPS adds editing of long/lat coords for venues through the editor screen
-new EventRocketGPS;
+new EventRocket_VenuePositioning;
