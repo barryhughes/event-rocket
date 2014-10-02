@@ -46,7 +46,6 @@ class EventRocket_AdminMenus
 	}
 
 	public function settings_get_tabs() {
-		if ( ! class_exists( 'TribeSettings' ) ) return;
 		$this->settings_frontend_hack();
 
 		do_action( 'tribe_settings_do_tabs' );
@@ -73,8 +72,6 @@ class EventRocket_AdminMenus
 	}
 
 	public function settings_add_tablinks() {
-		if ( ! class_exists( 'TribeSettings' ) ) return;
-
 		$target = $this->toolbar->get_node( self::SETTINGS_PARENT );
 		if ( null === $target ) return;
 
@@ -85,7 +82,9 @@ class EventRocket_AdminMenus
 	}
 
 	public function settings_add_to_group( $index, $item ) {
+		if ( ! class_exists( 'TribeSettings' ) ) return;
 		$settings = TribeSettings::instance();
+
 		$query = array( 'page' => $settings->adminSlug, 'tab' => $index, 'post_type' => TribeEvents::POSTTYPE );
 		$url = apply_filters( 'tribe_settings_url', add_query_arg( $query, admin_url( 'edit.php' ) ) );
 
