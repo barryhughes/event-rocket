@@ -22,7 +22,11 @@ function eventrocket_launch() {
 		return;
 	}
 
-	require EVENTROCKET_INC . '/groundcontrol.php';
+	require_once EVENTROCKET_INC . '/404_laser.php';
+	require_once EVENTROCKET_INC . '/hud.php';
+	require_once EVENTROCKET_INC . '/jettison.php';
+	require_once EVENTROCKET_INC . '/nosecone.php';
+	require_once EVENTROCKET_INC . '/shortcodes.php';
 }
 
 function eventrocket_abort_launch() {
