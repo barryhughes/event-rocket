@@ -281,7 +281,7 @@ class EventRocketEmbedEventsShortcode
 	 */
 	protected function set_template() {
 		$this->template = ''; // Wipe clean
-		$fallback = EVENTROCKET_INC . '/shortcodes/embed-events-template.php';
+		$fallback = EVENTROCKET_INC . '/templates/embedded-events.php';
 
 		// If there is no template and no inner content, assume the regular single event template
 		if ( ! isset( $this->params['template'] ) && empty( $this->content ) ) $this->template = $fallback;
