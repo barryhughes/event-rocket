@@ -414,7 +414,7 @@ class EventRocket_EmbedEventsShortcode
 	 */
 	protected function args_display_type() {
 		$this->args['eventDisplay'] = ( isset( $this->args['start_date'] ) || isset( $this->args['end_date'] ) || isset( $this->args['post__in'] ) )
-			? 'custom' : 'upcoming';
+			? 'custom' : 'list';
 	}
 
 	/**
