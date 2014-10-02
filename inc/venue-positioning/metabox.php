@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or exit();
 $longitude = isset( $longitude ) ? (float) $longitude : 0;
 $latitude = isset( $latitude ) ? (float) $latitude : 0;
 
-wp_nonce_field( 'event_rocket_save_long_lat', 'eventrocket_gps' );
+wp_nonce_field( 'event_rocket_save_long_lat', 'eventrocket_venue_positioning' );
 ?>
 
 <p>

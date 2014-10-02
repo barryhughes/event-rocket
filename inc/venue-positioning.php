@@ -8,16 +8,6 @@ defined( 'ABSPATH' ) or exit();
 class EventRocket_VenuePositioning
 {
 	/**
-	 * Script handle for Event Rocket's own embedded map script.
-	 */
-	const MAP_HANDLER = 'eventrocket_embedded_map';
-
-	/**
-	 * Script handle for the Google Maps API script.
-	 */
-	const GMAP_API = 'eventrocket_google_maps';
-
-	/**
 	 * Venue post meta key for latitude.
 	 *
 	 * @var string
@@ -31,48 +21,16 @@ class EventRocket_VenuePositioning
 	 */
 	protected $lng_key;
 
-	/**
-	 * Give each set of long/lat coordinates an index, potentially allowing for
-	 * multiple embedded maps per page.
-	 *
-	 * @var array
-	 */
-	protected $embedded_maps = array();
-
-	/**
-	 * Working longitude value (for map embeds).
-	 *
-	 * @var int
-	 */
-	protected $lng = 0;
-
-	/**
-	 * Working latitude value (for map embeds).
-	 *
-	 * @var int
-	 */
-	protected $lat = 0;
-
-	/**
-	 * Used to track if Event Rocket's own map script (and Google Maps) have been
-	 * enqueued.
-	 *
-	 * @var bool
-	 */
-	protected $map_script_enqueued = false;
-
-
 
 	/**
 	 * Set up meta box and listeners for updates.
 	 */
 	public function __construct() {
 		$this->coords_metabox();
-		$this->embedded_maps();
 	}
 
 	protected function coords_metabox() {
-		if ( ! apply_filters( 'eventrocket_gps_metabox', true ) ) return;
+		if ( ! apply_filters( 'eventrocket_venue_positioning_metabox', true ) ) return;
 		add_action( 'add_meta_boxes', array( $this, 'setup_metabox' ) );
 		add_action( 'init', array( $this, 'set_long_lat_keys' ) );
 		add_action( 'save_post', array( $this, 'save' ) );
@@ -97,7 +55,7 @@ class EventRocket_VenuePositioning
 	public function setup_metabox() {
 		$title = __( 'Coordinates', 'eventrocket');
 		$callback = array( $this, 'metabox' );
-		add_meta_box( 'eventrocket_gps_coords', $title, $callback, TribeEvents::VENUE_POST_TYPE, 'side' );
+		add_meta_box( 'eventrocket_venue_coords', $title, $callback, TribeEvents::VENUE_POST_TYPE, 'side' );
 	}
 
 	/**
@@ -142,95 +100,8 @@ class EventRocket_VenuePositioning
 	 */
 	protected function safety( $id ) {
 		if ( ! isset( $_POST['eventrocket_gps'] ) ) return false;
-		if ( ! wp_verify_nonce( $_POST['eventrocket_gps'], 'event_rocket_save_long_lat' ) ) return false;
+		if ( ! wp_verify_nonce( $_POST['eventrocket_venue_positioning'], 'event_rocket_save_long_lat' ) ) return false;
 		return current_user_can( 'edit_post', $id );
-	}
-
-	protected function embedded_maps() {
-		if ( apply_filters( 'eventrocket_replace_embedded_maps', true ) )
-			add_filter( 'tribe_get_embedded_map', array( $this, 'single_post_map' ) );
-	}
-
-	/**
-	 * Replaces the embedded map on single post/venues with one that uses lat/long rather
-	 * than the street address.
-	 *
-	 * @param $map
-	 * @return mixed
-	 */
-	public function single_post_map( $map ) {
-		$post_id = get_the_ID();
-
-		// If it's neither a venue nor an event, bail
-		if ( ! ( tribe_is_venue( $post_id ) || tribe_is_event( $post_id ) ) ) return $map;
-		$venue = tribe_get_venue_id( $post_id );
-
-		// Try to load the coordinates
-		$this->lat = get_post_meta( $venue, $this->lat_key, true );
-		$this->lng = get_post_meta( $venue, $this->lng_key, true );
-
-		// No valid coordinates? Bail
-		if ( ! is_numeric( $this->lat ) || $this->lat < -90 || $this->lat > 90 ) return $map;
-		if ( ! is_numeric( $this->lng ) || $this->lng < -180 || $this->lng > 180 ) return $map;
-
-		// Add coordinate-based map
-		return $this->create_map();
-	}
-
-	/**
-	 * Adds embedded map markup and sets up supporting scripts/script data.
-	 *
-	 * @return string
-	 */
-	protected function create_map() {
-		$this->embedded_maps[] = array( $this->lat, $this->lng );
-
-		end( $this->embedded_maps );
-		$index = key( $this->embedded_maps );
-
-		$template = locate_template( 'tribe-events/eventrocket/embedded-map.php' );
-		if ( empty( $template ) ) $template = EVENTROCKET_INC . '/venue-positioning/embedded-map.php';
-
-		ob_start();
-		include $template;
-		$html = ob_get_clean();
-
-		$this->setup_script();
-		return $html;
-	}
-
-	protected function setup_script() {
-		if ( ! $this->map_script_enqueued ) $this->enqueue_map_scripts();
-		wp_localize_script( self::MAP_HANDLER, 'eventrocket_map', array(
-			'markers' => $this->embedded_maps,
-			'zoom' => apply_filters( 'eventrocket_map_zoom_level', (int) tribe_get_option( 'embedGoogleMapsZoom', 8 ) )
-		));
-	}
-
-	/**
-	 * Sets up Event Rocket's map handling script - and the Google Maps JS API
-	 * script - in the footer.
-	 *
-	 * It's possible to prevent the Google Maps API from being pulled in by
-	 * setting up a filter as following:
-	 *
-	 *     add_filter( 'eventrocket_gps_add_gmap_api', '__return_false' );
-	 *
-	 * This could be useful in the event of a conflict with some other theme or
-	 * plugin which also works with Google Maps. Similarly, the actual Google
-	 * Maps API URL can be altered using the eventrocket_google_maps hook: this
-	 * could be useful to force it to a new address or to append an API key.
-	 */
-	protected function enqueue_map_scripts() {
-		$url = EVENTROCKET_URL . 'inc/venue-positioning/map-embed.js';
-		wp_enqueue_script( self::MAP_HANDLER, $url, array( 'jquery' ), '1.4.4', true );
-
-		if ( apply_filters( 'eventrocket_gps_add_gmap_api', true ) ) {
-			$url = apply_filters( 'eventrocket_google_maps_api_url', '//maps.googleapis.com/maps/api/js' );
-			wp_enqueue_script( self::GMAP_API, $url, array(), '1.0', true );
-		}
-
-		$this->map_script_enqueued = true;
 	}
 }
 
