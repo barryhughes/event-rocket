@@ -99,7 +99,7 @@ class EventRocket_VenuePositioning
 	 * @return bool
 	 */
 	protected function safety( $id ) {
-		if ( ! isset( $_POST['eventrocket_gps'] ) ) return false;
+		if ( ! isset( $_POST['eventrocket_venue_positioning'] ) ) return false;
 		if ( ! wp_verify_nonce( $_POST['eventrocket_venue_positioning'], 'event_rocket_save_long_lat' ) ) return false;
 		return current_user_can( 'edit_post', $id );
 	}
