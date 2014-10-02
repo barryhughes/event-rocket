@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) or exit();
  * Extremely basic templating engine for embedding templates inline between opening and
  * closing shortcodes.
  */
-class EventRocketEmbeddedEventTemplateParser
+class EventRocket_EmbeddedEventTemplateParser
 {
 	public $output = '';
 
