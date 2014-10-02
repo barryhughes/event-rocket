@@ -68,7 +68,6 @@ class EventRocket_VenuePositioning
 		include $template;
 	}
 
-
 	/**
 	 * Save our new long/lat data when submitted.
 	 *
