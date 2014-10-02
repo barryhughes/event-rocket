@@ -62,7 +62,7 @@ class EventRocket_VenuePositioning
 	 * Display the meta box.
 	 */
 	public function metabox( $post ) {
-		$template = apply_filters( 'eventrocket_metabox_template', EVENTROCKET_INC . '/venue-positioning/metabox.php' );
+		$template = apply_filters( 'eventrocket_metabox_template', EVENTROCKET_INC . '/templates/venue-positioning-metabox.php' );
 		$latitude = (float) get_post_meta( $post->ID, $this->lat_key, true );
 		$longitude = (float) get_post_meta( $post->ID, $this->lng_key, true );
 		include $template;
