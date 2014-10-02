@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or exit();
 /**
  * Facilitates a means of positioning the main events page on the blog front page.
  */
-class EventRocketNosecone
+class EventRocket_FrontPageEvents
 {
 	/**
 	 * Our fake post ID used to indicate that the main events page should be
@@ -172,4 +172,4 @@ class EventRocketNosecone
 }
 
 // Nosecone is an experiment to facilitate frontpage support for events
-new EventRocketNosecone;
+new EventRocket_FrontPageEvents;
