@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or exit();
 /**
  * Avoid 404s on empty single day views.
  */
-class EventRocket404Laser
+class EventRocket_404Helper
 {
 	public function __construct() {
 		add_action( 'status_header', array( $this, 'http_status_radar' ) );
@@ -48,4 +48,4 @@ class EventRocket404Laser
 }
 
 // Start blasting those 404s
-new EventRocket404Laser;
+new EventRocket_404Helper;

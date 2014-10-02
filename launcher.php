@@ -22,7 +22,7 @@ function eventrocket_launch() {
 		return;
 	}
 
-	require_once EVENTROCKET_INC . '/404_laser.php';
+	require_once EVENTROCKET_INC . '/404-helper.php';
 	require_once EVENTROCKET_INC . '/hud.php';
 	require_once EVENTROCKET_INC . '/clean-up.php';
 	require_once EVENTROCKET_INC . '/front-page-events.php';
