@@ -33,7 +33,7 @@ function eventrocket_launch() {
 function eventrocket_abort_launch() {
 	global $pagenow;
 
-	require_once EVENTROCKET_INC . '/jettison.php';
+	require_once EVENTROCKET_INC . '/clean-up.php';
 	if ( 'plugins.php' === $pagenow ) add_action( 'admin_notices', 'eventrocket_explain_failure' );
 }
 
