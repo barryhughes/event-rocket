@@ -125,6 +125,7 @@ required).
 = 2.2 =
 * Restore venue positiong for single events (where only The Events Calendar and not Events Calendar PRO is activated)
 * Add caching abilities to the event_embed shortcode
+* Add support for "AND" taxonomy queries
 
 = 2.1 =
 * Clean-up reference to old jettison module (thanks to MJTDI3 for highlighting this)
