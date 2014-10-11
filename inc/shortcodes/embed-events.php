@@ -423,8 +423,10 @@ class EventRocket_EmbedEventsShortcode
 		if ( ! empty( $this->tags) ) $this->args['tag__in'] = $this->tags;
 		if ( ! empty( $this->ignore_tags ) ) $this->args['tag__not_in'] = $this->ignore_tags;
 
-		$tax_args['relation'] = 'OR';
-		if ( ! empty( $tax_args ) ) $this->args['tax_query'] = $tax_args;
+		if ( ! empty( $tax_args ) ) {
+			$tax_args['relation'] = 'OR';
+			$this->args['tax_query'] = $tax_args;
+		}
 	}
 
 	/**
