@@ -23,10 +23,15 @@ class EventRocket_EmbedEventsShortcode
 	protected $ignore_tags = array();
 
 	// Miscellaneous conditions
+	protected $tax_logic = 'OR';
 	protected $from = '';
 	protected $to = '';
 	protected $limit = 20;
 	protected $template = '';
+
+	// Caching
+	protected $cache_key = '';
+	protected $cache_expiry = 0;
 
 	// Nothing found fallbacks
 	protected $nothing_found_text = '';
@@ -47,40 +52,51 @@ class EventRocket_EmbedEventsShortcode
 	 */
 	public function __construct() {
 		$shortcode = apply_filters( 'eventrocket_embed_events_shortcode_name', 'event_embed' );
-		add_shortcode( $shortcode, array( $this, 'shortcode' ) );
+		add_shortcode( $shortcode, array( $this, 'embed' ) );
 	}
 
 	/**
-	 * Provides a programmatic means of using the event embed shortcode, returning
-	 * the shortcode output as a string.
+	 * Provides an alternative means of querying for events: any results that are found are
+	 * returned in an array (which may be empty, if nothing is found).
+	 *
+	 * @param array $params
+	 * @param string $content
+	 * @return array
+	 */
+	public function obtain( array $params, $content = '' ) {
+		$this->embed( $params, $content );
+		return $this->results;
+	}
+
+	/**
+	 * Provides a programmatic means of embedding events. The output is returned as a string.
 	 *
 	 * @param array $params
 	 * @param string $content
 	 * @return string
 	 */
 	public function get( array $params, $content = '' ) {
-		return $this->shortcode( $params, $content );
+		return $this->embed( $params, $content );
 	}
 
 	/**
-	 * Provides a programmatic means of using the event embed shortcode, printing
-	 * the shortcode output directly.
+	 * Provides a programmatic means of embedding events. The output is printed directly.
 	 *
 	 * @param array $params
 	 * @param string $content
 	 */
 	public function render( array $params, $content = '' ) {
-		echo $this->shortcode( $params, $content );
+		echo $this->embed( $params, $content );
 	}
 
 	/**
-	 * Shortcode handler.
+	 * Embedded events request and shortcode handler.
 	 *
 	 * @param $params
 	 * @param $content
 	 * @return string
 	 */
-	public function shortcode( $params, $content ) {
+	public function embed( $params, $content ) {
 		if ( ! empty( $params ) && is_array( $params ) ) $this->params = $params;
 		$this->content = trim( $content );
 		$this->execute();
@@ -89,11 +105,15 @@ class EventRocket_EmbedEventsShortcode
 
 	/**
 	 * Parse the provided parameters, run the resulting query and build the output.
+	 * Allows for retrieval of cached results where appropriate.
 	 */
 	protected function execute() {
 		$this->parse();
-		$this->query();
-		$this->build();
+
+		if ( ! $this->cache_get() ) {
+			$this->query();
+			$this->build();
+		}
 	}
 
 	/**
@@ -107,6 +127,7 @@ class EventRocket_EmbedEventsShortcode
 		$this->set_limit();
 		$this->set_template();
 		$this->set_fallbacks();
+		$this->set_cache();
 	}
 
 	/**
@@ -172,6 +193,10 @@ class EventRocket_EmbedEventsShortcode
 
 		$this->parse_tax_refs( $this->tags, 'post_tag' );
 		$this->parse_tax_refs( $this->ignore_tags, 'post_tag' );
+
+		// Default to an "OR" relationship between different tax queries, but allow for "AND"
+		if ( isset( $this->params['logic'] ) && 'and' === strtolower( $this->params['logic'] ) )
+			$this->tax_logic = 'AND';
 	}
 
 	/**
@@ -199,19 +224,35 @@ class EventRocket_EmbedEventsShortcode
 
 	/**
 	 * Process the list of terms for the specified taxonomy, converting
-	 * any term slugs into term IDs.
+	 * any term slugs into term IDs and grouping terms together where
+	 * an AND condition should be applied.
 	 *
 	 * @param $list
 	 * @param $taxonomy
 	 */
 	protected function parse_tax_refs( &$list, $taxonomy ) {
-		foreach ( $list as $index => $reference ) {
-			$this->typify( $reference );
-			if ( ! is_string( $reference ) ) continue;
+		foreach ( $list as $index => $term ) {
+			// Convert each list item to an array
+			$list[$index] = array();
 
-			$term = get_term_by( 'slug', $reference, $taxonomy );
-			if ( false === $term ) $list[$index] = 0;
-			else $list[$index] = (int) $term->term_id;
+			// Each "term" may actually be multiple terms, joined via the "+" symbol to mark an "AND" condition
+			$terms = explode( '+', $term );
+
+			// Look at each term reference: convert slugs to numeric IDs and group terms together as needed
+			foreach ( $terms as $term_ref ) {
+				$this->typify( $term_ref ); // Convert numeric strings to actual integers, etc
+
+				// If an integer, do not process further - just add it to the list
+				if ( is_int( $term_ref ) ) {
+					$list[$index][] = $term_ref;
+				}
+				// If a string, convert to an integer (ie, get the term ID) - then add to the list
+				else {
+					$term = get_term_by( 'slug', $term_ref, $taxonomy);
+					if ( false === $term ) $list[$index][] = 0;
+					else $list[$index][] = (int) $term->term_id;
+				}
+			}
 		}
 	}
 
@@ -307,7 +348,7 @@ class EventRocket_EmbedEventsShortcode
 	protected function set_fallbacks() {
 		// Has a (usually short) piece of text been provided, ie "Nothing found"?
 		if ( isset( $this->params['nothing_found_text'] ) && is_string( $this->params['nothing_found_text'] ) )
-				$this->nothing_found_text = $this->params['nothing_found_text'];
+			$this->nothing_found_text = $this->params['nothing_found_text'];
 
 		// Has a template path been provided?
 		if ( ! isset( $this->params['nothing_found_template'] ) ) return;
@@ -319,6 +360,29 @@ class EventRocket_EmbedEventsShortcode
 		// Ensure the template exists
 		if ( ! $this->nothing_found_template && file_exists( $this->params['nothing_found_template'] ) )
 			$this->nothing_found_template = $this->params['nothing_found_template'];
+	}
+
+	/**
+	 * Determines if the output should be cached.
+	 */
+	protected function set_cache() {
+		// Has a cache param been set?
+		$cache = isset( $this->params['cache'] ) ? $this->params['cache'] : null;
+		$cache = apply_filters( 'eventrocket_embed_event_cache_expiry', $cache, $this->params );
+
+		// No caching? Bail
+		if ( null === $cache ) return;
+
+		// Cache for the default period?
+		if ( 'auto' === strtolower( $cache ) || 'on' === strtolower( $cache ) )
+			$this->cache_expiry = (int) apply_filters( 'eventrocket_embed_event_cache_default_value', HOUR_IN_SECONDS * 2 );
+
+		// Cache for a specified amount of time?
+		elseif ( is_numeric( $cache ) && $cache == absint( $cache ) )
+			$this->cache_expiry = absint( $cache );
+
+		// Create the cache key
+		$this->cache_key = hash( 'md5', join( '|', $this->params ) );
 	}
 
 	/**
@@ -355,23 +419,46 @@ class EventRocket_EmbedEventsShortcode
 		if ( ! empty( $this->events ) ) $this->args['post__in'] = $this->events;
 		if ( ! empty( $this->ignore_events ) ) $this->args['post__not_in'] = $this->ignore_events;
 
-		if ( ! empty( $this->categories ) ) $tax_args[] = array(
-			'taxonomy' => TribeEvents::TAXONOMY,
-			'field' => 'id',
-			'terms' => $this->categories
-		);
+		if ( ! empty( $this->categories ) )
+			$this->build_tax_args( $tax_args, TribeEvents::TAXONOMY, $this->categories );
 
-		if ( ! empty( $this->ignore_categories ) ) $tax_args[] = array(
-			'taxonomy' => TribeEvents::TAXONOMY,
-			'field' => 'id',
-			'terms' => $this->ignore_categories,
-			'operator' => 'NOT IN'
-		);
+		if ( ! empty( $this->ignore_categories ) )
+			$this->build_tax_args( $tax_args, TribeEvents::TAXONOMY, $this->ignore_categories, true );
 
-		if ( ! empty( $this->tags) ) $this->args['tag__in'] = $this->tags;
-		if ( ! empty( $this->ignore_tags ) ) $this->args['tag__not_in'] = $this->ignore_tags;
+		/*if ( ! empty( $this->tags) ) $this->args['tag__in'] = $this->tags[0];
+		if ( ! empty( $this->ignore_tags ) ) $this->args['tag__not_in'] = $this->ignore_tags[0];*/
 
-		if ( ! empty( $tax_args ) ) $this->args['tax_query'] = $tax_args;
+		if ( ! empty( $this->tags) )
+			$this->build_tax_args( $tax_args, 'post_tag', $this->tags );
+
+		if ( ! empty( $this->ignore_tags ) )
+			$this->build_tax_args( $tax_args, 'post_tag', $this->ignore_tags, true );
+
+		if ( ! empty( $tax_args ) ) {
+			$tax_args['relation'] = $this->tax_logic;
+			$this->args['tax_query'] = $tax_args;
+		}
+	}
+
+	/**
+	 * Helper that puts together a set of tax query arguments for a term or group of terms.
+	 *
+	 * @param array $tax_args
+	 * @param $taxonomy
+	 * @param $term_set
+	 * @param $exclude
+	 */
+	protected function build_tax_args( array &$tax_args, $taxonomy, $term_set, $exclude = false ) {
+		foreach ( $term_set as $terms ) {
+			$operator = $exclude ? 'NOT IN' : ( count( $terms ) > 1 ? 'AND' : 'IN' );
+
+			$tax_args[] = array(
+				'taxonomy' => $taxonomy,
+				'field'    => 'id',
+				'terms'    => $terms,
+				'operator' => $operator
+			);
+		}
 	}
 
 	protected function args_venue_organizer() {
@@ -434,6 +521,26 @@ class EventRocket_EmbedEventsShortcode
 		foreach ( $this->results as $this->event_post ) $this->build_item();
 		$this->output = ob_get_clean();
 		$this->output = apply_filters( 'eventrocket_embed_event_output', $this->output );
+		if ( $this->cache_expiry && $this->cache_key ) $this->cache_output();
+	}
+
+	/**
+	 * Stores the generated output in the cache.
+	 */
+	protected function cache_output() {
+		set_transient( $this->cache_key, $this->output, $this->cache_expiry );
+	}
+
+	/**
+	 * @return bool
+	 */
+	protected function cache_get() {
+		if ( ! $this->cache_expiry ) return false;
+		$cached_output = get_transient( $this->cache_key );
+
+		if ( ! $cached_output ) return false;
+		$this->output = $cached_output;
+		return true;
 	}
 
 	/**
