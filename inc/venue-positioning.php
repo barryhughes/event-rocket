@@ -34,6 +34,7 @@ class EventRocket_VenuePositioning
 		add_action( 'add_meta_boxes', array( $this, 'setup_metabox' ) );
 		add_action( 'init', array( $this, 'set_long_lat_keys' ) );
 		add_action( 'save_post', array( $this, 'save' ) );
+		add_action( 'tribe_events_map_embedded', array( $this, 'use_coords' ), 10, 2 );
 	}
 
 	/**
@@ -101,6 +102,37 @@ class EventRocket_VenuePositioning
 		if ( ! isset( $_POST['eventrocket_venue_positioning'] ) ) return false;
 		if ( ! wp_verify_nonce( $_POST['eventrocket_venue_positioning'], 'event_rocket_save_long_lat' ) ) return false;
 		return current_user_can( 'edit_post', $id );
+	}
+
+	/**
+	 * Update the location information associated with the venue map to use coordinates
+	 * in place of a street address, if possible.
+	 *
+	 * @param $map_index
+	 * @param $venue_id
+	 */
+	public function use_coords( $map_index, $venue_id ) {
+		// Sanity checks: we need a venue to work with and the correct version of TEC
+		if ( ! tribe_is_venue( $venue_id ) ) return;
+		if ( ! class_exists( 'TribeEvents_EmbeddedMaps' ) ) return;
+
+		// Try to load the coordinates - it's possible none will be set
+		$lat = get_post_meta( $venue_id, $this->lat_key, true );
+		$lng = get_post_meta( $venue_id, $this->lng_key, true );
+		if ( ! $this->valid_coords( $lat, $lng ) ) return;
+
+		// If we have valid coordinates let's put them to work
+		$mapping = TribeEvents_EmbeddedMaps::instance();
+		$venue_data = $mapping->get_map_data( $map_index );
+		$venue_data['coords'] = array( $lat, $lng );
+		$mapping->update_map_data( $map_index, $venue_data );
+	}
+
+
+	protected function valid_coords( $lat, $lng ) {
+		if ( ! is_numeric( $lat ) || $lat < -90  || $lat > 90 )  return false;
+		if ( ! is_numeric( $lng ) || $lng < -180 || $lng > 180 ) return false;
+		return true;
 	}
 }
 
