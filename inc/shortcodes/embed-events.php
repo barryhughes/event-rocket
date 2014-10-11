@@ -23,6 +23,7 @@ class EventRocket_EmbedEventsShortcode
 	protected $ignore_tags = array();
 
 	// Miscellaneous conditions
+	protected $blog = false;
 	protected $tax_logic = 'OR';
 	protected $from = '';
 	protected $to = '';
@@ -30,7 +31,8 @@ class EventRocket_EmbedEventsShortcode
 	protected $template = '';
 
 	// Caching
-	protected $cache_key = '';
+	protected $cache_key_data = '';
+	protected $cache_key_html = '';
 	protected $cache_expiry = 0;
 
 	// Nothing found fallbacks
@@ -381,8 +383,9 @@ class EventRocket_EmbedEventsShortcode
 		elseif ( is_numeric( $cache ) && $cache == absint( $cache ) )
 			$this->cache_expiry = absint( $cache );
 
-		// Create the cache key
-		$this->cache_key = hash( 'md5', join( '|', $this->params ) );
+		// Create the cache keys
+		$this->cache_key_data = 'EReeData' . hash( 'md5', join( '|', $this->params ) );
+		$this->cache_key_html = 'EReeData' . hash( 'md5', join( '|', $this->params ) );
 	}
 
 	/**
@@ -521,14 +524,15 @@ class EventRocket_EmbedEventsShortcode
 		foreach ( $this->results as $this->event_post ) $this->build_item();
 		$this->output = ob_get_clean();
 		$this->output = apply_filters( 'eventrocket_embed_event_output', $this->output );
-		if ( $this->cache_expiry && $this->cache_key ) $this->cache_output();
+		if ( $this->cache_expiry && $this->cache_key_html ) $this->cache_store();
 	}
 
 	/**
 	 * Stores the generated output in the cache.
 	 */
-	protected function cache_output() {
-		set_transient( $this->cache_key, $this->output, $this->cache_expiry );
+	protected function cache_store() {
+		set_transient( $this->cache_key_html, $this->output, $this->cache_expiry );
+		set_transient( $this->cache_key_data, $this->results, $this->cache_expiry );
 	}
 
 	/**
@@ -536,10 +540,13 @@ class EventRocket_EmbedEventsShortcode
 	 */
 	protected function cache_get() {
 		if ( ! $this->cache_expiry ) return false;
-		$cached_output = get_transient( $this->cache_key );
 
-		if ( ! $cached_output ) return false;
-		$this->output = $cached_output;
+		$cached_output = get_transient( $this->cache_key_html );
+		$cached_data   = get_transient( $this->cache_key_data );
+		if ( ! $cached_output || ! $cached_data ) return false;
+
+		$this->output  = $cached_output;
+		$this->results = $cached_data;
 		return true;
 	}
 
