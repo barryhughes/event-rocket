@@ -23,6 +23,7 @@ class EventRocket_EmbedEventsShortcode
 	protected $ignore_tags = array();
 
 	// Miscellaneous conditions
+	protected $tax_logic = 'OR';
 	protected $from = '';
 	protected $to = '';
 	protected $limit = 20;
@@ -192,6 +193,10 @@ class EventRocket_EmbedEventsShortcode
 
 		$this->parse_tax_refs( $this->tags, 'post_tag' );
 		$this->parse_tax_refs( $this->ignore_tags, 'post_tag' );
+
+		// Default to an "OR" relationship between different tax queries, but allow for "AND"
+		if ( isset( $this->params['logic'] ) && 'and' === strtolower( $this->params['logic'] ) )
+			$this->tax_logic = 'AND';
 	}
 
 	/**
@@ -420,11 +425,17 @@ class EventRocket_EmbedEventsShortcode
 		if ( ! empty( $this->ignore_categories ) )
 			$this->build_tax_args( $tax_args, TribeEvents::TAXONOMY, $this->ignore_categories, true );
 
-		if ( ! empty( $this->tags) ) $this->args['tag__in'] = $this->tags;
-		if ( ! empty( $this->ignore_tags ) ) $this->args['tag__not_in'] = $this->ignore_tags;
+		/*if ( ! empty( $this->tags) ) $this->args['tag__in'] = $this->tags[0];
+		if ( ! empty( $this->ignore_tags ) ) $this->args['tag__not_in'] = $this->ignore_tags[0];*/
+
+		if ( ! empty( $this->tags) )
+			$this->build_tax_args( $tax_args, 'post_tag', $this->tags );
+
+		if ( ! empty( $this->ignore_tags ) )
+			$this->build_tax_args( $tax_args, 'post_tag', $this->ignore_tags, true );
 
 		if ( ! empty( $tax_args ) ) {
-			$tax_args['relation'] = 'OR';
+			$tax_args['relation'] = $this->tax_logic;
 			$this->args['tax_query'] = $tax_args;
 		}
 	}
