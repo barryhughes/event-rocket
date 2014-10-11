@@ -28,6 +28,11 @@ class EventRocket_EmbedEventsShortcode
 	protected $limit = 20;
 	protected $template = '';
 
+	// Caching
+	protected $cache_type = 'transient';
+	protected $cache_key = '';
+	protected $cache_expiry = 0;
+
 	// Nothing found fallbacks
 	protected $nothing_found_text = '';
 	protected $nothing_found_template = '';
@@ -92,8 +97,11 @@ class EventRocket_EmbedEventsShortcode
 	 */
 	protected function execute() {
 		$this->parse();
-		$this->query();
-		$this->build();
+
+		if ( ! $this->cache_get() ) {
+			$this->query();
+			$this->build();
+		}
 	}
 
 	/**
@@ -107,6 +115,7 @@ class EventRocket_EmbedEventsShortcode
 		$this->set_limit();
 		$this->set_template();
 		$this->set_fallbacks();
+		$this->set_cache();
 	}
 
 	/**
@@ -307,7 +316,7 @@ class EventRocket_EmbedEventsShortcode
 	protected function set_fallbacks() {
 		// Has a (usually short) piece of text been provided, ie "Nothing found"?
 		if ( isset( $this->params['nothing_found_text'] ) && is_string( $this->params['nothing_found_text'] ) )
-				$this->nothing_found_text = $this->params['nothing_found_text'];
+			$this->nothing_found_text = $this->params['nothing_found_text'];
 
 		// Has a template path been provided?
 		if ( ! isset( $this->params['nothing_found_template'] ) ) return;
@@ -319,6 +328,32 @@ class EventRocket_EmbedEventsShortcode
 		// Ensure the template exists
 		if ( ! $this->nothing_found_template && file_exists( $this->params['nothing_found_template'] ) )
 			$this->nothing_found_template = $this->params['nothing_found_template'];
+	}
+
+	/**
+	 * Determines if the output should be cached.
+	 */
+	protected function set_cache() {
+		// Has a cache param been set?
+		$cache = isset( $this->params['cache'] ) ? $this->params['cache'] : null;
+		$cache = apply_filters( 'eventrocket_embed_event_cache_expiry', $cache, $this->params );
+
+		// No caching? Bail
+		if ( null === $cache ) return;
+
+		// Cache for the default period?
+		if ( 'auto' === strtolower( $cache ) || 'on' === strtolower( $cache ) )
+			$this->cache_expiry = (int) apply_filters( 'eventrocket_embed_event_cache_default_value', HOUR_IN_SECONDS * 2 );
+
+		// Cache for a specified amount of time?
+		elseif ( is_numeric( $cache ) && $cache == absint( $cache ) )
+			$this->cache_expiry = absint( $cache );
+
+		// Create the cache key
+		$this->cache_key = hash( 'md5', join( '|', $this->params ) );
+
+		// By default we use the transient API, but this can be overridden
+		$this->cache_type = apply_filters( 'eventrocket_embed_event_cache_type', $this->cache_type );
 	}
 
 	/**
@@ -434,6 +469,33 @@ class EventRocket_EmbedEventsShortcode
 		foreach ( $this->results as $this->event_post ) $this->build_item();
 		$this->output = ob_get_clean();
 		$this->output = apply_filters( 'eventrocket_embed_event_output', $this->output );
+		if ( $this->cache_expiry && $this->cache_key ) $this->cache_output();
+	}
+
+	/**
+	 * Stores the generated output in the cache.
+	 */
+	protected function cache_output() {
+		switch ( $this->cache_type ) {
+			case 'object': wp_cache_set( $this->cache_key, $this->output, 'eventrocket', $this->cache_expiry ); break;
+			default: set_transient( $this->cache_key, $this->output, $this->cache_expiry ); break;
+		}
+	}
+
+	/**
+	 * @return bool
+	 */
+	protected function cache_get() {
+		if ( ! $this->cache_expiry ) return false;
+
+		switch ( $this->cache_type ) {
+			case 'object': $cached_output  = wp_cache_get( $this->cache_key, 'eventrocket' ); break;
+			default: $cached_output = get_transient( $this->cache_key ); break;
+		}
+
+		if ( ! $cached_output ) return false;
+		$this->output = $cached_output;
+		return true;
 	}
 
 	/**
