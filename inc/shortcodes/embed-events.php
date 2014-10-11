@@ -51,40 +51,38 @@ class EventRocket_EmbedEventsShortcode
 	 */
 	public function __construct() {
 		$shortcode = apply_filters( 'eventrocket_embed_events_shortcode_name', 'event_embed' );
-		add_shortcode( $shortcode, array( $this, 'shortcode' ) );
+		add_shortcode( $shortcode, array( $this, 'embed' ) );
 	}
 
 	/**
-	 * Provides a programmatic means of using the event embed shortcode, returning
-	 * the shortcode output as a string.
+	 * Provides a programmatic means of embedding events. The output is returned as a string.
 	 *
 	 * @param array $params
 	 * @param string $content
 	 * @return string
 	 */
 	public function get( array $params, $content = '' ) {
-		return $this->shortcode( $params, $content );
+		return $this->embed( $params, $content );
 	}
 
 	/**
-	 * Provides a programmatic means of using the event embed shortcode, printing
-	 * the shortcode output directly.
+	 * Provides a programmatic means of embedding events. The output is printed directly.
 	 *
 	 * @param array $params
 	 * @param string $content
 	 */
 	public function render( array $params, $content = '' ) {
-		echo $this->shortcode( $params, $content );
+		echo $this->embed( $params, $content );
 	}
 
 	/**
-	 * Shortcode handler.
+	 * Embedded events request and shortcode handler.
 	 *
 	 * @param $params
 	 * @param $content
 	 * @return string
 	 */
-	public function shortcode( $params, $content ) {
+	public function embed( $params, $content ) {
 		if ( ! empty( $params ) && is_array( $params ) ) $this->params = $params;
 		$this->content = trim( $content );
 		$this->execute();
