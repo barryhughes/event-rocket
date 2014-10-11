@@ -29,7 +29,6 @@ class EventRocket_EmbedEventsShortcode
 	protected $template = '';
 
 	// Caching
-	protected $cache_type = 'transient';
 	protected $cache_key = '';
 	protected $cache_expiry = 0;
 
@@ -351,9 +350,6 @@ class EventRocket_EmbedEventsShortcode
 
 		// Create the cache key
 		$this->cache_key = hash( 'md5', join( '|', $this->params ) );
-
-		// By default we use the transient API, but this can be overridden
-		$this->cache_type = apply_filters( 'eventrocket_embed_event_cache_type', $this->cache_type );
 	}
 
 	/**
@@ -476,10 +472,7 @@ class EventRocket_EmbedEventsShortcode
 	 * Stores the generated output in the cache.
 	 */
 	protected function cache_output() {
-		switch ( $this->cache_type ) {
-			case 'object': wp_cache_set( $this->cache_key, $this->output, 'eventrocket', $this->cache_expiry ); break;
-			default: set_transient( $this->cache_key, $this->output, $this->cache_expiry ); break;
-		}
+		set_transient( $this->cache_key, $this->output, $this->cache_expiry );
 	}
 
 	/**
@@ -487,11 +480,7 @@ class EventRocket_EmbedEventsShortcode
 	 */
 	protected function cache_get() {
 		if ( ! $this->cache_expiry ) return false;
-
-		switch ( $this->cache_type ) {
-			case 'object': $cached_output  = wp_cache_get( $this->cache_key, 'eventrocket' ); break;
-			default: $cached_output = get_transient( $this->cache_key ); break;
-		}
+		$cached_output = get_transient( $this->cache_key );
 
 		if ( ! $cached_output ) return false;
 		$this->output = $cached_output;
