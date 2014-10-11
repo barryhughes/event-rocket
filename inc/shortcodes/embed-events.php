@@ -207,19 +207,35 @@ class EventRocket_EmbedEventsShortcode
 
 	/**
 	 * Process the list of terms for the specified taxonomy, converting
-	 * any term slugs into term IDs.
+	 * any term slugs into term IDs and grouping terms together where
+	 * an AND condition should be applied.
 	 *
 	 * @param $list
 	 * @param $taxonomy
 	 */
 	protected function parse_tax_refs( &$list, $taxonomy ) {
-		foreach ( $list as $index => $reference ) {
-			$this->typify( $reference );
-			if ( ! is_string( $reference ) ) continue;
+		foreach ( $list as $index => $term ) {
+			// Convert each list item to an array
+			$list[$index] = array();
 
-			$term = get_term_by( 'slug', $reference, $taxonomy );
-			if ( false === $term ) $list[$index] = 0;
-			else $list[$index] = (int) $term->term_id;
+			// Each "term" may actually be multiple terms, joined via the "+" symbol to mark an "AND" condition
+			$terms = explode( '+', $term );
+
+			// Look at each term reference: convert slugs to numeric IDs and group terms together as needed
+			foreach ( $terms as $term_ref ) {
+				$this->typify( $term_ref ); // Convert numeric strings to actual integers, etc
+
+				// If an integer, do not process further - just add it to the list
+				if ( is_int( $term_ref ) ) {
+					$list[$index][] = $term_ref;
+				}
+				// If a string, convert to an integer (ie, get the term ID) - then add to the list
+				else {
+					$term = get_term_by( 'slug', $term_ref, $taxonomy);
+					if ( false === $term ) $list[$index][] = 0;
+					else $list[$index][] = (int) $term->term_id;
+				}
+			}
 		}
 	}
 
@@ -386,23 +402,38 @@ class EventRocket_EmbedEventsShortcode
 		if ( ! empty( $this->events ) ) $this->args['post__in'] = $this->events;
 		if ( ! empty( $this->ignore_events ) ) $this->args['post__not_in'] = $this->ignore_events;
 
-		if ( ! empty( $this->categories ) ) $tax_args[] = array(
-			'taxonomy' => TribeEvents::TAXONOMY,
-			'field' => 'id',
-			'terms' => $this->categories
-		);
+		if ( ! empty( $this->categories ) )
+			$this->build_tax_args( $tax_args, TribeEvents::TAXONOMY, $this->categories );
 
-		if ( ! empty( $this->ignore_categories ) ) $tax_args[] = array(
-			'taxonomy' => TribeEvents::TAXONOMY,
-			'field' => 'id',
-			'terms' => $this->ignore_categories,
-			'operator' => 'NOT IN'
-		);
+		if ( ! empty( $this->ignore_categories ) )
+			$this->build_tax_args( $tax_args, TribeEvents::TAXONOMY, $this->ignore_categories, true );
 
 		if ( ! empty( $this->tags) ) $this->args['tag__in'] = $this->tags;
 		if ( ! empty( $this->ignore_tags ) ) $this->args['tag__not_in'] = $this->ignore_tags;
 
+		$tax_args['relation'] = 'OR';
 		if ( ! empty( $tax_args ) ) $this->args['tax_query'] = $tax_args;
+	}
+
+	/**
+	 * Helper that puts together a set of tax query arguments for a term or group of terms.
+	 *
+	 * @param array $tax_args
+	 * @param $taxonomy
+	 * @param $term_set
+	 * @param $exclude
+	 */
+	protected function build_tax_args( array &$tax_args, $taxonomy, $term_set, $exclude = false ) {
+		foreach ( $term_set as $terms ) {
+			$operator = $exclude ? 'NOT IN' : ( count( $terms ) > 1 ? 'AND' : 'IN' );
+
+			$tax_args[] = array(
+				'taxonomy' => $taxonomy,
+				'field'    => 'id',
+				'terms'    => $terms,
+				'operator' => $operator
+			);
+		}
 	}
 
 	protected function args_venue_organizer() {
