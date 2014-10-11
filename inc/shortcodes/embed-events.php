@@ -55,6 +55,19 @@ class EventRocket_EmbedEventsShortcode
 	}
 
 	/**
+	 * Provides an alternative means of querying for events: any results that are found are
+	 * returned in an array (which may be empty, if nothing is found).
+	 *
+	 * @param array $params
+	 * @param string $content
+	 * @return array
+	 */
+	public function obtain( array $params, $content = '' ) {
+		$this->embed( $params, $content );
+		return $this->results;
+	}
+
+	/**
 	 * Provides a programmatic means of embedding events. The output is returned as a string.
 	 *
 	 * @param array $params
@@ -73,19 +86,6 @@ class EventRocket_EmbedEventsShortcode
 	 */
 	public function render( array $params, $content = '' ) {
 		echo $this->embed( $params, $content );
-	}
-
-	/**
-	 * Provides an alternative means of querying for events: any results that are found are
-	 * returned in an array (which may be empty, if nothing is found).
-	 *
-	 * @param array $params
-	 * @param string $content
-	 * @return array
-	 */
-	public function obtain( array $params, $content = '' ) {
-		$this->embed( $params, $content );
-		return $this->results;
 	}
 
 	/**
