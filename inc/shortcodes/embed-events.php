@@ -5,9 +5,9 @@ defined( 'ABSPATH' ) or exit();
 class EventRocket_EmbedEventsShortcode
 {
 	/**
-	 * @var EventRocket_EventQuery
+	 * @var EventRocket_EventFinder
 	 */
-	protected $query;
+	protected $finder;
 
 
 	/**
@@ -31,7 +31,7 @@ class EventRocket_EmbedEventsShortcode
 	 */
 	public function obtain( array $params, $content = '' ) {
 		$this->embed( $params, $content );
-		return $this->query->results();
+		return $this->finder->results();
 	}
 
 	/**
@@ -66,8 +66,8 @@ class EventRocket_EmbedEventsShortcode
 		$params = ! empty( $params ) && is_array( $params ) ? $params : array();
 		$content = trim( $content );
 
-		$this->query = new EventRocket_EventQuery( $params, $content );
-		return $this->query->output();
+		$this->finder = new EventRocket_EventFinder( $params, $content );
+		return $this->finder->output();
 	}
 
 }

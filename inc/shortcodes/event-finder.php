@@ -1,5 +1,5 @@
 <?php
-class EventRocket_EventQuery
+class EventRocket_EventFinder
 {
 	// Inputs
 	protected $params = array();

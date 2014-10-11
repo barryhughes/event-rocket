@@ -6,7 +6,7 @@ require_once EVENTROCKET_INC . '/shortcodes/widget-wrapper.php';
 require_once EVENTROCKET_INC . '/shortcodes/widget-adjusters.php';
 require_once EVENTROCKET_INC . '/shortcodes/embedded-templates.php';
 require_once EVENTROCKET_INC . '/shortcodes/embed-events.php';
-require_once EVENTROCKET_INC . '/shortcodes/embeds/event-query.php';
+require_once EVENTROCKET_INC . '/shortcodes/event-finder.php';
 
 /**
  * Set up our widget-based shortcodes: if PRO is not enabled those shortcodes won't actually
