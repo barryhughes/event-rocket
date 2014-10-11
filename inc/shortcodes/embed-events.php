@@ -104,6 +104,7 @@ class EventRocket_EmbedEventsShortcode
 
 	/**
 	 * Parse the provided parameters, run the resulting query and build the output.
+	 * Allows for retrieval of cached results where appropriate.
 	 */
 	protected function execute() {
 		$this->parse();
