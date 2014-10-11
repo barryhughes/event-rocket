@@ -76,6 +76,19 @@ class EventRocket_EmbedEventsShortcode
 	}
 
 	/**
+	 * Provides an alternative means of querying for events: any results that are found are
+	 * returned in an array (which may be empty, if nothing is found).
+	 *
+	 * @param array $params
+	 * @param string $content
+	 * @return array
+	 */
+	public function obtain( array $params, $content = '' ) {
+		$this->embed( $params, $content );
+		return $this->results;
+	}
+
+	/**
 	 * Embedded events request and shortcode handler.
 	 *
 	 * @param $params
