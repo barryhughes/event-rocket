@@ -130,6 +130,7 @@ class EventRocket_EmbedEventsShortcode
 		$this->set_template();
 		$this->set_fallbacks();
 		$this->set_cache();
+		$this->set_blog();
 	}
 
 	/**
@@ -388,6 +389,11 @@ class EventRocket_EmbedEventsShortcode
 		$this->cache_key_html = 'EReeData' . hash( 'md5', join( '|', $this->params ) );
 	}
 
+	protected function set_blog() {
+		if ( ! isset( $this->params['blog'] ) ) return;
+		$this->blog = $this->params['blog'];
+	}
+
 	/**
 	 * Accepts a value and if it appears to be a string it is returned as-is. If it
 	 * appears to be a number expressed as a string then it is converted to an int
@@ -403,6 +409,7 @@ class EventRocket_EmbedEventsShortcode
 	 * Retrieve the events based on the parameters provided.
 	 */
 	protected function query() {
+		$this->enter_blog();
 		$this->args = array( 'post_type' => TribeEvents::POSTTYPE ); // Reset
 		$this->args_post_tax();
 		$this->args_venue_organizer();
@@ -514,6 +521,7 @@ class EventRocket_EmbedEventsShortcode
 	protected function build() {
 		if ( ! empty( $this->results ) ) $this->build_normal();
 		else $this->build_no_results();
+		$this->exit_blog();
 	}
 
 	/**
@@ -587,6 +595,17 @@ class EventRocket_EmbedEventsShortcode
 		if ( null === $parser ) $parser = new EventRocket_EmbeddedEventTemplateParser;
 		$parser->process( $this->content );
 		print do_shortcode( $parser->output );
+	}
+
+	protected function enter_blog() {
+		if ( ! $this->blog ) return;
+		switch_to_blog( $this->blog );
+	}
+
+	protected function exit_blog() {
+		if ( ! $this->blog ) return;
+		restore_current_blog();
+		$this->blog = false;
 	}
 }
 
