@@ -1,9 +1,15 @@
 <?php
 abstract class EventRocket_ObjectFinder
 {
-	protected $output  = '';
-	protected $results = '';
+	// Inputs
+	protected $params = array();
+	protected $content = '';
 
+	// Internal
+	protected $output  = '';
+	protected $results = array();
+
+	// Caching
 	protected $cache_key_html = '';
 	protected $cache_key_data = '';
 	protected $cache_expiry   = 0;

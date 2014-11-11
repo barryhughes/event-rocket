@@ -1,10 +1,6 @@
 <?php
 class EventRocket_EventFinder extends EventRocket_ObjectFinder
 {
-	// Inputs
-	protected $params = array();
-	protected $content = '';
-
 	// Positive posts/terms to query against
 	protected $events = array();
 	protected $venues = array();
@@ -27,20 +23,13 @@ class EventRocket_EventFinder extends EventRocket_ObjectFinder
 	protected $limit = 20;
 	protected $template = '';
 
-	// Caching
-	protected $cache_key_data = '';
-	protected $cache_key_html = '';
-	protected $cache_expiry = 0;
-
 	// Nothing found fallbacks
 	protected $nothing_found_text = '';
 	protected $nothing_found_template = '';
 
 	// Internal
 	protected $args = array();
-	protected $results = array();
 	protected $event_post;
-	protected $output = '';
 
 
 	/**
