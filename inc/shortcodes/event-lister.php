@@ -249,8 +249,7 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		);
 	}
 
-	protected function args_time()
-	{
+	protected function args_time() {
 		if (!empty($this->from)) $this->args['start_date'] = $this->from;
 		if (!empty($this->to)) $this->args['end_date'] = $this->to;
 	}
