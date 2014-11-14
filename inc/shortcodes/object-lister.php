@@ -12,6 +12,7 @@ abstract class EventRocket_ObjectLister
 	protected $args = array();
 	protected $event_post;
 	protected $fallback = '';
+	protected $template = '';
 
 	// Nothing found fallbacks
 	protected $nothing_found_text = '';
@@ -184,11 +185,8 @@ abstract class EventRocket_ObjectLister
 	 * theme/child theme, or can be an absolute path.
 	 */
 	protected function set_template() {
-		$this->template = ''; // Wipe clean
-		$fallback = $this->fallback;
-
 		// If there is no template and no inner content, assume the regular single event template
-		if (!isset($this->params['template']) && empty($this->content)) $this->template = $fallback;
+		if (!isset($this->params['template']) && empty($this->content)) $this->template = $this->fallback;
 		elseif (!isset($this->params['template'])) return;
 
 		// If not an absolute filepath use Tribe's template finder
