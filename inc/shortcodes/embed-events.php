@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or exit();
 class EventRocket_EmbedEventsShortcode
 {
 	/**
-	 * @var EventRocket_EventFinder
+	 * @var EventRocket_EventLister
 	 */
 	protected $finder;
 
@@ -66,7 +66,7 @@ class EventRocket_EmbedEventsShortcode
 		$params = ! empty( $params ) && is_array( $params ) ? $params : array();
 		$content = trim( $content );
 
-		$this->finder = new EventRocket_EventFinder( $params, $content );
+		$this->finder = new EventRocket_EventLister( $params, $content );
 		return $this->finder->output();
 	}
 

@@ -1,5 +1,5 @@
 <?php
-abstract class EventRocket_ObjectFinder
+abstract class EventRocket_ObjectLister
 {
 	// Inputs
 	protected $params = array();
@@ -225,6 +225,10 @@ abstract class EventRocket_ObjectFinder
 
 	/**
 	 * Restores the current blog, if necessary. Called at the end of build().
+	 *
+	 * It could also be called as one of the final statements within query(),
+	 * however that would preclude template tags etc from running within the same
+	 * context which or may not be an issue depending on the specific use case.
 	 */
 	protected function exit_blog() {
 		if ( ! $this->blog ) return;

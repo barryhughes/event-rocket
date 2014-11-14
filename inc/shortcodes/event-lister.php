@@ -1,5 +1,5 @@
 <?php
-class EventRocket_EventFinder extends EventRocket_ObjectFinder
+class EventRocket_EventLister extends EventRocket_ObjectFinder
 {
 	// Positive posts/terms to query against
 	protected $events = array();
