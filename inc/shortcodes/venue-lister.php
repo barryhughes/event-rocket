@@ -28,9 +28,8 @@ class EventRocket_VenueLister extends EventRocket_ObjectLister
 
 
 	public function __construct( array $params, $content ) {
-		$this->params = $params;
-		$this->content = $content;
-		$this->execute();
+		$this->fallback = EVENTROCKET_INC . '/templates/embedded-venues.php';
+		parent::__construct( $params, $content );
 	}
 
 	protected function execute() {
@@ -43,22 +42,14 @@ class EventRocket_VenueLister extends EventRocket_ObjectLister
 	}
 
 	protected function parse() {
-
+		$this->set_template();
 	}
 
 	protected function query() {
 		$this->enter_blog();
-		$this->args = array( 'post_type' => TribeEvents::POSTTYPE ); // Reset
-		$this->args_post_tax();
-		$this->args_venue_organizer();
-		$this->args_time();
-		$this->args_limit();
-		$this->args_display_type();
-		$this->args = apply_filters( 'eventrocket_embed_event_args', $this->args, $this->params );
-		$this->results = tribe_get_events( $this->args );
-	}
+		$this->args = array( 'post_type' => TribeEvents::VENUE_POST_TYPE ); // Reset
 
-	protected function build() {
-
+		$this->args = apply_filters( 'eventrocket_embed_venue_args', $this->args, $this->params );
+		$this->results = get_posts( $this->args );
 	}
 }
