@@ -6,6 +6,7 @@ abstract class EventRocket_ObjectFinder
 	protected $content = '';
 
 	// Internal
+	protected $blog = false;
 	protected $output  = '';
 	protected $results = array();
 
@@ -36,7 +37,6 @@ abstract class EventRocket_ObjectFinder
 
 	abstract protected function parse();
 	abstract protected function query();
-	abstract protected function build();
 
 	/**
 	 * Inspect the properties array for values assigned with either the $singular or $plural
@@ -85,5 +85,105 @@ abstract class EventRocket_ObjectFinder
 		$this->output  = $cached_output;
 		$this->results = $cached_data;
 		return true;
+	}
+
+	/**
+	 * Take the query result set and build the actual output.
+	 */
+	protected function build() {
+		if ( ! empty( $this->results ) ) $this->build_normal();
+		else $this->build_no_results();
+		$this->exit_blog();
+	}
+
+	/**
+	 * Builds the output when we have some results from the query.
+	 */
+	protected function build_normal() {
+		ob_start();
+		foreach ( $this->results as $this->event_post ) $this->build_item();
+		$this->output = ob_get_clean();
+		$this->output = apply_filters( 'eventrocket_embed_event_output', $this->output );
+		if ( $this->cache_expiry && $this->cache_key_html ) $this->cache_store();
+	}
+
+	/**
+	 * Builds the output where no results were returned.
+	 */
+	protected function build_no_results() {
+		if ( ! empty( $this->nothing_found_text ) )
+			$this->output = apply_filters( 'eventrocket_embed_event_output', $this->nothing_found_text );
+
+		elseif ( ! empty( $this->nothing_found_template ) ) {
+			ob_start();
+			include $this->nothing_found_template;
+			$this->output = ob_get_clean();
+			$this->output = apply_filters( 'eventrocket_embed_event_output', $this->output );
+		}
+	}
+
+	/**
+	 * Decide whether to pull in a template to render each event or to use
+	 * an inline template.
+	 */
+	protected function build_item() {
+		if ( ! is_a( $this->event_post, 'WP_Post' ) ) return;
+		$GLOBALS['post'] = $this->event_post;
+		setup_postdata( $GLOBALS['post'] );
+		ob_start();
+
+		if ( ! empty( $this->template ) ) include $this->template;
+		elseif ( ! empty( $this->content ) ) $this->build_inline_output();
+
+		echo apply_filters( 'eventrocket_embed_event_single_output', ob_get_clean(), get_the_ID() );
+		wp_reset_postdata();
+	}
+
+	protected function build_inline_output() {
+		static $parser = null;
+		if ( null === $parser ) $parser = new EventRocket_EmbeddedEventTemplateParser;
+		$parser->process( $this->content );
+		print do_shortcode( $parser->output );
+	}
+
+	/**
+	 * Tests to see if a specific blog has been requested. Expected to be called
+	 * during argument parsing (ie, when parse() runs).
+	 */
+	protected function set_blog() {
+		if ( ! isset( $this->params['blog'] ) ) return;
+		$this->blog = $this->params['blog'];
+	}
+
+	/**
+	 * Switch to a different blog if required. Expected to be called when query()
+	 * runs.
+	 */
+	protected function enter_blog() {
+		if ( ! $this->blog ) return;
+		switch_to_blog( $this->blog );
+	}
+
+	/**
+	 * Restores the current blog, if necessary. Called at the end of build().
+	 */
+	protected function exit_blog() {
+		if ( ! $this->blog ) return;
+		restore_current_blog();
+		$this->blog = false;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function output() {
+		return (string) $this->output;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function results() {
+		return (string) $this->output;
 	}
 }

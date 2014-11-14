@@ -16,7 +16,6 @@ class EventRocket_EventFinder extends EventRocket_ObjectFinder
 	protected $ignore_tags = array();
 
 	// Miscellaneous conditions
-	protected $blog = false;
 	protected $tax_logic = 'OR';
 	protected $from = '';
 	protected $to = '';
@@ -277,11 +276,6 @@ class EventRocket_EventFinder extends EventRocket_ObjectFinder
 		$this->cache_key_html = 'EReeData' . hash( 'md5', join( '|', $this->params ) );
 	}
 
-	protected function set_blog() {
-		if ( ! isset( $this->params['blog'] ) ) return;
-		$this->blog = $this->params['blog'];
-	}
-
 	/**
 	 * Accepts a value and if it appears to be a string it is returned as-is. If it
 	 * appears to be a number expressed as a string then it is converted to an int
@@ -401,89 +395,5 @@ class EventRocket_EventFinder extends EventRocket_ObjectFinder
 	protected function args_display_type() {
 		$this->args['eventDisplay'] = ( isset( $this->args['start_date'] ) || isset( $this->args['end_date'] ) || isset( $this->args['post__in'] ) )
 			? 'custom' : 'list';
-	}
-
-	/**
-	 * Take the query result set and build the actual output.
-	 */
-	protected function build() {
-		if ( ! empty( $this->results ) ) $this->build_normal();
-		else $this->build_no_results();
-		$this->exit_blog();
-	}
-
-	/**
-	 * Builds the output when we have some results from the query.
-	 */
-	protected function build_normal() {
-		ob_start();
-		foreach ( $this->results as $this->event_post ) $this->build_item();
-		$this->output = ob_get_clean();
-		$this->output = apply_filters( 'eventrocket_embed_event_output', $this->output );
-		if ( $this->cache_expiry && $this->cache_key_html ) $this->cache_store();
-	}
-
-	/**
-	 * Builds the output where no results were returned.
-	 */
-	protected function build_no_results() {
-		if ( ! empty( $this->nothing_found_text ) )
-			$this->output = apply_filters( 'eventrocket_embed_event_output', $this->nothing_found_text );
-
-		elseif ( ! empty( $this->nothing_found_template ) ) {
-			ob_start();
-			include $this->nothing_found_template;
-			$this->output = ob_get_clean();
-			$this->output = apply_filters( 'eventrocket_embed_event_output', $this->output );
-		}
-	}
-
-	/**
-	 * Decide whether to pull in a template to render each event or to use
-	 * an inline template.
-	 */
-	protected function build_item() {
-		if ( ! is_a( $this->event_post, 'WP_Post' ) ) return;
-		$GLOBALS['post'] = $this->event_post;
-		setup_postdata( $GLOBALS['post'] );
-		ob_start();
-
-		if ( ! empty( $this->template ) ) include $this->template;
-		elseif ( ! empty( $this->content ) ) $this->build_inline_output();
-
-		echo apply_filters( 'eventrocket_embed_event_single_output', ob_get_clean(), get_the_ID() );
-		wp_reset_postdata();
-	}
-
-	protected function build_inline_output() {
-		static $parser = null;
-		if ( null === $parser ) $parser = new EventRocket_EmbeddedEventTemplateParser;
-		$parser->process( $this->content );
-		print do_shortcode( $parser->output );
-	}
-
-	protected function enter_blog() {
-		if ( ! $this->blog ) return;
-		switch_to_blog( $this->blog );
-	}
-
-	protected function exit_blog() {
-		if ( ! $this->blog ) return;
-		restore_current_blog();
-		$this->blog = false;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function output() {
-		return (string) $this->output;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function results() {
-		return (string) $this->output;
 	}
 }
