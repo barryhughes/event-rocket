@@ -9,6 +9,12 @@ abstract class EventRocket_ObjectFinder
 	protected $blog = false;
 	protected $output  = '';
 	protected $results = array();
+	protected $args = array();
+	protected $event_post;
+
+	// Nothing found fallbacks
+	protected $nothing_found_text = '';
+	protected $nothing_found_template = '';
 
 	// Caching
 	protected $cache_key_html = '';

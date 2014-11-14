@@ -22,14 +22,6 @@ class EventRocket_EventFinder extends EventRocket_ObjectFinder
 	protected $limit = 20;
 	protected $template = '';
 
-	// Nothing found fallbacks
-	protected $nothing_found_text = '';
-	protected $nothing_found_template = '';
-
-	// Internal
-	protected $args = array();
-	protected $event_post;
-
 
 	/**
 	 * Pre-process and get what we need from any parameters that were provided.
