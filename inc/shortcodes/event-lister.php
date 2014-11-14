@@ -1,5 +1,5 @@
 <?php
-class EventRocket_EventLister extends EventRocket_ObjectFinder
+class EventRocket_EventLister extends EventRocket_ObjectLister
 {
 	// Positive posts/terms to query against
 	protected $events = array();
@@ -70,24 +70,6 @@ class EventRocket_EventLister extends EventRocket_ObjectFinder
 	}
 
 	/**
-	 * Moves any values in $list prefixed with a negative operator ("-") to the
-	 * ignore list.
-	 *
-	 * @param array $list
-	 * @param array $ignore_list
-	 */
-	protected function move_ignore_vals( array &$list, array &$ignore_list ) {
-		$keep_list = array();
-
-		foreach ( $list as $value ) {
-			if ( 0 === strpos( $value, '-') ) $ignore_list[] = substr( $value, 1 );
-			else $keep_list[] = $value;
-		}
-
-		$list = $keep_list;
-	}
-
-	/**
 	 * The event and taxonomy params all accept a mix of IDs and slugs:
 	 * this method converts any slugs in those params back into IDs.
 	 */
@@ -110,29 +92,6 @@ class EventRocket_EventLister extends EventRocket_ObjectFinder
 		// Default to an "OR" relationship between different tax queries, but allow for "AND"
 		if ( isset( $this->params['logic'] ) && 'and' === strtolower( $this->params['logic'] ) )
 			$this->tax_logic = 'AND';
-	}
-
-	/**
-	 * Process the list of posts, turning any slugs into IDs.
-	 *
-	 * @param $list
-	 * @param string $type
-	 */
-	protected function parse_post_refs( &$list, $type = TribeEvents::POSTTYPE ) {
-		foreach ( $list as $index => $reference ) {
-			$this->typify( $reference );
-			if ( ! is_string( $reference ) ) continue;
-
-			$event = get_posts( array(
-				'name' => $reference,
-				'post_type' => $type,
-				'eventDisplay' => 'custom',
-				'posts_per_page' => 1
-			) );
-
-			if ( empty( $event ) || ! is_array( $event ) ) $list[$index] = 0;
-			else $list[$index] = $event[0]->ID;
-		}
 	}
 
 	/**
@@ -204,30 +163,6 @@ class EventRocket_EventLister extends EventRocket_ObjectFinder
 		$this->limit = isset( $this->params['limit'] )
 			? (int) $this->params['limit']
 			: (int) get_option( 'posts_per_page', 20 );
-	}
-
-	/**
-	 * Determines if the output should be cached.
-	 */
-	protected function set_cache() {
-		// Has a cache param been set?
-		$cache = isset( $this->params['cache'] ) ? $this->params['cache'] : null;
-		$cache = apply_filters( 'eventrocket_embed_event_cache_expiry', $cache, $this->params );
-
-		// No caching? Bail
-		if ( null === $cache ) return;
-
-		// Cache for the default period?
-		if ( 'auto' === strtolower( $cache ) || 'on' === strtolower( $cache ) )
-			$this->cache_expiry = (int) apply_filters( 'eventrocket_embed_event_cache_default_value', HOUR_IN_SECONDS * 2 );
-
-		// Cache for a specified amount of time?
-		elseif ( is_numeric( $cache ) && $cache == absint( $cache ) )
-			$this->cache_expiry = absint( $cache );
-
-		// Create the cache keys
-		$this->cache_key_data = 'EReeData' . hash( 'md5', join( '|', $this->params ) );
-		$this->cache_key_html = 'EReeData' . hash( 'md5', join( '|', $this->params ) );
 	}
 
 	/**

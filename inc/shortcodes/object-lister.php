@@ -95,6 +95,30 @@ abstract class EventRocket_ObjectLister
 	}
 
 	/**
+	 * Determines if the output should be cached.
+	 */
+	protected function set_cache() {
+		// Has a cache param been set?
+		$cache = isset( $this->params['cache'] ) ? $this->params['cache'] : null;
+		$cache = apply_filters( 'eventrocket_embeded_posts_cache_expiry', $cache, $this->params );
+
+		// No caching? Bail
+		if ( null === $cache ) return;
+
+		// Cache for the default period?
+		if ( 'auto' === strtolower( $cache ) || 'on' === strtolower( $cache ) )
+			$this->cache_expiry = (int) apply_filters( 'eventrocket_embedded_posts_cache_default_value', HOUR_IN_SECONDS * 2 );
+
+		// Cache for a specified amount of time?
+		elseif ( is_numeric( $cache ) && $cache == absint( $cache ) )
+			$this->cache_expiry = absint( $cache );
+
+		// Create the cache keys
+		$this->cache_key_data = 'EREmbedData' . hash( 'md5', join( '|', $this->params ) );
+		$this->cache_key_html = 'EREmbedData' . hash( 'md5', join( '|', $this->params ) );
+	}
+
+	/**
 	 * Take the query result set and build the actual output.
 	 */
 	protected function build() {
@@ -203,6 +227,48 @@ abstract class EventRocket_ObjectLister
 	 */
 	protected function typify( &$value ) {
 		$value = is_numeric( $value ) ? (int) $value : (string) $value;
+	}
+
+	/**
+	 * Moves any values in $list prefixed with a negative operator ("-") to the
+	 * ignore list.
+	 *
+	 * @param array $list
+	 * @param array $ignore_list
+	 */
+	protected function move_ignore_vals( array &$list, array &$ignore_list ) {
+		$keep_list = array();
+
+		foreach ( $list as $value ) {
+			if ( 0 === strpos( $value, '-') ) $ignore_list[] = substr( $value, 1 );
+			else $keep_list[] = $value;
+		}
+
+		$list = $keep_list;
+	}
+
+	/**
+	 * Process the list of posts, turning any slugs into IDs.
+	 *
+	 * @param $list
+	 * @param string $type
+	 */
+	protected function parse_post_refs( &$list, $type = TribeEvents::POSTTYPE )
+	{
+		foreach ($list as $index => $reference) {
+			$this->typify($reference);
+			if (!is_string($reference)) continue;
+
+			$event = get_posts(array(
+				'name' => $reference,
+				'post_type' => $type,
+				'eventDisplay' => 'custom',
+				'posts_per_page' => 1
+			));
+
+			if (empty($event) || !is_array($event)) $list[$index] = 0;
+			else $list[$index] = $event[0]->ID;
+		}
 	}
 
 	/**
