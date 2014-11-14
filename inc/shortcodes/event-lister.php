@@ -157,15 +157,6 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	}
 
 	/**
-	 * Set the number of posts to retreive
-	 */
-	protected function set_limit() {
-		$this->limit = isset( $this->params['limit'] )
-			? (int) $this->params['limit']
-			: (int) get_option( 'posts_per_page', 20 );
-	}
-
-	/**
 	 * Retrieve the events based on the parameters provided.
 	 */
 	protected function query() {
@@ -258,13 +249,10 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		);
 	}
 
-	protected function args_time() {
-		if ( ! empty( $this->from ) ) $this->args['start_date'] = $this->from;
-		if ( ! empty( $this->to ) ) $this->args['end_date'] = $this->to;
-	}
-
-	protected function args_limit() {
-		$this->args['posts_per_page'] = $this->limit;
+	protected function args_time()
+	{
+		if (!empty($this->from)) $this->args['start_date'] = $this->from;
+		if (!empty($this->to)) $this->args['end_date'] = $this->to;
 	}
 
 	/**

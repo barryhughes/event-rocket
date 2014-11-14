@@ -199,6 +199,15 @@ abstract class EventRocket_ObjectLister
 	}
 
 	/**
+	 * Set the number of posts to retreive
+	 */
+	protected function set_limit() {
+		$this->limit = isset( $this->params['limit'] )
+			? (int) $this->params['limit']
+			: (int) get_option( 'posts_per_page', 20 );
+	}
+
+	/**
 	 * Set the message to display - or template to pull in - should no results be found.
 	 */
 	protected function set_fallbacks() {
@@ -218,6 +227,10 @@ abstract class EventRocket_ObjectLister
 			$this->nothing_found_template = $this->params['nothing_found_template'];
 	}
 
+	protected function args_limit() {
+		$this->args['posts_per_page'] = $this->limit;
+	}
+
 	/**
 	 * Forces numeric values to ints and anything else to strings.
 	 *
@@ -225,6 +238,21 @@ abstract class EventRocket_ObjectLister
 	 */
 	protected function typify( &$value ) {
 		$value = is_numeric( $value ) ? (int) $value : (string) $value;
+	}
+
+	/**
+	 * Evaluates the parameter and assesses if it means "on" or is a positive indication.
+	 * For instance, by default, "1", "yes" and "on" would eval as positive.
+	 *
+	 * @param  $param
+	 * @return bool
+	 */
+	protected function is_on( $param ) {
+		$on_vals = apply_filters( 'eventrocket_embedded_posts_positive_strs', array( 'on', 'true', 'yes', 'y' ) );
+
+		if ( in_array( strtolower( $param ), $on_vals ) ) return true;
+		if ( is_numeric( $param ) && $param ) return true;
+		return false;
 	}
 
 	/**

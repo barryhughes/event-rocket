@@ -70,3 +70,16 @@ class EventRocket_EmbedVenuesShortcode
 		return $this->finder->output();
 	}
 }
+
+
+/**
+ * @return EventRocket_EmbedVenuesShortcode
+ */
+function venue_embed() {
+	static $object = null;
+	if ( null === $object ) $object = new EventRocket_EmbedVenuesShortcode;
+	return $object;
+}
+
+// Call once to ensure the [event-embed] object is created
+venue_embed();
