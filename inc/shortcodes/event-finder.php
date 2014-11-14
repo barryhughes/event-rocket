@@ -23,6 +23,11 @@ class EventRocket_EventFinder extends EventRocket_ObjectFinder
 	protected $template = '';
 
 
+	public function __construct( array $params, $content ) {
+		$this->fallback = EVENTROCKET_INC . '/templates/embedded-events.php';
+		parent::__construct( $params, $content );
+	}
+
 	/**
 	 * Pre-process and get what we need from any parameters that were provided.
 	 */
@@ -202,49 +207,6 @@ class EventRocket_EventFinder extends EventRocket_ObjectFinder
 	}
 
 	/**
-	 * Set the template to use.
-	 *
-	 * The template can live in the core The Events Calendar views directory, or else in the
-	 * theme/child theme, or can be an absolute path.
-	 */
-	protected function set_template() {
-		$this->template = ''; // Wipe clean
-		$fallback = EVENTROCKET_INC . '/templates/embedded-events.php';
-
-		// If there is no template and no inner content, assume the regular single event template
-		if ( ! isset( $this->params['template'] ) && empty( $this->content ) ) $this->template = $fallback;
-		elseif ( ! isset( $this->params['template'] ) ) return;
-
-		// If not an absolute filepath use Tribe's template finder
-		if ( isset( $this->params['template'] ) && 0 !== strpos( $this->params['template'], '/' ) )
-			$this->template = TribeEventsTemplates::getTemplateHierarchy( $this->params['template'] );
-
-		// Ensure the template exists
-		if ( ! $this->template && file_exists( $this->params['template'] ) )
-			$this->template = $this->params['template'];
-	}
-
-	/**
-	 * Set the message to display - or template to pull in - should no results be found.
-	 */
-	protected function set_fallbacks() {
-		// Has a (usually short) piece of text been provided, ie "Nothing found"?
-		if ( isset( $this->params['nothing_found_text'] ) && is_string( $this->params['nothing_found_text'] ) )
-			$this->nothing_found_text = $this->params['nothing_found_text'];
-
-		// Has a template path been provided?
-		if ( ! isset( $this->params['nothing_found_template'] ) ) return;
-
-		// If not an absolute filepath use Tribe's template finder
-		if ( isset( $this->params['nothing_found_template'] ) && 0 !== strpos( $this->params['nothing_found_template'], '/' ) )
-			$this->nothing_found_template = TribeEventsTemplates::getTemplateHierarchy( $this->params['nothing_found_template'] );
-
-		// Ensure the template exists
-		if ( ! $this->nothing_found_template && file_exists( $this->params['nothing_found_template'] ) )
-			$this->nothing_found_template = $this->params['nothing_found_template'];
-	}
-
-	/**
 	 * Determines if the output should be cached.
 	 */
 	protected function set_cache() {
@@ -266,17 +228,6 @@ class EventRocket_EventFinder extends EventRocket_ObjectFinder
 		// Create the cache keys
 		$this->cache_key_data = 'EReeData' . hash( 'md5', join( '|', $this->params ) );
 		$this->cache_key_html = 'EReeData' . hash( 'md5', join( '|', $this->params ) );
-	}
-
-	/**
-	 * Accepts a value and if it appears to be a string it is returned as-is. If it
-	 * appears to be a number expressed as a string then it is converted to an int
-	 * and, if it is numeric, it is simply returned as an int.
-	 *
-	 * @param $value
-	 */
-	protected function typify( &$value ) {
-		$value = is_numeric( $value ) ? (int) $value : (string) $value;
 	}
 
 	/**

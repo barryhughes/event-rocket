@@ -11,6 +11,7 @@ abstract class EventRocket_ObjectFinder
 	protected $results = array();
 	protected $args = array();
 	protected $event_post;
+	protected $fallback = '';
 
 	// Nothing found fallbacks
 	protected $nothing_found_text = '';
@@ -150,6 +151,58 @@ abstract class EventRocket_ObjectFinder
 		if ( null === $parser ) $parser = new EventRocket_EmbeddedEventTemplateParser;
 		$parser->process( $this->content );
 		print do_shortcode( $parser->output );
+	}
+
+	/**
+	 * Set the template to use.
+	 *
+	 * The template can live in the core The Events Calendar views directory, or else in the
+	 * theme/child theme, or can be an absolute path.
+	 */
+	protected function set_template() {
+		$this->template = ''; // Wipe clean
+		$fallback = $this->fallback;
+
+		// If there is no template and no inner content, assume the regular single event template
+		if (!isset($this->params['template']) && empty($this->content)) $this->template = $fallback;
+		elseif (!isset($this->params['template'])) return;
+
+		// If not an absolute filepath use Tribe's template finder
+		if (isset($this->params['template']) && 0 !== strpos($this->params['template'], '/'))
+			$this->template = TribeEventsTemplates::getTemplateHierarchy($this->params['template']);
+
+		// Ensure the template exists
+		if (!$this->template && file_exists($this->params['template']))
+			$this->template = $this->params['template'];
+	}
+
+	/**
+	 * Set the message to display - or template to pull in - should no results be found.
+	 */
+	protected function set_fallbacks() {
+		// Has a (usually short) piece of text been provided, ie "Nothing found"?
+		if ( isset( $this->params['nothing_found_text'] ) && is_string( $this->params['nothing_found_text'] ) )
+			$this->nothing_found_text = $this->params['nothing_found_text'];
+
+		// Has a template path been provided?
+		if ( ! isset( $this->params['nothing_found_template'] ) ) return;
+
+		// If not an absolute filepath use Tribe's template finder
+		if ( isset( $this->params['nothing_found_template'] ) && 0 !== strpos( $this->params['nothing_found_template'], '/' ) )
+			$this->nothing_found_template = TribeEventsTemplates::getTemplateHierarchy( $this->params['nothing_found_template'] );
+
+		// Ensure the template exists
+		if ( ! $this->nothing_found_template && file_exists( $this->params['nothing_found_template'] ) )
+			$this->nothing_found_template = $this->params['nothing_found_template'];
+	}
+
+	/**
+	 * Forces numeric values to ints and anything else to strings.
+	 *
+	 * @param $value
+	 */
+	protected function typify( &$value ) {
+		$value = is_numeric( $value ) ? (int) $value : (string) $value;
 	}
 
 	/**
