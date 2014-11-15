@@ -22,11 +22,9 @@ function eventrocket_launch() {
 		return;
 	}
 
-	require_once EVENTROCKET_INC . '/misc/404-helper.php';
-	require_once EVENTROCKET_INC . '/misc/clean-up.php';
-	require_once EVENTROCKET_INC . '/misc/front-page-events.php';
-	require_once EVENTROCKET_INC . '/misc/venue-positioning.php';
 	require_once EVENTROCKET_INC . '/embedding/embedding.php';
+	require_once EVENTROCKET_INC . '/admin/admin.php';
+	require_once EVENTROCKET_INC . '/misc/helpers.php';
 }
 
 function eventrocket_abort_launch() {
