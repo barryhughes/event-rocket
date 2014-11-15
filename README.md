@@ -9,19 +9,18 @@ This is an experimental addon that furnishes
 
 Basic usage:
 
-* It's a plugin!
-* Activate TEC/ECP - this plugin depends on them
-* Add `[event_rocket_calendar]` to a page or post
+* It's a regular WordPress plugin!
+* Activate The Events Calendar and optionally Events Calendar Pro (recommended) - this plugin depends on them
+* Add a shortcode like `[event_rocket_calendar]` to a page or post
 * The calendar widget should appear wherever you added that shortcode!
 * You can even add params like `[event_rocket_calendar count="3"]` to limit the number of events listed beneath the calendar
-
-Some further examples from the readme.txt FAQ section:
 
 ## Use it to embed events, organizers and venues anywhere!
 
 * Shortcodes like `[event_embed]` and `[organizer_embed]` make this easy
-* There is even a programmatic means of embedding, ie `venue_embed()->get()`
-* Powerful capabilities including cross-blog sharing and more `[event_embed blog="5" from="tomorrow"]`
+* There is even a programmatic means of embedding, ie `venue_embed()->get()` (pass extra params in an array)
+* Powerful capabilities including cross-blog sharing and more `[event_embed blog="5" from="tomorrow"]` (list events
+from blog ID 5 from tomorrow onwards)
 
 ## Use it to embed widgets in pages and posts
 
