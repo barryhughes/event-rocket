@@ -54,8 +54,8 @@ class EventRocket_VenueLister extends EventRocket_ObjectLister
 	}
 
 	protected function set_with_events() {
-		if ( isset( $this->params['with_events'] ) && $this->is_on( $this->params['with_events'] ) )
-			$this->with_events = true;
+		if ( ! isset( $this->params['with_events'] ) ) return;
+		$this->with_events = $this->is_on( $this->params['with_events'] );
 	}
 
 	/**
