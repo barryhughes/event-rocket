@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) or exit();
 add_action( 'plugins_loaded', 'eventrocket_launch' );
 
 function eventrocket_launch() {
-	define( 'EVENTROCKET_INC', dirname( __FILE__ ) . '/inc' );
+	define( 'EVENTROCKET_INC', dirname( __FILE__ ) );
 	define( 'EVENTROCKET_URL', plugin_dir_url( __FILE__ ) );
 
 	if ( ! class_exists( 'TribeEvents' ) || version_compare( TribeEvents::VERSION, '3.8', '<' ) ) {
@@ -22,11 +22,11 @@ function eventrocket_launch() {
 		return;
 	}
 
-	require_once EVENTROCKET_INC . '/404-helper.php';
-	require_once EVENTROCKET_INC . '/clean-up.php';
-	require_once EVENTROCKET_INC . '/front-page-events.php';
-	require_once EVENTROCKET_INC . '/embedding.php';
-	require_once EVENTROCKET_INC . '/venue-positioning.php';
+	require_once EVENTROCKET_INC . '/launchers/404-helper.php';
+	require_once EVENTROCKET_INC . '/launchers/clean-up.php';
+	require_once EVENTROCKET_INC . '/launchers/front-page-events.php';
+	require_once EVENTROCKET_INC . '/launchers/embedding.php';
+	require_once EVENTROCKET_INC . '/launchers/venue-positioning.php';
 }
 
 function eventrocket_abort_launch() {
