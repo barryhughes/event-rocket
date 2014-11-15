@@ -5,15 +5,15 @@ defined( 'ABSPATH' ) or exit();
 require_once EVENTROCKET_INC . '/shortcodes/widget-wrapper.php';
 require_once EVENTROCKET_INC . '/shortcodes/widget-adjusters.php';
 
-require_once EVENTROCKET_INC . '/shortcodes/inline-template-parser.php';
-require_once EVENTROCKET_INC . '/shortcodes/embedded-event-templates.php';
-require_once EVENTROCKET_INC . '/shortcodes/embedded-venue-templates.php';
+require_once EVENTROCKET_INC . '/shortcodes/inline-templates-parser.php';
+require_once EVENTROCKET_INC . '/shortcodes/inline-templates-events.php';
+require_once EVENTROCKET_INC . '/shortcodes/inline-templates-venues.php';
 
-require_once EVENTROCKET_INC . '/shortcodes/object-lister.php';
+require_once EVENTROCKET_INC . '/shortcodes/lister-objects.php';
 require_once EVENTROCKET_INC . '/shortcodes/embed-events.php';
-require_once EVENTROCKET_INC . '/shortcodes/event-lister.php';
+require_once EVENTROCKET_INC . '/shortcodes/lister-events.php';
 require_once EVENTROCKET_INC . '/shortcodes/embed-venues.php';
-require_once EVENTROCKET_INC . '/shortcodes/venue-lister.php';
+require_once EVENTROCKET_INC . '/shortcodes/lister-venues.php';
 
 /**
  * Set up our widget-based shortcodes: if PRO is not enabled those shortcodes won't actually
