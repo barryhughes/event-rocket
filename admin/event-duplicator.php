@@ -92,22 +92,24 @@ class EventRocket_EventDuplicator
 
 	public function notices() {
 		if ( in_array( self::POST_CREATION_SUCCESSFUL, $this->status ) ) {
-			$url = get_admin_url( null, 'post.php?post=' . $this->duplicate . '&action=edit' );
+			$edit = get_admin_url( null, 'post.php?post=' . $this->duplicate . '&action=edit' );
+			$view = get_permalink( $this->duplicate );
 			echo '<div class="updated"> <p> '
-				. sprintf( __('Event successfully duplicated <a href="%s">(edit new event)</a>.', 'eventrocket' ), $url )
+				. sprintf( __('Event successfully duplicated! <br/> <a href="%s">Edit</a> | <a href="%s">View</a>', 'eventrocket' ), $edit, $view )
 				. '</p> </div>';
 		}
 
 		elseif ( in_array( self::POST_CREATION_WARNING, $this->status ) ) {
-			$url = get_admin_url( null, 'post.php?post=' . $this->duplicate . '&action=edit' );
+			$edit = get_admin_url( null, 'post.php?post=' . $this->duplicate . '&action=edit' );
+			$view = get_permalink( $this->duplicate );
 			echo '<div class="error"> <p>'
-				. sprintf( __( 'Event was duplicated but something went wrong. Please <a href="%s">review and edit</a>.', 'eventrocket' ), $url )
+				. sprintf( __( 'Event was duplicated but something went wrong! <br/> <a href="%s">Edit</a> | <a href="%s">View</a>', 'eventrocket' ), $edit, $view )
 				. '</p> </div>';
 		}
 
 		elseif ( in_array( self::POST_CREATION_FAILED, $this->status ) ) {
 			echo '<div class="error"> <p>'
-				. __( 'The event could not be duplicated.', 'eventrocket' )
+				. __( 'Sorry! The event could not be duplicated. Please try again or speak to your administrator or developer for further assistance.', 'eventrocket' )
 				. '</p> </div>';
 		}
 	}
