@@ -17,7 +17,13 @@ Basic usage:
 
 Some further examples from the readme.txt FAQ section:
 
-## What are the shortcodes used to embed different widgets in pages/posts?
+## Use it to embed events, organizers and venues anywhere!
+
+* Shortcodes like `[event_embed]` and `[organizer_embed]` make this easy
+* There is even a programmatic means of embedding, ie `venue_embed()->get()`
+* Powerful capabilities including cross-blog sharing and more `[event_embed blog="5" from="tomorrow"]`
+
+## Use it to embed widgets in pages and posts
 
 * `[event_rocket_calendar]` embeds the calendar widget
 * `[event_rocket_list]` embeds the list widget
