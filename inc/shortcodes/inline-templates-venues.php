@@ -6,9 +6,9 @@ defined( 'ABSPATH' ) or exit();
  * Extremely basic templating engine for embedding templates inline between opening and
  * closing shortcodes.
  */
-class EventRocket_EmbeddedEventTemplateParser
+class EventRocket_EmbeddedVenueTemplateParser implements EventRocket_iInlineParser
 {
-	public $output = '';
+	protected $output = '';
 
 	protected $placeholders = array(
 		'{link}' => 'get_permalink',
@@ -18,16 +18,12 @@ class EventRocket_EmbeddedEventTemplateParser
 		'{content}' => 'get_the_content',
 		'{description}' => 'get_the_content',
 		'{excerpt}' => 'get_the_excerpt',
-		'{thumbnail}' => 'tribe_event_featured_image',
-		'{start_date}' => array( '__this__', 'start_date' ),
-		'{start_time}' => array( '__this__', 'start_time' ),
-		'{end_date}' => array( '__this__', 'end_date' ),
-		'{end_time}' => array( '__this__', 'end_time' )
+		'{thumbnail}' => 'tribe_event_featured_image'
 	);
 
 
 	public function __construct() {
-		$this->placeholders = apply_filters( 'eventrocket_embedded_event_placeholders', $this->placeholders );
+		$this->placeholders = apply_filters( 'eventrocket_embedded_venue_placeholders', $this->placeholders );
 		$this->adjust_callbacks();
 	}
 
@@ -45,7 +41,11 @@ class EventRocket_EmbeddedEventTemplateParser
 			$content = str_replace( $tag, $value, $content );
 		}
 
-		$this->output = apply_filters( 'eventrocket_embedded_event_output', $content );
+		$this->output = apply_filters( 'eventrocket_embedded_venue_output', $content );
+	}
+
+	public function output() {
+		return $this->output;
 	}
 
 	public function start_date() {

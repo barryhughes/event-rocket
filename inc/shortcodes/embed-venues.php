@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or exit();
 
 
-class EventRocket_EmbedEventsShortcode
+class EventRocket_EmbedVenuesShortcode
 {
 	/**
 	 * @var EventRocket_EventLister
@@ -17,7 +17,7 @@ class EventRocket_EmbedEventsShortcode
 	 * the eventrocket_embed_events_shortcode_name filter.
 	 */
 	public function __construct() {
-		$shortcode = apply_filters( 'eventrocket_embed_events_shortcode_name', 'event_embed' );
+		$shortcode = apply_filters( 'eventrocket_embed_venues_shortcode_name', 'venue_embed' );
 		add_shortcode( $shortcode, array( $this, 'embed' ) );
 	}
 
@@ -66,19 +66,20 @@ class EventRocket_EmbedEventsShortcode
 		$params = ! empty( $params ) && is_array( $params ) ? $params : array();
 		$content = trim( $content );
 
-		$this->finder = new EventRocket_EventLister( $params, $content );
+		$this->finder = new EventRocket_VenueLister( $params, $content );
 		return $this->finder->output();
 	}
 }
 
+
 /**
- * @return EventRocket_EmbedEventsShortcode
+ * @return EventRocket_EmbedVenuesShortcode
  */
-function event_embed() {
+function venue_embed() {
 	static $object = null;
-	if ( null === $object ) $object = new EventRocket_EmbedEventsShortcode;
+	if ( null === $object ) $object = new EventRocket_EmbedVenuesShortcode;
 	return $object;
 }
 
 // Call once to ensure the [event-embed] object is created
-event_embed();
+venue_embed();

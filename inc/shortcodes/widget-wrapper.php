@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) or exit();
  * Generic shortcode wrapper: allows widgets to be bundled up and delivered via
  * shortcodes.
  */
-class EventRocketWidgetShortcodes
+class EventRocket_WidgetShortcodes
 {
 	/**
 	 * The widget class we are wrapping.
