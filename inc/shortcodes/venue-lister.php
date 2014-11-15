@@ -80,8 +80,13 @@ class EventRocket_VenueLister extends EventRocket_ObjectLister
 
 	protected function query() {
 		$this->enter_blog();
-		$this->args = array( 'post_type' => TribeEvents::VENUE_POST_TYPE ); // Reset
+		$this->args = array(
+			'post_type' => TribeEvents::VENUE_POST_TYPE,
+			'suppress_filters' => false // We may need to modify the where clause
+		);
+
 		$this->args_post_tax();
+		$this->args_with_events();
 		$this->args = apply_filters( 'eventrocket_embed_venue_args', $this->args, $this->params );
 		$this->results = get_posts( $this->args );
 	}
@@ -93,5 +98,42 @@ class EventRocket_VenueLister extends EventRocket_ObjectLister
 	protected function args_post_tax() {
 		if ( ! empty( $this->venues ) ) $this->args['post__in'] = $this->venues;
 		if ( ! empty( $this->ignore_venues ) ) $this->args['post__not_in'] = $this->ignore_venues;
+	}
+
+	/**
+	 * If we are only interested in venues with (current or upcoming) events we need to
+	 * do some query voodoo.
+	 */
+	protected function args_with_events() {
+		if ( $this->with_events )
+			add_filter( 'posts_where', array( $this, 'add_where_events_clause' ) );
+	}
+
+	public function add_where_events_clause( $where_sql ) {
+		global $wpdb;
+		$right_now = date_i18n( TribeDateUtils::DBDATETIMEFORMAT );
+
+		// We don't want this filter to be reused repeatedly
+		remove_filter( 'posts_where', array( $this, 'add_where_events_clause' ) );
+
+		// Form the subquery
+		$subquery = "
+			SELECT DISTINCT
+			    venue_meta.meta_value
+			FROM
+			    wp_posts
+			        JOIN
+			    wp_postmeta AS venue_meta ON venue_meta.post_id = ID
+			        JOIN
+			    wp_postmeta AS date_meta ON date_meta.post_id = ID
+			WHERE
+			    (venue_meta.meta_key = '_EventVenueID'
+			        AND venue_meta.meta_value > 0)
+			        AND (date_meta.meta_key = '_EventEndDate'
+			        AND date_meta.meta_value >= %s)
+		";
+
+		$subquery = $wpdb->prepare( $subquery, $right_now );
+		return $where_sql . " AND wp_posts.ID IN ( $subquery ) ";
 	}
 }
