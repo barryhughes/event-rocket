@@ -25,7 +25,7 @@ function eventrocket_launch() {
 	require_once EVENTROCKET_INC . '/404-helper.php';
 	require_once EVENTROCKET_INC . '/clean-up.php';
 	require_once EVENTROCKET_INC . '/front-page-events.php';
-	require_once EVENTROCKET_INC . '/shortcodes.php';
+	require_once EVENTROCKET_INC . '/embedding.php';
 	require_once EVENTROCKET_INC . '/venue-positioning.php';
 }
 
