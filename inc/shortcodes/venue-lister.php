@@ -138,6 +138,6 @@ class EventRocket_VenueLister extends EventRocket_ObjectLister
 	}
 
 	protected function get_inline_parser() {
-		return new EventRocket_EmbeddedEventTemplateParser;
+		return new EventRocket_EmbeddedVenueTemplateParser;
 	}
 }
