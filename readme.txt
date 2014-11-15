@@ -4,7 +4,7 @@ Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes
 Requires at least: 3.9
 Tested up to: 4.0
-Stable tag: 2.2
+Stable tag: 2.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -121,6 +121,11 @@ required).
 7. The actual cleanup screen
 
 == Changelog ==
+
+= 2.3 =
+* Officially adds blog switching support: within multisite networks you can now display events from one blog on any other blog
+* Adds a venue embed shortcode that parallels the event embed shortcode
+* Removes the troublesome admin menu extension - should ease compatibility concerns in a variety of situations
 
 = 2.2 =
 * Restore venue positiong for single events (where only The Events Calendar and not Events Calendar PRO is activated)
