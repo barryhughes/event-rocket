@@ -136,4 +136,8 @@ class EventRocket_VenueLister extends EventRocket_ObjectLister
 		$subquery = $wpdb->prepare( $subquery, $right_now );
 		return $where_sql . " AND wp_posts.ID IN ( $subquery ) ";
 	}
+
+	protected function get_inline_parser() {
+		return new EventRocket_EmbeddedEventTemplateParser;
+	}
 }

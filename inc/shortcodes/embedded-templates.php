@@ -6,9 +6,9 @@ defined( 'ABSPATH' ) or exit();
  * Extremely basic templating engine for embedding templates inline between opening and
  * closing shortcodes.
  */
-class EventRocket_EmbeddedEventTemplateParser
+class EventRocket_EmbeddedEventTemplateParser implements EventRocket_iInlineParser
 {
-	public $output = '';
+	protected $output = '';
 
 	protected $placeholders = array(
 		'{link}' => 'get_permalink',
@@ -46,6 +46,10 @@ class EventRocket_EmbeddedEventTemplateParser
 		}
 
 		$this->output = apply_filters( 'eventrocket_embedded_event_output', $content );
+	}
+
+	public function output() {
+		return $this->output;
 	}
 
 	public function start_date() {

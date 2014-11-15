@@ -69,7 +69,6 @@ class EventRocket_EmbedEventsShortcode
 		$this->finder = new EventRocket_EventLister( $params, $content );
 		return $this->finder->output();
 	}
-
 }
 
 /**

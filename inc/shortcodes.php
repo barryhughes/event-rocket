@@ -4,7 +4,10 @@ defined( 'ABSPATH' ) or exit();
 
 require_once EVENTROCKET_INC . '/shortcodes/widget-wrapper.php';
 require_once EVENTROCKET_INC . '/shortcodes/widget-adjusters.php';
+
+require_once EVENTROCKET_INC . '/shortcodes/inline-template-parser.php';
 require_once EVENTROCKET_INC . '/shortcodes/embedded-templates.php';
+
 require_once EVENTROCKET_INC . '/shortcodes/object-lister.php';
 require_once EVENTROCKET_INC . '/shortcodes/embed-events.php';
 require_once EVENTROCKET_INC . '/shortcodes/event-lister.php';

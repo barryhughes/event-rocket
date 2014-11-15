@@ -261,4 +261,8 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		$this->args['eventDisplay'] = ( isset( $this->args['start_date'] ) || isset( $this->args['end_date'] ) || isset( $this->args['post__in'] ) )
 			? 'custom' : 'list';
 	}
+
+	protected function get_inline_parser() {
+		return new EventRocket_EmbeddedEventTemplateParser;
+	}
 }

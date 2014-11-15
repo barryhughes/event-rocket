@@ -45,6 +45,7 @@ abstract class EventRocket_ObjectLister
 
 	abstract protected function parse();
 	abstract protected function query();
+	abstract protected function get_inline_parser();
 
 	/**
 	 * Inspect the properties array for values assigned with either the $singular or $plural
@@ -173,9 +174,12 @@ abstract class EventRocket_ObjectLister
 
 	protected function build_inline_output() {
 		static $parser = null;
-		if ( null === $parser ) $parser = new EventRocket_EmbeddedEventTemplateParser;
+
+		if ( null === $parser ) $parser = $this->get_inline_parser();
+		if ( ! $parser instanceof EventRocket_iInlineParser ) return '';
+
 		$parser->process( $this->content );
-		print do_shortcode( $parser->output );
+		print do_shortcode( $parser->output() );
 	}
 
 	/**
