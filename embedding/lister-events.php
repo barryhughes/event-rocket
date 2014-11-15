@@ -21,6 +21,7 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	protected $to = '';
 	protected $limit = 20;
 	protected $template = '';
+	protected $order = 'ASC';
 
 
 	public function __construct( array $params, $content ) {
@@ -39,6 +40,7 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		$this->set_limit();
 		$this->set_template();
 		$this->set_fallbacks();
+		$this->set_order();
 		$this->set_cache();
 		$this->set_blog();
 	}
@@ -136,6 +138,11 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		if ( isset( $this->params['to' ] ) ) $this->time_to();
 	}
 
+	protected function set_order() {
+		if ( isset( $this->params['order'] ) && 'DESC' === strtoupper( $this->params['order'] ) )
+			$this->order = 'DESC';
+	}
+
 	/**
 	 * Ensure the from param is a well formed date. Convert to a standard format where possible
 	 * and store.
@@ -167,6 +174,7 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		$this->args_time();
 		$this->args_limit();
 		$this->args_display_type();
+		$this->args_order();
 		$this->args = apply_filters( 'eventrocket_embed_event_args', $this->args, $this->params );
 		$this->results = tribe_get_events( $this->args );
 	}
@@ -247,8 +255,8 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	}
 
 	protected function args_time() {
-		if (!empty($this->from)) $this->args['start_date'] = $this->from;
-		if (!empty($this->to)) $this->args['end_date'] = $this->to;
+		if ( ! empty( $this->from ) ) $this->args['start_date'] = $this->from;
+		if ( ! empty( $this->to ) ) $this->args['end_date'] = $this->to;
 	}
 
 	/**
@@ -257,6 +265,19 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	protected function args_display_type() {
 		$this->args['eventDisplay'] = ( isset( $this->args['start_date'] ) || isset( $this->args['end_date'] ) || isset( $this->args['post__in'] ) )
 			? 'custom' : 'list';
+	}
+
+	/**
+	 * Optionally forces the order to DESC.
+	 */
+	protected function args_order() {
+		if ( 'DESC' !== $this->order ) return;
+		add_filter( 'tribe_events_query_posts_orderby', array( $this, 'force_desc_order' ) );
+	}
+
+	public function force_desc_order( $order_sql ) {
+		remove_filter( 'tribe_events_query_posts_orderby', array( $this, 'force_desc_order' ) );
+		return str_replace( 'ASC', 'DESC', $order_sql );
 	}
 
 	protected function get_inline_parser() {

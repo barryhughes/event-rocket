@@ -121,8 +121,9 @@ required).
 == Changelog ==
 
 = 2.4 =
-* Adds new [organizer_embed] shortcode
-* Resolves issue with the "with_events" parameter for venue and organizer embedding
+* Adds new `[organizer_embed]` shortcode
+* Resolves issue with the `"with_events"` parameter for venue and organizer embedding
+* Add reverse chronological ordering for `[event_embed]`
 
 = 2.3 =
 * Officially adds blog switching support: within multisite networks you can now display events from one blog on any other blog
