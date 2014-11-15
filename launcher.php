@@ -22,17 +22,17 @@ function eventrocket_launch() {
 		return;
 	}
 
-	require_once EVENTROCKET_INC . '/launchers/404-helper.php';
-	require_once EVENTROCKET_INC . '/launchers/clean-up.php';
-	require_once EVENTROCKET_INC . '/launchers/front-page-events.php';
-	require_once EVENTROCKET_INC . '/launchers/embedding.php';
-	require_once EVENTROCKET_INC . '/launchers/venue-positioning.php';
+	require_once EVENTROCKET_INC . '/misc/404-helper.php';
+	require_once EVENTROCKET_INC . '/misc/clean-up.php';
+	require_once EVENTROCKET_INC . '/misc/front-page-events.php';
+	require_once EVENTROCKET_INC . '/misc/venue-positioning.php';
+	require_once EVENTROCKET_INC . '/embedding/embedding.php';
 }
 
 function eventrocket_abort_launch() {
 	global $pagenow;
 
-	require_once EVENTROCKET_INC . '/clean-up.php';
+	require_once EVENTROCKET_INC . '/misc/clean-up.php';
 	if ( 'plugins.php' === $pagenow ) add_action( 'admin_notices', 'eventrocket_explain_failure' );
 }
 
