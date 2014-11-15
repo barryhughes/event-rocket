@@ -139,8 +139,16 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	}
 
 	protected function set_order() {
-		if ( isset( $this->params['order'] ) && 'DESC' === strtoupper( $this->params['order'] ) )
-			$this->order = 'DESC';
+		if ( ! isset( $this->params['order'] ) ) return;
+
+		switch ( strtolower( $this->params['order'] ) ) {
+			case 'desc':
+			case 'descending':
+			case 'backwards':
+			case 'reverse':
+				$this->order = 'DESC';
+				break;
+		}
 	}
 
 	/**
