@@ -116,9 +116,8 @@ using this tool (and, of course, should make yourself aware of the steps needed 
 in terms of styling that can occur theme to theme (ie, to make things super-seamless some CSS knowledge is going to be
 required).
 4. Editing venue coordinates
-5. Enhanced admin toolbar options
-6. Cleanup tools menu entry (will not normally appear unless The Events Calendar has been deactivated)
-7. The actual cleanup screen
+5. Cleanup tools menu entry (will not normally appear unless The Events Calendar has been deactivated)
+6. The actual cleanup screen
 
 == Changelog ==
 
