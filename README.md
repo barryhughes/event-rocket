@@ -1,7 +1,8 @@
 Event Rocket
 ============
 
-This is an experimental addon that furnishes The Events Calendar/Events Calendar PRO with super powers.
+This is an experimental addon that furnishes
+[The Events Calendar/Events Calendar PRO](http://wordpress.org/plugins/the-events-calendar/) with super powers.
 
 * [Checkout the wiki](https://github.com/barryhughes/event-rocket/wiki)
 * [Visit the plugin homepage on wordpress.org](http://wordpress.org/plugins/event-rocket/)
