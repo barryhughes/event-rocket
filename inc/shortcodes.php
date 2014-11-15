@@ -8,12 +8,16 @@ require_once EVENTROCKET_INC . '/shortcodes/widget-adjusters.php';
 require_once EVENTROCKET_INC . '/shortcodes/inline-templates-parser.php';
 require_once EVENTROCKET_INC . '/shortcodes/inline-templates-events.php';
 require_once EVENTROCKET_INC . '/shortcodes/inline-templates-venues.php';
+require_once EVENTROCKET_INC . '/shortcodes/inline-templates-organizers.php';
 
 require_once EVENTROCKET_INC . '/shortcodes/lister-objects.php';
-require_once EVENTROCKET_INC . '/shortcodes/embed-events.php';
 require_once EVENTROCKET_INC . '/shortcodes/lister-events.php';
-require_once EVENTROCKET_INC . '/shortcodes/embed-venues.php';
 require_once EVENTROCKET_INC . '/shortcodes/lister-venues.php';
+require_once EVENTROCKET_INC . '/shortcodes/lister-organizers.php';
+
+require_once EVENTROCKET_INC . '/shortcodes/embed-events.php';
+require_once EVENTROCKET_INC . '/shortcodes/embed-venues.php';
+require_once EVENTROCKET_INC . '/shortcodes/embed-organizers.php';
 
 /**
  * Set up our widget-based shortcodes: if PRO is not enabled those shortcodes won't actually
