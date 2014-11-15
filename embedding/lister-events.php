@@ -186,9 +186,6 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		if ( ! empty( $this->ignore_categories ) )
 			$this->build_tax_args( $tax_args, TribeEvents::TAXONOMY, $this->ignore_categories, true );
 
-		/*if ( ! empty( $this->tags) ) $this->args['tag__in'] = $this->tags[0];
-		if ( ! empty( $this->ignore_tags ) ) $this->args['tag__not_in'] = $this->ignore_tags[0];*/
-
 		if ( ! empty( $this->tags) )
 			$this->build_tax_args( $tax_args, 'post_tag', $this->tags );
 
