@@ -134,9 +134,13 @@ abstract class EventRocket_ObjectLister
 	 */
 	protected function build_normal() {
 		ob_start();
-		foreach ( $this->results as $this->event_post ) $this->build_item();
+
+		$this->build_header();
+		$this->build_each_item();
+		$this->build_footer();
+
 		$this->output = ob_get_clean();
-		$this->output = apply_filters( 'eventrocket_embed_event_output', $this->output );
+		$this->output = apply_filters( 'eventrocket_embed_post_output', $this->output );
 		if ( $this->cache_expiry && $this->cache_key_html ) $this->cache_store();
 	}
 
@@ -145,14 +149,29 @@ abstract class EventRocket_ObjectLister
 	 */
 	protected function build_no_results() {
 		if ( ! empty( $this->nothing_found_text ) )
-			$this->output = apply_filters( 'eventrocket_embed_event_output', $this->nothing_found_text );
+			$this->output = apply_filters( 'eventrocket_embed_post_output', $this->nothing_found_text );
 
 		elseif ( ! empty( $this->nothing_found_template ) ) {
 			ob_start();
 			include $this->nothing_found_template;
 			$this->output = ob_get_clean();
-			$this->output = apply_filters( 'eventrocket_embed_event_output', $this->output );
+			$this->output = apply_filters( 'eventrocket_embed_post_output', $this->output );
 		}
+	}
+
+	protected function build_header() {
+		$header = apply_filters( 'eventrocket_embed_post_header', '', $this->params, $this->results );
+		$this->output = $header . $this->output;
+	}
+
+	protected function build_each_item() {
+		foreach ( $this->results as $this->event_post )
+			$this->build_item();
+	}
+
+	protected function build_footer() {
+		$footer = apply_filters( 'eventrocket_embed_post_footer', '', $this->params, $this->results );
+		$this->output .= $footer;
 	}
 
 	/**
@@ -168,7 +187,7 @@ abstract class EventRocket_ObjectLister
 		if ( ! empty( $this->template ) ) include $this->template;
 		elseif ( ! empty( $this->content ) ) $this->build_inline_output();
 
-		echo apply_filters( 'eventrocket_embed_event_single_output', ob_get_clean(), get_the_ID() );
+		echo apply_filters( 'eventrocket_embed_post_single_output', ob_get_clean(), get_the_ID() );
 		wp_reset_postdata();
 	}
 
