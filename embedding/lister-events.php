@@ -138,6 +138,10 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		if ( isset( $this->params['to' ] ) ) $this->time_to();
 	}
 
+	/**
+	 * Allow for events to be ordered reverse chronologically (farthest in the future
+	 * first).
+	 */
 	protected function set_order() {
 		if ( ! isset( $this->params['order'] ) ) return;
 
@@ -283,6 +287,12 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		add_filter( 'tribe_events_query_posts_orderby', array( $this, 'force_desc_order' ) );
 	}
 
+	/**
+	 * Slightly hackish but straightforward means of forcing descending order results.
+	 *
+	 * @param $order_sql
+	 * @return mixed
+	 */
 	public function force_desc_order( $order_sql ) {
 		remove_filter( 'tribe_events_query_posts_orderby', array( $this, 'force_desc_order' ) );
 		return str_replace( 'ASC', 'DESC', $order_sql );
