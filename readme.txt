@@ -126,6 +126,7 @@ required).
 * Add reverse chronological ordering for `[event_embed]`
 * Special parameter added to make it easy to list current/ongoing events only, ie `[event_embed where="current"]`
 * Duplicate events - with the exception of recurring events - with a single click
+* Internal restructuring to make future enhancements easier
 
 = 2.3 =
 * Officially adds blog switching support: within multisite networks you can now display events from one blog on any other blog
