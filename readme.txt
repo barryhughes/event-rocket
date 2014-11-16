@@ -4,13 +4,18 @@ Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes, The Events Calendar, duplicate
 Requires at least: 4.0
 Tested up to: 4.0
-Stable tag: 2.4dev
+Stable tag: 2.4
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Experimental extension for The Events Calendar and Events Calendar PRO adding shortcodes, front page events and more.
 
 == Description ==
+
+> *Need help?*
+>
+> Please do take the time to read through our [FAQs](https://wordpress.org/plugins/event-rocket/faq/)
+> and [wiki](https://github.com/barryhughes/event-rocket/wiki) first of all!
 
 This is an add-on that builds on top of the following wonderful plugins:
 
