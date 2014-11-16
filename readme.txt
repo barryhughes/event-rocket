@@ -124,6 +124,7 @@ required).
 * Adds new `[organizer_embed]` shortcode
 * Resolves issue with the `"with_events"` parameter for venue and organizer embedding
 * Add reverse chronological ordering for `[event_embed]`
+* Special parameter added to make it easy to list current/ongoing events only, ie `[event_embed where="current"]`
 
 = 2.3 =
 * Officially adds blog switching support: within multisite networks you can now display events from one blog on any other blog

@@ -22,6 +22,7 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	protected $limit = 20;
 	protected $template = '';
 	protected $order = 'ASC';
+	protected $where = '';
 
 
 	public function __construct( array $params, $content ) {
@@ -41,6 +42,7 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		$this->set_template();
 		$this->set_fallbacks();
 		$this->set_order();
+		$this->set_where();
 		$this->set_cache();
 		$this->set_blog();
 	}
@@ -156,6 +158,23 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	}
 
 	/**
+	 * Sets a specialist condition. Currently supported: "ongoing" which means an event
+	 * that is currently in progress. More specialist cases may be added.
+	 */
+	protected function set_where() {
+		if ( ! isset( $this->params['where'] ) ) return;
+
+		$keywords = array( 'ongoing', 'current', 'in-progress', 'in progress' );
+		$keywords[] = _x( 'ongoing', 'embedded event condition', 'eventrocket' );
+		$keywords[] = _x( 'current', 'embedded event condition', 'eventrocket' );
+		$keywords[] = _x( 'in-progress', 'embedded event condition', 'eventrocket' );
+		$keywords[] = _x( 'in progress', 'embedded event condition', 'eventrocket' );
+
+		$where = strtolower( $this->params['where'] );
+		if ( in_array( $where, $keywords ) ) $this->where = 'ongoing';
+	}
+
+	/**
 	 * Ensure the from param is a well formed date. Convert to a standard format where possible
 	 * and store.
 	 */
@@ -187,6 +206,7 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		$this->args_limit();
 		$this->args_display_type();
 		$this->args_order();
+		$this->args_where();
 		$this->args = apply_filters( 'eventrocket_embed_event_args', $this->args, $this->params );
 		$this->results = tribe_get_events( $this->args );
 	}
@@ -285,6 +305,39 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	protected function args_order() {
 		if ( 'DESC' !== $this->order ) return;
 		add_filter( 'tribe_events_query_posts_orderby', array( $this, 'force_desc_order' ) );
+	}
+
+	/**
+	 * Optionally enforce some special condition.
+	 */
+	protected function args_where() {
+		if ( empty( $this->where ) ) return;
+		if ( 'ongoing' === $this->where ) {
+			$this->args['start_date']   = '1000-01-01 00:00';
+			$this->args['end_date']     = '9999-12-31 23:59';
+			$this->args['eventDisplay'] = 'custom';
+			add_filter( 'posts_where', array( $this, 'force_ongoing' ), 50, 2 );
+		}
+	}
+
+	/**
+	 * Restrict result set to ongoing/in-progress events.
+	 */
+	public function force_ongoing( $where_sql ) {
+		global $wpdb;
+		$now = date_i18n( TribeDateUtils::DBDATETIMEFORMAT, time() );
+
+		// Tear this filter down, we don't want it running on subsequent event queries unless explicitly set up
+		remove_filter( 'posts_where', array( $this, 'force_ongoing' ), 50, 2 );
+
+		// Form our ongoing events conditions
+		$extra_conditions = $wpdb->prepare( " AND
+				( $wpdb->postmeta.meta_value <= %s AND tribe_event_end_date.meta_value >= %s )
+			", $now, $now
+		);
+
+		// Append and return
+		return $where_sql . $extra_conditions;
 	}
 
 	/**
