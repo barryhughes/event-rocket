@@ -20,10 +20,12 @@ This is an add-on that builds on top of the following wonderful plugins:
 
 So if you don't already have them installed it behooves you to do so now. This plugin then adds the following power-ups:
 
-* Event widgets can be deployed as shortcodes (PRO users can position the calendar widget right inside pages and posts)
-* Embed events inline *anywhere* using the `[event_embed]` shortcode or programmatically - includes powerful cross-blog
-  capabilities and support for special conditions
-* It lets you position the main events page on the front page of your blog
+* Event widgets can be deployed as shortcodes (PRO users can position the calendar widget right inside pages and posts,
+  for instance)
+* Embed events *anywhere* using the `[event_embed]` shortcode - includes powerful cross-blog capabilities and
+  support for special conditions - plus an API to let developers leverage this flexible system programmatically
+* Venues and organizers can also be embedded anywhere (new in 2.4)
+* Want to place the main events page on the front page of your blog? Event Rocket makes it easy to do so
 * Precise editing of venue coordinates becomes possible for when street addresses just don't cut it
 * A 404 Laser has been added to help blast away pesky 404 issues
 * Clean up and remove events data if you decide you don't need it any longer
