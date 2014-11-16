@@ -1,7 +1,7 @@
 === Event Rocket ===
 Contributors: barry.hughes
 Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
-Tags: events, shortcodes, The Events Calendar
+Tags: events, shortcodes, The Events Calendar, duplicate
 Requires at least: 4.0
 Tested up to: 4.0
 Stable tag: 2.4dev
@@ -20,11 +20,14 @@ This is an add-on that builds on top of the following wonderful plugins:
 
 So if you don't already have them installed it behooves you to do so now. This plugin then adds the following power-ups:
 
+* Event widgets can be deployed as shortcodes (PRO users can position the calendar widget right inside pages and posts)
+* Embed events inline *anywhere* using the `[event_embed]` shortcode or programmatically - includes powerful cross-blog
+  capabilities and support for special conditions
 * It lets you position the main events page on the front page of your blog
 * Precise editing of venue coordinates becomes possible for when street addresses just don't cut it
 * A 404 Laser has been added to help blast away pesky 404 issues
-* Event widgets can be deployed as shortcodes and you can embed events inline *anywhere* using the `[event_embed]` shortcode
 * Clean up and remove events data if you decide you don't need it any longer
+* Duplicate events with a single click
 
 Check out the FAQs and screenshots for more examples.
 
