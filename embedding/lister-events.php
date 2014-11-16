@@ -141,14 +141,14 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	protected function set_order() {
 		if ( ! isset( $this->params['order'] ) ) return;
 
-		switch ( strtolower( $this->params['order'] ) ) {
-			case 'desc':
-			case 'descending':
-			case 'backwards':
-			case 'reverse':
-				$this->order = 'DESC';
-				break;
-		}
+		$keywords = array( 'desc', 'descending', 'backwards', 'reverse' );
+		$keywords[] = _x( 'desc', 'embedded event sequence', 'eventrocket' );
+		$keywords[] = _x( 'descending', 'embedded event sequence', 'eventrocket' );
+		$keywords[] = _x( 'backwards', 'embedded event sequence', 'eventrocket' );
+		$keywords[] = _x( 'reverse', 'embedded event sequence', 'eventrocket' );
+
+		$direction = strtolower( $this->params['order'] );
+		if ( in_array( $direction, $keywords ) ) $this->order = 'DESC';
 	}
 
 	/**
