@@ -14,11 +14,11 @@ if ( ! $enabled ) return;
 	<form action="" method="post">
 		<h4> <?php _ex( 'RSVP', 'form title', 'eventrocket' ) ?> </h4>
 
-		<?php if ( $enabled && $restricted && ! is_user_logged_in() ): ?>
+		<?php if ( $restricted && ! is_user_logged_in() ): ?>
 			<p> <?php _e( 'To RSVP to this event you must be logged in!', 'eventrocket' ) ?> </p>
 		<?php endif ?>
 
-		<?php if ( $enabled && $restricted && is_user_logged_in() ): ?>
+		<?php if ( $restricted && is_user_logged_in() ): ?>
 			<?php if ( $attendance->is_attending() ): ?>
 				<p>
 					<?php _e( 'You have indicated that you are attending this event!', 'eventrocket' ) ?>
@@ -46,7 +46,7 @@ if ( ! $enabled ) return;
 			<?php endif ?>
 		<?php endif ?>
 
-		<?php if ( $enabled && ! $restricted ): ?>
+		<?php if ( ! $restricted ): ?>
 		<?php endif ?>
 	</form>
 </div>
