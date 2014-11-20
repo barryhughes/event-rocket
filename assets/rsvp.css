@@ -1,0 +1,17 @@
+#eventrocket_rsvp_dialog > div {
+	max-height: 480px;
+	overflow-y: auto;
+}
+
+#eventrocket_rsvp_dialog > div li {
+	font-size: 92%;
+	text-transform: uppercase;
+}
+
+#rsvp-non-attendee-tab li {
+	color: #826224;
+}
+
+#rsvp-attendee-tab li {
+	color: #009254;
+}

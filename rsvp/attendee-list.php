@@ -17,6 +17,7 @@ class EventRocket_RSVPAttendeeList
 			'jquery-ui-tabs'
 		);
 
+		wp_enqueue_style( 'eventrocket_rsvp', EVENTROCKET_URL . 'assets/rsvp.css' );
 		wp_enqueue_script( 'eventrocket_rsvp', EVENTROCKET_URL . 'assets/rsvp.js', $dependencies, false, true );
 
 		wp_localize_script( 'eventrocket_rsvp', 'eventrocket_rsvp', array(
