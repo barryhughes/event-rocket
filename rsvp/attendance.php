@@ -31,4 +31,12 @@ class EventRocket_RSVPAttendance
 		$user_id = absint( $user_id );
 		return ! isset( $this->attendees[$user_id] );
 	}
+
+	public function will_attend( $user_id ) {
+
+	}
+
+	public function will_not_attend( $user_id ) {
+
+	}
 }
