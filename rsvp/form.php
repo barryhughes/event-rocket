@@ -2,12 +2,12 @@
 class EventRocket_RSVPForm
 {
 	public function __construct() {
-		add_action( 'init', array( $this, 'listen' ) );
+		add_action( 'wp', array( $this, 'listen' ) );
 		add_action( 'tribe_events_single_event_after_the_meta', array( $this, 'show_form' ) );
 	}
 
 	public function listen() {
-		if ( ! isset( $_POST['rsvp_attend'] ) || ! isset( $_POST['rsvp_withdraw'] ) ) return;
+		if ( ! isset( $_POST['rsvp_attend'] ) && ! isset( $_POST['rsvp_withdraw'] ) ) return;
 		if ( ! wp_verify_nonce( $_POST['eventrocket_rsvp_check'], 'mark_attendance' . get_current_user_id() . get_the_ID() ) ) return;
 
 		if ( is_user_logged_in() ) $this->authed_request();
@@ -18,10 +18,10 @@ class EventRocket_RSVPForm
 		$attendance = eventrocket_rsvp()->attendance( @$_POST['eventrocket_rsvp_event'] );
 
 		if ( isset( $_POST['rsvp_attend'] ) )
-			$attendance->will_attend( get_current_user_id() );
+			$attendance->set_to_attend( get_current_user_id() );
 
 		if ( isset( $_POST['rsvp_withdraw'] ) )
-			$attendance->will_not_attend( get_current_user_id() );
+			$attendance->set_to_not_attend( get_current_user_id() );
 	}
 
 	protected function unauthed_request() {
