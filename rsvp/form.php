@@ -8,7 +8,7 @@ class EventRocket_RSVPForm
 
 	public function listen() {
 		if ( ! isset( $_POST['rsvp_attend'] ) || ! isset( $_POST['rsvp_withdraw'] ) ) return;
-		if ( ! wp_verify_nonce( $_POST['eventrocket_rsvp_check'], 'mark_attendance' . $user_id . get_the_ID() ) ) return;
+		if ( ! wp_verify_nonce( $_POST['eventrocket_rsvp_check'], 'mark_attendance' . get_current_user_id() . get_the_ID() ) ) return;
 
 		if ( is_user_logged_in() ) $this->authed_request();
 		else $this->unauthed_request();
