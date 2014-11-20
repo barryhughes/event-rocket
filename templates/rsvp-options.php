@@ -12,6 +12,8 @@
  * @var bool $restricted
  * @var EventRocket_RSVPAttendance $attendance
  */
+
+defined( 'ABSPATH' ) or die();
 ?>
 <table class="eventtable eventrocket_rsvp">
 	<tr>
