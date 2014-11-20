@@ -2,6 +2,7 @@
 /**
  * @var bool $enabled
  * @var bool $restricted
+ * @var bool $anon_accepted
  * @var EventRocket_RSVPAttendance $attendance
  */
 
@@ -53,7 +54,23 @@ $user_id = get_current_user_id();
 			<?php endif ?>
 		<?php endif ?>
 
-		<?php if ( ! $restricted ): ?>
+		<?php if ( ! $restricted && ! $anon_accepted ): ?>
+			<p>
+				<?php _e( 'If you plan on attending please let us know by providing your email address.', 'eventrocket' ) ?> <br />
+
+				<?php do_action( 'eventrocket_rsvp_anon_submission_form' ) ?>
+
+				<input type="text" name="eventrocket_anon_id" id="eventrocket_anon_id" value="" placeholder="<?php esc_attr_e( 'your@email.address', 'eventrocket' ) ?>" />
+				<button class="eventrocket rsvp anon attend" name="rsvp_attend" value="__anon">
+					<?php _ex( 'Yes! I will attend', 'anon attendance button', 'eventrocket' ) ?>
+				</button>
+			</p>
+		<?php endif ?>
+
+		<?php if ( ! $restricted && $anon_accepted ): ?>
+			<p>
+				<?php _e( 'Thank you for confirming your attendance.', 'eventrocket' ) ?> <br />
+			</p>
 		<?php endif ?>
 	</form>
 </div>
