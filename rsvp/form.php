@@ -57,7 +57,7 @@ class EventRocket_RSVPForm
 
 	public function	anon_submission_errors() {
 		$event_id = get_the_ID();
-		if ( 0 === count( $this->anon_submission_errors[ $event_id ] ) ) return;
+		if ( ! isset( $this->anon_submission_errors[ $event_id ] ) || 0 === count( $this->anon_submission_errors[ $event_id ] ) ) return;
 
 		$error_txt = '<ul class="errors">';
 
