@@ -1,7 +1,13 @@
 <?php
 class EventRocket_RSVPForm
 {
+	protected $anon_submission_errors = array();
+	protected $anon_sub_accepted = 0;
+
+
 	public function __construct() {
+		add_filter( 'eventrocket_rsvp_accept_anon_submission', array( $this, 'assess_anon_submissions' ) );
+		add_action( 'eventrocket_rsvp_anon_submission_form', array( $this, 'anon_submission_errors' ) );
 		add_action( 'wp', array( $this, 'listen' ) );
 		add_action( 'tribe_events_single_event_after_the_meta', array( $this, 'show_form' ) );
 	}
@@ -25,7 +31,40 @@ class EventRocket_RSVPForm
 	}
 
 	protected function unauthed_request() {
+		if ( ! isset( $_POST['eventrocket_anon_id'] ) ) return;
+		if ( ! apply_filters( 'eventrocket_rsvp_accept_anon_submission', false ) ) return;
 
+		$attendance = eventrocket_rsvp()->attendance( @$_POST['eventrocket_rsvp_event'] );
+		$attendance->set_anon_to_attend( $_POST['eventrocket_anon_id'] );
+
+		$this->anon_sub_accepted = get_the_ID();
+	}
+
+	public function assess_anon_submissions() {
+		$event_id = get_the_ID();
+
+		if ( get_post_meta( $event_id, EventRocket_RSVPManager::RESTRICT_RSVP, true ) ) {
+			$this->anon_submission_errors[ $event_id ][] = __( 'This event is not open to anonymous RSVP submissions', 'eventrocket' );
+		}
+
+		if ( ! filter_var( $_POST['eventrocket_anon_id'], FILTER_VALIDATE_EMAIL ) ) {
+			$this->anon_submission_errors[ $event_id ][] = __( 'You must provide a valid email address!', 'eventrocket' );
+		}
+
+		if ( count( $this->anon_submission_errors[ $event_id ] ) > 0 ) return false;
+		return true;
+	}
+
+	public function	anon_submission_errors() {
+		$event_id = get_the_ID();
+		if ( 0 === count( $this->anon_submission_errors[ $event_id ] ) ) return;
+
+		$error_txt = '<ul class="errors">';
+
+		foreach ( $this->anon_submission_errors[ $event_id ] as $error )
+			$error_txt = "<li> $error </li>";
+
+		echo "$error_txt </ul>";
 	}
 
 	public function show_form() {
@@ -38,6 +77,7 @@ class EventRocket_RSVPForm
 		$enabled    = get_post_meta( get_the_ID(), EventRocket_RSVPManager::ENABLE_RSVP, true );
 		$restricted = get_post_meta( get_the_ID(), EventRocket_RSVPManager::RESTRICT_RSVP, true );
 		$attendance = eventrocket_rsvp()->attendance();
+		$anon_accepted = ( get_the_ID() === $this->anon_sub_accepted );
 
 		include $template;
 	}

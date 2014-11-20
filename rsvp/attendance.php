@@ -92,8 +92,8 @@ class EventRocket_RSVPAttendance
 	public function count_positive_authed_responses() {
 		$attendees = $this->attendees;
 
-		if ( isset( $this->attendees[self::ANONYMOUS] ) )
-			unset( $this->attendees[self::ANONYMOUS] );
+		if ( isset( $attendees[self::ANONYMOUS] ) )
+			unset( $attendees[self::ANONYMOUS] );
 
 		$responses = array_count_values( $attendees );
 		if ( ! isset( $responses[1] ) ) return 0;
@@ -103,8 +103,8 @@ class EventRocket_RSVPAttendance
 	public function count_negative_authed_responses() {
 		$attendees = $this->attendees;
 
-		if ( isset( $this->attendees[self::ANONYMOUS] ) )
-			unset( $this->attendees[self::ANONYMOUS] );
+		if ( isset( $attendees[self::ANONYMOUS] ) )
+			unset( $attendees[self::ANONYMOUS] );
 
 		$responses = array_count_values( $attendees );
 		if ( ! isset( $responses[0] ) ) return 0;
@@ -137,8 +137,8 @@ class EventRocket_RSVPAttendance
 		$attendees = $this->attendees;
 		$user_list = array();
 
-		if ( isset( $this->attendees[self::ANONYMOUS] ) )
-			unset( $this->attendees[self::ANONYMOUS] );
+		if ( isset( $attendees[self::ANONYMOUS] ) )
+			unset( $attendees[self::ANONYMOUS] );
 
 		foreach ( $attendees as $user_id => $is_attending ) {
 			if ( ! $is_attending ) continue;
@@ -165,8 +165,8 @@ class EventRocket_RSVPAttendance
 		$attendees = $this->attendees;
 		$user_list = array();
 
-		if ( isset( $this->attendees[self::ANONYMOUS] ) )
-			unset( $this->attendees[self::ANONYMOUS] );
+		if ( isset( $attendees[self::ANONYMOUS] ) )
+			unset( $attendees[self::ANONYMOUS] );
 
 		foreach ( $attendees as $user_id => $is_attending ) {
 			if ( $is_attending ) continue;
