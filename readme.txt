@@ -135,6 +135,7 @@ required).
 4. Editing venue coordinates
 5. Cleanup tools menu entry (will not normally appear unless The Events Calendar has been deactivated)
 6. The actual cleanup screen
+7. RSVP admin user interface - allow RSVPs on a per-event basis, restrict to logged in users only and view confirmation totals
 
 == Changelog ==
 
