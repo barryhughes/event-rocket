@@ -139,6 +139,9 @@ required).
 
 == Changelog ==
 
+= 2.5 =
+* Adds simple RSVP facilities
+
 = 2.4 =
 * Adds new `[organizer_embed]` shortcode
 * Resolves issue with the `"with_events"` parameter for venue and organizer embedding
