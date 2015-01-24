@@ -9,8 +9,20 @@ class EventRocket_EventDuplicator
 	protected $duplicate;
 	protected $status = array();
 
+	/** @var EventRocket_EventDuplicatorFilters */
+	public $filters;
+
 
 	public function __construct() {
+		$this->setup_objects();
+		$this->setup_hooks();
+	}
+
+	protected function setup_objects() {
+		$this->filters = new EventRocket_EventDuplicatorFilters;
+	}
+
+	protected function setup_hooks() {
 		add_action( 'admin_init', array( $this, 'listener' ) );
 		add_action( 'admin_notices', array( $this, 'notices' ) );
 		add_filter( 'post_row_actions', array( $this, 'add_duplicate_action'), 20, 2 );
@@ -127,4 +139,4 @@ function eventrocket_duplicator() {
 	return $duplicator;
 }
 
-eventrocket_duplicator();
+add_action( 'init', 'eventrocket_duplicator' );
