@@ -139,6 +139,10 @@ required).
 
 == Changelog ==
 
+= 2.6 =
+* Improve compatibility of event duplicator with other plugins using custom list tables etc
+* Add a variety of new inline template placeholders, including author and venue related tags
+
 = 2.5 =
 * Adds simple RSVP facilities
 
