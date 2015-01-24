@@ -16,7 +16,11 @@ class EventRocket_EventDuplicator
 		add_filter( 'post_row_actions', array( $this, 'add_duplicate_action'), 20, 2 );
 	}
 
-	public function	add_duplicate_action( $actions, WP_Post $post) {
+	public function	add_duplicate_action( $actions, $post) {
+		// Not a post? Bail (we aren't using a typehint since some plugins may pass in something a stdClass object etc)
+		if ( ! is_a( $post, 'WP_Post' ) )
+			return $actions;
+
 		// Not an event? Don't add the link
 		if ( TribeEvents::POSTTYPE !== $post->post_type )
 			return $actions;
