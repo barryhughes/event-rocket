@@ -74,11 +74,11 @@ class EventRocket_EventDuplicator
 		$post_data = (array) $this->src_post;
 		$post_meta = get_post_meta( $this->src_post->ID );
 
-		unset( $post_data['ID'] );
 		$post_data['post_status'] = apply_filters( 'eventrocket_duplicated_post_status', 'draft' );
 		$post_data['post_title'] = $this->get_duplicate_post_title();
-
 		$post_data = (array) apply_filters( 'eventrocket_duplicated_post_data', $post_data );
+
+		unset( $post_data['ID'] );
 		$this->duplicate = wp_insert_post( $post_data );
 
 		if ( ! $this->duplicate  || is_wp_error( $this->duplicate ) ) {
