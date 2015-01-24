@@ -66,6 +66,7 @@ class EventRocket_EventDuplicator
 		$post_data['post_status'] = apply_filters( 'eventrocket_duplicated_post_status', 'draft' );
 		$post_data['post_title'] = $this->get_duplicate_post_title();
 
+		$post_data = (array) apply_filters( 'eventrocket_duplicated_post_data', $post_data );
 		$this->duplicate = wp_insert_post( $post_data );
 
 		if ( ! $this->duplicate  || is_wp_error( $this->duplicate ) ) {
