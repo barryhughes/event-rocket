@@ -19,6 +19,7 @@ class EventRocket_EmbeddedEventTemplateParser implements EventRocket_iInlinePars
 		'{description}' => 'get_the_content',
 		'{excerpt}' => 'get_the_excerpt',
 		'{thumbnail}' => 'tribe_event_featured_image',
+		'{author}' => 'get_the_author',
 		'{start_date}' => array( '__this__', 'start_date' ),
 		'{start_time}' => array( '__this__', 'start_time' ),
 		'{end_date}' => array( '__this__', 'end_date' ),
