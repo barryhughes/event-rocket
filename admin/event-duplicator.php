@@ -57,7 +57,7 @@ class EventRocket_EventDuplicator
 	}
 
 	protected function duplication_link_url( $post_id ) {
-		$url = get_admin_url( null, 'edit.php' . http_build_query( array(
+		$url = get_admin_url( null, 'edit.php?' . http_build_query( array(
 			'post_type'       => TribeEvents::POSTTYPE,
 			'duplicate_event' => absint( $post_id ),
 		) ) );
@@ -87,6 +87,7 @@ class EventRocket_EventDuplicator
 		$post_data = (array) apply_filters( 'eventrocket_duplicated_post_data', $post_data );
 
 		unset( $post_data['ID'] );
+		add_filter( 'wp_insert_post_empty_content', '__return_false' );
 		$this->duplicate = wp_insert_post( $post_data );
 
 		if ( ! $this->duplicate  || is_wp_error( $this->duplicate ) ) {
@@ -95,15 +96,11 @@ class EventRocket_EventDuplicator
 		}
 
 		$post_meta = (array) apply_filters( 'eventrocket_duplicated_post_meta', $post_meta );
-		$meta_fail = true;
 
-		foreach ( $post_meta as $key => $value )
+		foreach ( $post_meta as $key => $value ) {
+			$value = (array) $value;
 			foreach ( $value as $meta_entry )
-				if ( ! update_post_meta( $this->duplicate, $key, $meta_entry ) ) $meta_fail = true;
-
-		if ( ! $meta_fail ) {
-			$this->status[] = self::POST_CREATION_WARNING;
-			return;
+				update_post_meta( $this->duplicate, $key, $meta_entry );
 		}
 
 		$this->status[] = self::POST_CREATION_SUCCESSFUL;

@@ -15,7 +15,8 @@ class EventRocket_EventDuplicatorFilters
 		);
 
 		foreach ( $overrides as $requested => $post_field )
-			if ( isset( $_REQUEST[$requested] ) ) $post[$post_field] = (string) $_REQUEST[$requested];
+			if ( isset( $_REQUEST[$requested] ) && ! empty( $_REQUEST[$requested] ) )
+				$post[$post_field] = (string) $_REQUEST[$requested];
 
 		return $post;
 	}
@@ -27,7 +28,7 @@ class EventRocket_EventDuplicatorFilters
 		);
 
 		foreach ( $date_overrides as $requested => $meta_field ) {
-			if ( ! isset( $_REQUEST[$requested] ) ) continue;
+			if ( ! isset( $_REQUEST[$requested] ) || empty( $_REQUEST[$requested] ) ) continue;
 			$formatted_date = date( 'Y-m-d H:i:s', strtotime( $_REQUEST[$requested] ) );
 			if ( false === $formatted_date ) continue;
 			$meta[$meta_field] = $formatted_date;
