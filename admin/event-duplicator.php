@@ -48,7 +48,7 @@ class EventRocket_EventDuplicator
 		// Form the link
 		$url  = $this->duplication_link_url( $post->ID );
 		$text = __( 'Duplicate', 'eventrocket' );
-		$date = tribe_get_start_date( $post->ID, false, TribeDateUtils::DBDATETIMEFORMAT );
+		$date = tribe_get_start_date( $post->ID, false, DateTime::ISO8601 );
 		$link = '<a href="'. $url . '" class="eventrocket_duplicate" data-date="' . $date . '">' . $text . '</a>';
 
 		// Add to the list of actions
