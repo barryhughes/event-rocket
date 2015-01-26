@@ -12,6 +12,9 @@ class EventRocket_EventDuplicator
 	/** @var EventRocket_EventDuplicatorFilters */
 	public $filters;
 
+	/** @var  EventRocket_EventDuplicatorUI */
+	public $ui;
+
 
 	public function __construct() {
 		$this->setup_objects();
@@ -20,6 +23,7 @@ class EventRocket_EventDuplicator
 
 	protected function setup_objects() {
 		$this->filters = new EventRocket_EventDuplicatorFilters;
+		$this->ui = new EventRocket_EventDuplicatorUI;
 	}
 
 	protected function setup_hooks() {
@@ -44,7 +48,8 @@ class EventRocket_EventDuplicator
 		// Form the link
 		$url  = $this->duplication_link_url( $post->ID );
 		$text = __( 'Duplicate', 'eventrocket' );
-		$link = '<a href="'. $url . '" class="eventrocket_duplicate">' . $text . '</a>';
+		$date = tribe_get_start_date( $post->ID, false, TribeDateUtils::DBDATETIMEFORMAT );
+		$link = '<a href="'. $url . '" class="eventrocket_duplicate" data-date="' . $date . '">' . $text . '</a>';
 
 		// Add to the list of actions
 		$actions['duplicate'] = $link;
@@ -52,8 +57,11 @@ class EventRocket_EventDuplicator
 	}
 
 	protected function duplication_link_url( $post_id ) {
-		$url  = 'edit.php?post_type=' . TribeEvents::POSTTYPE . '&duplicate_event=' . absint( $post_id );
-		$url = get_admin_url( null, $url );
+		$url = get_admin_url( null, 'edit.php' . http_build_query( array(
+			'post_type'       => TribeEvents::POSTTYPE,
+			'duplicate_event' => absint( $post_id ),
+		) ) );
+
 		return wp_nonce_url( $url, 'eventrocket_duplicate_' . $post_id, '_check' );
 	}
 
