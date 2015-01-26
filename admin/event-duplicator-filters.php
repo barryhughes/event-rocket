@@ -3,7 +3,7 @@ class EventRocket_EventDuplicatorFilters
 {
 	public function __construct() {
 		add_filter( 'eventrocket_duplicated_post_data', array( $this, 'customize_post_fields' ) );
-		add_filter( 'eventrocket_duplicated_post_meta', array( $this, 'customize_meta_fields' ) );
+		add_filter( 'eventrocket_duplicated_post_meta', array( $this, 'customize_date_fields' ), 10, 2 );
 	}
 
 	public function customize_post_fields( array $post ) {
@@ -21,19 +21,47 @@ class EventRocket_EventDuplicatorFilters
 		return $post;
 	}
 
-	public function customize_meta_fields( array $meta ) {
-		$date_overrides = array(
-			'duplicate_start' => '_EventStartDate',
-			'duplicate_end'   => '_EventEndDate'
-		);
+	public function customize_date_fields( array $meta, WP_Post $original ) {
+		$start_date_set = false;
+		$end_date_set   = false;
 
-		foreach ( $date_overrides as $requested => $meta_field ) {
-			if ( ! isset( $_REQUEST[$requested] ) || empty( $_REQUEST[$requested] ) ) continue;
-			$formatted_date = date( 'Y-m-d H:i:s', strtotime( $_REQUEST[$requested] ) );
-			if ( false === $formatted_date ) continue;
-			$meta[$meta_field] = $formatted_date;
-		}
+		if ( isset( $_REQUEST['duplicate_start'] ) && ! empty( $_REQUEST['duplicate_start'] ) )
+			$start_date_set = $this->set_date( $meta, '_EventStartDate', $this->add_start_time( $_REQUEST['duplicate_start'], $original ) );
+
+		if ( isset( $_REQUEST['duplicate_end'] ) && ! empty( $_REQUEST['duplicate_end'] ) )
+			$end_date_set = $this->set_date( $meta, '_EventEndDate', $_REQUEST['duplicate_end'] );
+
+		if ( $start_date_set && ! $end_date_set )
+			$this->maintain_gap( $meta, $original );
 
 		return $meta;
+	}
+
+	protected function add_start_time( $datetime, $original ) {
+		$date = date( 'Y-m-d', strtotime( $datetime ) );
+		$time = tribe_get_start_date( $original->ID, false, 'H:i:s' );
+		return "$date $time";
+	}
+
+	protected function set_date( array &$meta, $field, $input ) {
+		$formatted_date = date( 'Y-m-d H:i:s', strtotime( $input ) );
+
+		if ( false !== $formatted_date ) {
+			$meta[$field] = $formatted_date;
+			return true;
+		}
+		return false;
+	}
+
+	protected function maintain_gap( array &$meta, $original ) {
+		// Original event start/end times and difference between them
+		$start = tribe_get_start_date( $original->ID, false, TribeDateUtils::DBDATETIMEFORMAT );
+		$end   = tribe_get_end_date( $original->ID, false, TribeDateUtils::DBDATETIMEFORMAT );
+		$diff  = strtotime( $end ) - strtotime( $start );
+
+		// Adjust new event end time to maintain the same difference
+		$start = strtotime( $meta['_EventStartDate'] );
+		$end   = $start + $diff;
+		$meta['_EventEndDate'] = date( TribeDateUtils::DBDATETIMEFORMAT, $end );
 	}
 }

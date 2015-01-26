@@ -84,7 +84,7 @@ class EventRocket_EventDuplicator
 
 		$post_data['post_status'] = apply_filters( 'eventrocket_duplicated_post_status', 'draft' );
 		$post_data['post_title'] = $this->get_duplicate_post_title();
-		$post_data = (array) apply_filters( 'eventrocket_duplicated_post_data', $post_data );
+		$post_data = (array) apply_filters( 'eventrocket_duplicated_post_data', $post_data, $this->src_post );
 
 		unset( $post_data['ID'] );
 		add_filter( 'wp_insert_post_empty_content', '__return_false' );
@@ -95,7 +95,7 @@ class EventRocket_EventDuplicator
 			return;
 		}
 
-		$post_meta = (array) apply_filters( 'eventrocket_duplicated_post_meta', $post_meta );
+		$post_meta = (array) apply_filters( 'eventrocket_duplicated_post_meta', $post_meta, $this->src_post, $this->duplicate );
 
 		foreach ( $post_meta as $key => $value ) {
 			$value = (array) $value;
