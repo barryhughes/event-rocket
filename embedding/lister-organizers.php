@@ -81,7 +81,7 @@ class EventRocket_OrganizerLister extends EventRocket_ObjectLister
 	protected function query() {
 		$this->enter_blog();
 		$this->args = array(
-			'post_type' => TribeEvents::ORGANIZER_POST_TYPE,
+			'post_type' => EventRocket_TEC::$organizer_type,
 			'suppress_filters' => false // We may need to modify the where clause
 		);
 
