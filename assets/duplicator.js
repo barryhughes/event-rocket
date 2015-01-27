@@ -18,7 +18,7 @@ function eventrocket_duplicator( $ ) {
 			hide:   true,
 			title:  eventrocket_dup.dialog_title,
 			height: "auto",
-			width:  "auto"
+			width:  600
 		} );
 	}
 
