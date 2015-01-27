@@ -140,6 +140,7 @@ required).
 == Changelog ==
 
 = 2.6 =
+* Enhance event duplicator tool - make it easy to define the duplicate's title, date etc
 * Improve compatibility of event duplicator with other plugins using custom list tables etc
 * Add a variety of new inline template placeholders, including author and venue related tags
 
