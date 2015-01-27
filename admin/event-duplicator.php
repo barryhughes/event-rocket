@@ -38,7 +38,7 @@ class EventRocket_EventDuplicator
 			return $actions;
 
 		// Not an event? Don't add the link
-		if ( EventRocket_TEC::$event_type !== $post->post_type )
+		if ( TribeEvents::POSTTYPE !== $post->post_type )
 			return $actions;
 
 		// Recurring event? Don't add the link either!
@@ -58,7 +58,7 @@ class EventRocket_EventDuplicator
 
 	protected function duplication_link_url( $post_id ) {
 		$url = get_admin_url( null, 'edit.php?' . http_build_query( array(
-			'post_type'       => EventRocket_TEC::$event_type,
+			'post_type'       => TribeEvents::POSTTYPE,
 			'duplicate_event' => absint( $post_id ),
 		) ) );
 
@@ -68,12 +68,12 @@ class EventRocket_EventDuplicator
 	public function listener() {
 		global $pagenow;
 
-		if ( 'edit.php' !== $pagenow || EventRocket_TEC::$event_type !== @$_GET['post_type'] ) return;
+		if ( 'edit.php' !== $pagenow || TribeEvents::POSTTYPE !== @$_GET['post_type'] ) return;
 		if ( ! isset( $_GET['duplicate_event'] ) ) return;
 		if ( ! wp_verify_nonce( @$_GET['_check'], 'eventrocket_duplicate_' . $_GET['duplicate_event'] ) ) return;
 
 		$this->src_post = get_post( $_GET['duplicate_event'] );
-		if ( EventRocket_TEC::$event_type !== $this->src_post->post_type ) return;
+		if ( TribeEvents::POSTTYPE !== $this->src_post->post_type ) return;
 
 		$this->duplicate();
 	}

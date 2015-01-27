@@ -58,7 +58,7 @@ function eventrocket_tax_atts( $atts ) {
 	);
 
 	$relationship = array(
-		'categories' => EventRocket_TEC::$category,
+		'categories' => TribeEvents::TAXONOMY,
 		'tags' => 'post_tag'
 	);
 

@@ -18,5 +18,4 @@ class EventRocket_TEC
 	public static $event_type     = 'tribe_events';
 	public static $venue_type     = 'tribe_venue';
 	public static $organizer_type = 'tribe_organizer';
-	public static $category       = 'tribe_events_cat';
 }

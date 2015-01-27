@@ -8,7 +8,7 @@ class EventRocket_RSVPAttendeeList
 
 	public function add_assets() {
 		global $pagenow, $post;
-		if ( 'post.php' !== $pagenow || EventRocket_TEC::$event_type !== $post->post_type ) return;
+		if ( 'post.php' !== $pagenow || TribeEvents::POSTTYPE !== $post->post_type ) return;
 
 		$dependencies = array(
 			'jquery',

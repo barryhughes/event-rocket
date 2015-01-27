@@ -85,7 +85,7 @@ class EventRocket_FrontPageEvents
 
 		// Let's set the relevant flags in order to cause the main events page to show
 		$query->set( 'page_id', 0 );
-		$query->set( 'post_type', EventRocket_TEC::$event_type );
+		$query->set( 'post_type', TribeEvents::POSTTYPE );
 		$query->set( 'eventDisplay', 'default' );
 		$query->set( 'eventrocket_frontpage', true );
 

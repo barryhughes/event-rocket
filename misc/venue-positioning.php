@@ -56,7 +56,7 @@ class EventRocket_VenuePositioning
 	public function setup_metabox() {
 		$title = __( 'Coordinates', 'eventrocket');
 		$callback = array( $this, 'metabox' );
-		add_meta_box( 'eventrocket_venue_coords', $title, $callback, EventRocket_TEC::$venue_type, 'side' );
+		add_meta_box( 'eventrocket_venue_coords', $title, $callback, TribeEvents::VENUE_POST_TYPE, 'side' );
 	}
 
 	/**
