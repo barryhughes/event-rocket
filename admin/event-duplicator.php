@@ -67,6 +67,7 @@ class EventRocket_EventDuplicator
 
 	public function listener() {
 		global $pagenow;
+		$this->cookie_statuses();
 
 		if ( 'edit.php' !== $pagenow || TribeEvents::POSTTYPE !== @$_GET['post_type'] ) return;
 		if ( ! isset( $_GET['duplicate_event'] ) ) return;
@@ -76,6 +77,15 @@ class EventRocket_EventDuplicator
 		if ( TribeEvents::POSTTYPE !== $this->src_post->post_type ) return;
 
 		$this->duplicate();
+	}
+
+	protected function cookie_statuses() {
+		// Check for status messages conveyed via cookies
+		if ( isset( $_COOKIE['eventrocket_dup_status'] ) && ! empty( $_COOKIE['eventrocket_dup_status'] ) ) {
+			foreach ( (array) @unserialize( $_COOKIE['eventrocket_dup_status'] ) as $code )
+				$this->status[] = absint( $code );
+			setcookie( 'eventrocket_dup_status', 0 );
+		}
 	}
 
 	protected function duplicate() {
@@ -104,6 +114,7 @@ class EventRocket_EventDuplicator
 		}
 
 		$this->status[] = self::POST_CREATION_SUCCESSFUL;
+		$this->redirect();
 	}
 
 	protected function get_duplicate_post_title() {
@@ -134,6 +145,12 @@ class EventRocket_EventDuplicator
 				. __( 'Sorry! The event could not be duplicated. Please try again or speak to your administrator or developer for further assistance.', 'eventrocket' )
 				. '</p> </div>';
 		}
+	}
+
+	protected function redirect() {
+		$sendback = remove_query_arg( array(), wp_get_referer() );
+		setcookie( 'eventrocket_dup_status', serialize( $this->status ) );
+		exit( wp_safe_redirect( $sendback ) );
 	}
 }
 
