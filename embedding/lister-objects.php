@@ -362,6 +362,6 @@ abstract class EventRocket_ObjectLister
 	 * @return array
 	 */
 	public function results() {
-		return (string) $this->output;
+		return $this->results;
 	}
 }
