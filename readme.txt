@@ -139,10 +139,11 @@ required).
 
 == Changelog ==
 
-= 2.6 =
-* Enhance event duplicator tool - make it easy to define the duplicate's title, date etc
+= 3.0 =
+* Enhance event duplicator tool - make it easy to define the duplicate's title, date etc and ensure taxonomy terms are also carried over
 * Improve compatibility of event duplicator with other plugins using custom list tables etc
 * Add a variety of new inline template placeholders, including author and venue related tags
+* Fix bug in cleanup tool preventing proper operation (props: Richard Miller)
 
 = 2.5 =
 * Adds simple RSVP facilities
