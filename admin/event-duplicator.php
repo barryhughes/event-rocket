@@ -2,8 +2,8 @@
 class EventRocket_EventDuplicator
 {
 	const POST_CREATION_SUCCESSFUL = 100;
-	const POST_CREATION_WARNING = 200;
-	const POST_CREATION_FAILED = 900;
+	const POST_CREATION_WARNING    = 200;
+	const POST_CREATION_FAILED     = 900;
 
 	protected $src_post;
 	protected $duplicate;
