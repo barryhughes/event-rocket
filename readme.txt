@@ -140,6 +140,7 @@ required).
 == Changelog ==
 
 = 3.0 =
+* Min requirements bump: PHP 5.3, TEC 3.9.10, WP 4.0 all now expected
 * Enhance event duplicator tool - make it easy to define the duplicate's title, date etc and ensure taxonomy terms are also carried over
 * Improve compatibility of event duplicator with other plugins using custom list tables etc
 * Add a variety of new inline template placeholders, including author and venue related tags
