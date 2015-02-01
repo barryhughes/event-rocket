@@ -113,6 +113,8 @@ class EventRocket_EventDuplicator
 				update_post_meta( $this->duplicate, $key, $meta_entry );
 		}
 
+		$this->apply_terms();
+
 		$this->status[] = self::POST_CREATION_SUCCESSFUL;
 		$this->redirect();
 	}
@@ -121,6 +123,35 @@ class EventRocket_EventDuplicator
 		$default = __( 'Copy of %s', 'eventrocket' );
 		$template = apply_filters( 'eventrocket_duplicated_post_title_template', $default, $this->src_post );
 		return sprintf( $template, $this->src_post->post_title );
+	}
+
+	/**
+	 * Applies any taxonomy terms applied to the source post to the destination post.
+	 */
+	protected function apply_terms() {
+		foreach ( $this->event_taxonomies() as $taxonomy ) {
+			foreach ( wp_get_post_terms( $this->src_post->ID, $taxonomy ) as $term ) {
+				wp_set_object_terms( $this->duplicate, $term->term_id, $taxonomy, true );
+			}
+		}
+	}
+
+	/**
+	 * Returns a list of all taxonomies that can currently be used with events.
+	 *
+	 * @return array
+	 */
+	protected function event_taxonomies() {
+		$taxonomies = array();
+
+		foreach ( get_taxonomies() as $taxonomy ) {
+			$taxonomy = get_taxonomy( $taxonomy );
+			if ( in_array( TribeEvents::POSTTYPE, $taxonomy->object_type ) ) {
+				$taxonomies[] = $taxonomy->name;
+			}
+		}
+
+		return $taxonomies;
 	}
 
 	public function notices() {
