@@ -33,7 +33,8 @@ class EventRocket_VenuePositioning
 		if ( ! apply_filters( 'eventrocket_venue_positioning_metabox', true ) ) return;
 		add_action( 'add_meta_boxes', array( $this, 'setup_metabox' ) );
 		add_action( 'init', array( $this, 'set_long_lat_keys' ) );
-		add_action( 'save_post', array( $this, 'save' ) );
+		add_action( 'tribe_events_venue_created', array( $this, 'save' ), 4 );
+		add_action( 'tribe_events_venue_updated', array( $this, 'save' ), 4 );
 		add_action( 'tribe_events_map_embedded', array( $this, 'use_coords' ), 10, 2 );
 	}
 
