@@ -167,7 +167,7 @@ class EventRocket_FrontPageEvents
 		if ( ! ( $events_frontpage && $is_list && $single_template_chosen )	) return $template;
 
 		// Otherwise, try to enforce use of the list view template
-		return TribeEventsTemplates::getTemplateHierarchy( 'list', array( 'disable_view_check' => true ) );
+		return Tribe__Events__Templates::getTemplateHierarchy( 'list', array( 'disable_view_check' => true ) );
 	}
 }
 

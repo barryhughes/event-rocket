@@ -109,7 +109,7 @@ class EventRocket_VenuePositioning
 	public function use_coords( $map_index, $venue_id ) {
 		// Sanity checks: we need a venue to work with and the correct version of TEC
 		if ( ! tribe_is_venue( $venue_id ) ) return;
-		if ( ! class_exists( 'TribeEvents_EmbeddedMaps' ) ) return;
+		if ( ! class_exists( 'Tribe__Events__Embedded_Maps' ) ) return;
 
 		// Try to load the coordinates - it's possible none will be set
 		$lat = get_post_meta( $venue_id, $this->lat_key, true );
@@ -117,7 +117,7 @@ class EventRocket_VenuePositioning
 		if ( ! $this->valid_coords( $lat, $lng ) ) return;
 
 		// If we have valid coordinates let's put them to work
-		$mapping = TribeEvents_EmbeddedMaps::instance();
+		$mapping = Tribe__Events__Embedded_Maps::instance();
 		$venue_data = $mapping->get_map_data( $map_index );
 		$venue_data['coords'] = array( $lat, $lng );
 		$mapping->update_map_data( $map_index, $venue_data );

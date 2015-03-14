@@ -214,7 +214,7 @@ abstract class EventRocket_ObjectLister
 
 		// If not an absolute filepath use Tribe's template finder
 		if (isset($this->params['template']) && 0 !== strpos($this->params['template'], '/'))
-			$this->template = TribeEventsTemplates::getTemplateHierarchy($this->params['template']);
+			$this->template = Tribe__Events__Templates::getTemplateHierarchy($this->params['template']);
 
 		// Ensure the template exists
 		if (!$this->template && file_exists($this->params['template']))
@@ -243,7 +243,7 @@ abstract class EventRocket_ObjectLister
 
 		// If not an absolute filepath use Tribe's template finder
 		if ( isset( $this->params['nothing_found_template'] ) && 0 !== strpos( $this->params['nothing_found_template'], '/' ) )
-			$this->nothing_found_template = TribeEventsTemplates::getTemplateHierarchy( $this->params['nothing_found_template'] );
+			$this->nothing_found_template = Tribe__Events__Templates::getTemplateHierarchy( $this->params['nothing_found_template'] );
 
 		// Ensure the template exists
 		if ( ! $this->nothing_found_template && file_exists( $this->params['nothing_found_template'] ) )
