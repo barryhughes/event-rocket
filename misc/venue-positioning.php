@@ -132,6 +132,4 @@ class EventRocket_VenuePositioning
 }
 
 // Project GPS adds editing of long/lat coords for venues through the editor screen
-// however, as Events Calendar PRO ships with its own system for this purpose it
-// is disabled when PRO is active
-if ( ! class_exists( 'Tribe__Events__Pro__Events_Pro' ) ) new EventRocket_VenuePositioning;
+new EventRocket_VenuePositioning;
