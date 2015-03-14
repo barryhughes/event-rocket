@@ -126,6 +126,7 @@ class EventRocket_EventDuplicator
 		$data = @unserialize( $value );
 		return ( false !== $data ) ? $data : $value;
 	}
+
 	protected function get_duplicate_post_title() {
 		$default = __( 'Copy of %s', 'eventrocket' );
 		$template = apply_filters( 'eventrocket_duplicated_post_title_template', $default, $this->src_post );
