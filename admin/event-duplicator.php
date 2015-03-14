@@ -109,8 +109,10 @@ class EventRocket_EventDuplicator
 
 		foreach ( $post_meta as $key => $value ) {
 			$value = (array) $value;
-			foreach ( $value as $meta_entry )
+			foreach ( $value as $meta_entry ) {
+				$meta_entry = $this->smart_unserialize( $meta_entry );
 				update_post_meta( $this->duplicate, $key, $meta_entry );
+			}
 		}
 
 		$this->apply_terms();
@@ -119,6 +121,11 @@ class EventRocket_EventDuplicator
 		$this->redirect();
 	}
 
+	protected function smart_unserialize( $value ) {
+		if ( ! is_string( $value ) ) return $value;
+		$data = @unserialize( $value );
+		return ( false !== $data ) ? $data : $value;
+	}
 	protected function get_duplicate_post_title() {
 		$default = __( 'Copy of %s', 'eventrocket' );
 		$template = apply_filters( 'eventrocket_duplicated_post_title_template', $default, $this->src_post );
