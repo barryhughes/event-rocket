@@ -38,7 +38,7 @@ class EventRocket_EventDuplicator
 			return $actions;
 
 		// Not an event? Don't add the link
-		if ( TribeEvents::POSTTYPE !== $post->post_type )
+		if ( Tribe__Events__Events::POSTTYPE !== $post->post_type )
 			return $actions;
 
 		// Recurring event? Don't add the link either!
@@ -58,7 +58,7 @@ class EventRocket_EventDuplicator
 
 	protected function duplication_link_url( $post_id ) {
 		$url = get_admin_url( null, 'edit.php?' . http_build_query( array(
-			'post_type'       => TribeEvents::POSTTYPE,
+			'post_type'       => Tribe__Events__Events::POSTTYPE,
 			'duplicate_event' => absint( $post_id ),
 		) ) );
 
@@ -69,12 +69,12 @@ class EventRocket_EventDuplicator
 		global $pagenow;
 		$this->cookie_statuses();
 
-		if ( 'edit.php' !== $pagenow || TribeEvents::POSTTYPE !== @$_GET['post_type'] ) return;
+		if ( 'edit.php' !== $pagenow || Tribe__Events__Events::POSTTYPE !== @$_GET['post_type'] ) return;
 		if ( ! isset( $_GET['duplicate_event'] ) ) return;
 		if ( ! wp_verify_nonce( @$_GET['_check'], 'eventrocket_duplicate_' . $_GET['duplicate_event'] ) ) return;
 
 		$this->src_post = get_post( $_GET['duplicate_event'] );
-		if ( TribeEvents::POSTTYPE !== $this->src_post->post_type ) return;
+		if ( Tribe__Events__Events::POSTTYPE !== $this->src_post->post_type ) return;
 
 		$this->duplicate();
 	}
@@ -146,7 +146,7 @@ class EventRocket_EventDuplicator
 
 		foreach ( get_taxonomies() as $taxonomy ) {
 			$taxonomy = get_taxonomy( $taxonomy );
-			if ( in_array( TribeEvents::POSTTYPE, $taxonomy->object_type ) ) {
+			if ( in_array( Tribe__Events__Events::POSTTYPE, $taxonomy->object_type ) ) {
 				$taxonomies[] = $taxonomy->name;
 			}
 		}

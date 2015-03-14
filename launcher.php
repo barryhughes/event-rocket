@@ -19,7 +19,7 @@ function eventrocket_launch() {
 
 	// @todo we'll bump the min required TEC ver and switch to the new classnames across the board
 	if ( class_exists( 'Tribe__Events__Events' ) ) $version = Tribe__Events__Events::VERSION;
-	elseif ( class_exists( 'TribeEvents' ) ) $version = TribeEvents::VERSION;
+	elseif ( class_exists( 'Tribe__Events__Events' ) ) $version = Tribe__Events__Events::VERSION;
 
 	if ( ! isset( $version ) || version_compare( $version, '3.8', '<' ) ) {
 		eventrocket_abort_launch();

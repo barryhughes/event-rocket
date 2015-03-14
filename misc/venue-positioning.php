@@ -43,11 +43,6 @@ class EventRocket_VenuePositioning
 	public function set_long_lat_keys() {
 		$this->lat_key = '_VenueLat';
 		$this->lng_key = '_VenueLng';
-
-		if ( class_exists( 'TribeEventsGeoLoc') ) {
-			$this->lat_key = TribeEventsGeoLoc::LAT;
-			$this->lng_key = TribeEventsGeoLoc::LNG;
-		}
 	}
 
 	/**
@@ -56,7 +51,7 @@ class EventRocket_VenuePositioning
 	public function setup_metabox() {
 		$title = __( 'Coordinates', 'eventrocket');
 		$callback = array( $this, 'metabox' );
-		add_meta_box( 'eventrocket_venue_coords', $title, $callback, TribeEvents::VENUE_POST_TYPE, 'side' );
+		add_meta_box( 'eventrocket_venue_coords', $title, $callback, Tribe__Events__Events::VENUE_POST_TYPE, 'side' );
 	}
 
 	/**
@@ -137,4 +132,6 @@ class EventRocket_VenuePositioning
 }
 
 // Project GPS adds editing of long/lat coords for venues through the editor screen
-new EventRocket_VenuePositioning;
+// however, as Events Calendar PRO ships with its own system for this purpose it
+// is disabled when PRO is active
+if ( ! class_exists( 'Tribe__Events__Pro__Events_Pro' ) ) new EventRocket_VenuePositioning;

@@ -55,13 +55,13 @@ class EventRocket_EventDuplicatorFilters
 
 	protected function maintain_gap( array &$meta, $original ) {
 		// Original event start/end times and difference between them
-		$start = tribe_get_start_date( $original->ID, false, TribeDateUtils::DBDATETIMEFORMAT );
-		$end   = tribe_get_end_date( $original->ID, false, TribeDateUtils::DBDATETIMEFORMAT );
+		$start = tribe_get_start_date( $original->ID, false, Tribe__Events__Date_Utils::DBDATETIMEFORMAT );
+		$end   = tribe_get_end_date( $original->ID, false, Tribe__Events__Date_Utils::DBDATETIMEFORMAT );
 		$diff  = strtotime( $end ) - strtotime( $start );
 
 		// Adjust new event end time to maintain the same difference
 		$start = strtotime( $meta['_EventStartDate'] );
 		$end   = $start + $diff;
-		$meta['_EventEndDate'] = date( TribeDateUtils::DBDATETIMEFORMAT, $end );
+		$meta['_EventEndDate'] = date( Tribe__Events__Date_Utils::DBDATETIMEFORMAT, $end );
 	}
 }

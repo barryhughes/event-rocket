@@ -81,14 +81,14 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		$this->parse_post_refs( $this->events );
 		$this->parse_post_refs( $this->ignore_events );
 
-		$this->parse_post_refs( $this->venues, TribeEvents::VENUE_POST_TYPE );
-		$this->parse_post_refs( $this->ignore_venues, TribeEvents::VENUE_POST_TYPE );
+		$this->parse_post_refs( $this->venues, Tribe__Events__Events::VENUE_POST_TYPE );
+		$this->parse_post_refs( $this->ignore_venues, Tribe__Events__Events::VENUE_POST_TYPE );
 
-		$this->parse_post_refs( $this->organizers, TribeEvents::ORGANIZER_POST_TYPE );
-		$this->parse_post_refs( $this->ignore_organizers, TribeEvents::ORGANIZER_POST_TYPE );
+		$this->parse_post_refs( $this->organizers, Tribe__Events__Events::ORGANIZER_POST_TYPE );
+		$this->parse_post_refs( $this->ignore_organizers, Tribe__Events__Events::ORGANIZER_POST_TYPE );
 
-		$this->parse_tax_refs( $this->categories, TribeEvents::TAXONOMY );
-		$this->parse_tax_refs( $this->ignore_categories, TribeEvents::TAXONOMY );
+		$this->parse_tax_refs( $this->categories, Tribe__Events__Events::TAXONOMY );
+		$this->parse_tax_refs( $this->ignore_categories, Tribe__Events__Events::TAXONOMY );
 
 		$this->parse_tax_refs( $this->tags, 'post_tag' );
 		$this->parse_tax_refs( $this->ignore_tags, 'post_tag' );
@@ -199,7 +199,7 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	 */
 	protected function query() {
 		$this->enter_blog();
-		$this->args = array( 'post_type' => TribeEvents::POSTTYPE ); // Reset
+		$this->args = array( 'post_type' => Tribe__Events__Events::POSTTYPE ); // Reset
 		$this->args_post_tax();
 		$this->args_venue_organizer();
 		$this->args_time();
@@ -221,10 +221,10 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		if ( ! empty( $this->ignore_events ) ) $this->args['post__not_in'] = $this->ignore_events;
 
 		if ( ! empty( $this->categories ) )
-			$this->build_tax_args( $tax_args, TribeEvents::TAXONOMY, $this->categories );
+			$this->build_tax_args( $tax_args, Tribe__Events__Events::TAXONOMY, $this->categories );
 
 		if ( ! empty( $this->ignore_categories ) )
-			$this->build_tax_args( $tax_args, TribeEvents::TAXONOMY, $this->ignore_categories, true );
+			$this->build_tax_args( $tax_args, Tribe__Events__Events::TAXONOMY, $this->ignore_categories, true );
 
 		if ( ! empty( $this->tags) )
 			$this->build_tax_args( $tax_args, 'post_tag', $this->tags );
@@ -325,7 +325,7 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	 */
 	public function force_ongoing( $where_sql ) {
 		global $wpdb;
-		$now = date_i18n( TribeDateUtils::DBDATETIMEFORMAT, time() );
+		$now = date_i18n( Tribe__Events__Date_Utils::DBDATETIMEFORMAT, time() );
 
 		// Tear this filter down, we don't want it running on subsequent event queries unless explicitly set up
 		remove_filter( 'posts_where', array( $this, 'force_ongoing' ), 50, 2 );

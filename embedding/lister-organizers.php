@@ -81,7 +81,7 @@ class EventRocket_OrganizerLister extends EventRocket_ObjectLister
 	protected function query() {
 		$this->enter_blog();
 		$this->args = array(
-			'post_type' => TribeEvents::ORGANIZER_POST_TYPE,
+			'post_type' => Tribe__Events__Events::ORGANIZER_POST_TYPE,
 			'suppress_filters' => false // We may need to modify the where clause
 		);
 
@@ -111,7 +111,7 @@ class EventRocket_OrganizerLister extends EventRocket_ObjectLister
 
 	public function add_where_events_clause( $where_sql ) {
 		global $wpdb;
-		$right_now = date_i18n( TribeDateUtils::DBDATETIMEFORMAT );
+		$right_now = date_i18n( Tribe__Events__Date_Utils::DBDATETIMEFORMAT );
 
 		// We don't want this filter to be reused repeatedly
 		remove_filter( 'posts_where', array( $this, 'add_where_events_clause' ) );

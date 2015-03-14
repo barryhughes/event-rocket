@@ -302,7 +302,7 @@ abstract class EventRocket_ObjectLister
 	 * @param $list
 	 * @param string $type
 	 */
-	protected function parse_post_refs( &$list, $type = TribeEvents::POSTTYPE )
+	protected function parse_post_refs( &$list, $type = Tribe__Events__Events::POSTTYPE )
 	{
 		foreach ($list as $index => $reference) {
 			$this->typify($reference);
