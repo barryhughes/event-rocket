@@ -30,6 +30,7 @@ function eventrocket_launch() {
 	require_once EVENTROCKET_INC . '/admin/admin.php';
 	require_once EVENTROCKET_INC . '/misc/load.php';
 	require_once EVENTROCKET_INC . '/rsvp/rsvp.php';
+	require_once EVENTROCKET_INC . '/eventviews/views.php';
 }
 
 function eventrocket_abort_launch() {
@@ -43,4 +44,10 @@ function eventrocket_explain_failure() {
 	$msg =  __( 'Event Rocket requires a suitable version of The Events Calendar to be activated in order to provide '
 		. 'full functionality (data cleanup tools will still be available, though).', 'eventrocket' );
 	echo '<div class="error"> <p> ' . $msg . ' </p> </div>';
+}
+
+function eventrocket() {
+	static $register = null;
+	if ( null === $register ) $register = new stdClass;
+	return $register;
 }

@@ -1,5 +1,24 @@
 <?php
 /**
+ * @param  string $template
+ * @return string absolute filepath - may be empty if template could not be located
+ */
+function eventrocket_template( $template ) {
+	if ( false === strpos( $template, '.php' ) ) $template .= '.php';
+
+	// Look in the theme (+child theme) tribe-events directories first
+	$path = locate_template( 'tribe-events' . DIRECTORY_SEPARATOR . $template );
+
+	// Fallback on the plugin's default template
+	$path = empty( $path )
+		? EVENTROCKET_INC . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $template
+		: $path;
+
+	// Test existence and return
+	return file_exists( $path ) ? $path : '';
+}
+
+/**
  * Determines if the current event (or optionally specified event) has been
  * tagged with the specified tag.
  *
@@ -44,4 +63,20 @@ function next_tagged_event( $tag, $event_id = null ) {
 
 	if ( empty( $next_event ) ) return false;
 	return array_shift( $next_event );
+}
+
+function is_timeline_view() {
+	global $wp_query;
+	return eventrocket()->timeline->slug() === $wp_query->get( 'eventDisplay' );
+}
+
+/**
+ * @todo   support specifying the date, category and tag and support default permalinks
+ * @param  array $properties
+ * @return string
+ */
+function get_timeline_url( array $properties = array() ){
+	$tec = Tribe__Events__Events::instance();
+	$url = get_site_url() . '/' . $tec->rewriteSlug . '/' . trailingslashit( eventrocket()->timeline->slug() );
+	return $url;
 }
