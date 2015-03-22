@@ -11,23 +11,24 @@ class EventRocket_EmbeddedEventTemplateParser implements EventRocket_iInlinePars
 	protected $output = '';
 
 	protected $placeholders = array(
-		'{link}'        => 'get_permalink',
-		'{url}'         => 'get_permalink',
-		'{title}'       => 'get_the_title',
-		'{name}'        => 'get_the_title',
-		'{content}'     => 'get_the_content',
-		'{description}' => 'get_the_content',
-		'{excerpt}'     => 'get_the_excerpt',
-		'{thumbnail}'   => 'tribe_event_featured_image',
-		'{author}'      => 'get_the_author',
-		'{start_date}'  => array( '__this__', 'start_date' ),
-		'{start_time}'  => array( '__this__', 'start_time' ),
-		'{end_date}'    => array( '__this__', 'end_date' ),
-		'{end_time}'    => array( '__this__', 'end_time' ),
-		'{venue}'       => 'tribe_get_venue',
-		'{venue:name}'  => 'tribe_get_venue',
-		'{venue:link}'  => array( '__this__', 'tribe_get_venue_link' ),
-		'{venue:url}'   => array( '__this__', 'tribe_get_venue_url' )
+		'{link}'               => 'get_permalink',
+		'{url}'                => 'get_permalink',
+		'{title}'              => 'get_the_title',
+		'{name}'               => 'get_the_title',
+		'{content}'            => array( '__this__', 'content' ),
+		'{content:unfiltered}' => 'get_the_content',
+		'{description}'        => array( '__this__', 'content' ),
+		'{excerpt}'            => 'get_the_excerpt',
+		'{thumbnail}'          => 'tribe_event_featured_image',
+		'{author}'             => 'get_the_author',
+		'{start_date}'         => array( '__this__', 'start_date' ),
+		'{start_time}'         => array( '__this__', 'start_time' ),
+		'{end_date}'           => array( '__this__', 'end_date' ),
+		'{end_time}'           => array( '__this__', 'end_time' ),
+		'{venue}'              => 'tribe_get_venue',
+		'{venue:name}'         => 'tribe_get_venue',
+		'{venue:link}'         => array( '__this__', 'tribe_get_venue_link' ),
+		'{venue:url}'          => array( '__this__', 'tribe_get_venue_url' )
 	);
 
 
@@ -53,6 +54,10 @@ class EventRocket_EmbeddedEventTemplateParser implements EventRocket_iInlinePars
 
 	public function output() {
 		return $this->output;
+	}
+
+	public function content() {
+		return apply_filters( 'the_content', get_the_content() );
 	}
 
 	public function start_date() {
