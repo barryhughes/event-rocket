@@ -9,7 +9,6 @@ class EventRocket_Timeline {
 		add_action( 'pre_get_posts',          array( $this, 'adapter' ) );
 		add_filter( 'tribe-events-bar-views', array( $this, 'selector' ) );
 		add_filter( 'tribe_events_current_template_class', array( $this, 'template_class' ) );
-		add_filter( 'tribe_events_current_view_template',  array( $this, 'template' ) );
 	}
 
 	public function routes( $rewrite ) {
@@ -77,11 +76,6 @@ class EventRocket_Timeline {
 		if ( ! empty( $this->name ) ) return $this->name;
 		$this->name = apply_filters( 'eventrocket_timeline_name', _x( 'Timeline', 'view name', 'eventrocket' ) );
 		return $this->name;
-	}
-
-	public function template( $template ) {
-		if ( ! $this->is_timeline_view() ) return $template;
-		return eventrocket_template( 'timeline/list' );
 	}
 
 	public function template_class( $class ) {

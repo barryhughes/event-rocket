@@ -1,5 +1,22 @@
 <?php
 /**
+ * Loads and displays the specified template using the same rules as eventrocket_template.
+ *
+ * If the optional $vars are provided those are extracted into the symbol table of the
+ * included template.
+ *
+ * @param string $template
+ * @param array  $vars
+ */
+function eventrocket_get_template( $template, array $vars = array() ) {
+	$path = eventrocket_template( $template );
+	if ( empty( $path ) ) return;
+
+	extract( $vars );
+	include $path;
+}
+
+/**
  * @param  string $template
  * @return string absolute filepath - may be empty if template could not be located
  */
@@ -66,8 +83,7 @@ function next_tagged_event( $tag, $event_id = null ) {
 }
 
 function is_timeline_view() {
-	global $wp_query;
-	return eventrocket()->timeline->slug() === $wp_query->get( 'eventDisplay' );
+	return eventrocket()->timeline->is_timeline_view();
 }
 
 /**
