@@ -11,6 +11,9 @@ class EventRocket_Timeline {
 		add_filter( 'tribe_events_current_template_class', array( $this, 'template_class' ) );
 	}
 
+	/**
+	 * @param $rewrite
+	 */
 	public function routes( $rewrite ) {
 		$tec  = Tribe__Events__Events::instance();
 		$base = trailingslashit( $tec->rewriteSlug );
@@ -39,6 +42,11 @@ class EventRocket_Timeline {
 		$rewrite->rules = $timeline_rules + $rewrite->rules;
 	}
 
+	/**
+	 * Timeline view piggy backs on the existing list view.
+	 *
+	 * @param $query
+	 */
 	public function adapter( $query ) {
 		if ( 'timeline' !== $query->get( 'eventDisplay' ) ) return;
 		$query->set( 'eventDisplay', 'list' );
@@ -46,12 +54,20 @@ class EventRocket_Timeline {
 		add_action( 'wp_head', array( $this, 'set_displaying' ) );
 	}
 
+	/**
+	 * Once the page begins to be rendered (ie, wp_head has fired) lets ensure timeline view
+	 * is set as the currently displaying view. We also need to unhook TEC's own setDisplay()
+	 * callback which otherwise will be called repeatedly and undo this change.
+	 */
 	public function set_displaying() {
 		$tec = Tribe__Events__Events::instance();
 		$tec->displaying = $this->slug();
 		remove_action( 'parse_query', array( $tec, 'setDisplay' ), 51, 0 );
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function is_timeline_view() {
 		global $wp_query;
 		return ( 'timeline' === $wp_query->get( 'eventrocket_view' ) ) ? true : false;
