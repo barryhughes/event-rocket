@@ -82,4 +82,76 @@ class EventRocket_Timeline {
 		if ( ! $this->is_timeline_view() ) return $class;
 		return 'EventRocket_Timeline_View';
 	}
+
+	/**
+	 * Wrapper around tribe_has_previous_events().
+	 */
+	public function has_previous_page() {
+		global $wp_query;
+
+		// Get paged value, force a 0/null value to 1
+		$paged = $wp_query->get( 'paged' );
+		if ( 0 == $paged) $wp_query->set( 'paged', 1 );
+		$result = tribe_has_previous_event();
+
+		// Restore the original value and return the result
+		$wp_query->set( 'paged', $paged );
+		return $result;
+	}
+
+	/**
+	 * @todo confusion stemming from custom tribe_paged var overriding expected WP default for paged
+	 * @return string
+	 */
+	public function previous_page_url() {
+		global $wp_query;
+
+		$page = absint( $wp_query->get( 'paged' ) );
+		$page = ( 0 == $page ) ? 1 : $page;
+		$past = tribe_is_past();
+
+		// Go back a page in previous list?
+		if ( $past ) {
+			$prev_page = trailingslashit( get_timeline_url() ) . 'page/' . ( $page + 1 );
+			return add_query_arg( 'tribe_event_display', 'past', $prev_page );
+		}
+
+		// Page 1 of the present+future list?
+		if ( ! $past && 1 === $page ) {
+			return add_query_arg( 'tribe_event_display', 'past', get_timeline_url() );
+		}
+
+		// Go back a page in current+future list?
+		if ( ! $past && 1 < $page ) {
+			return trailingslashit( get_timeline_url() ) . 'page/' . ( $page - 1 );
+		}
+	}
+
+	/**
+	 * @todo confusion stemming from custom tribe_paged var overriding expected WP default for paged
+	 * @return string
+	 */
+	public function next_page_url() {
+		global $wp_query;
+
+		$page = absint( $wp_query->get( 'paged' ) );
+		$page = ( 0 == $page ) ? 1 : $page;
+		$past = tribe_is_past();
+
+		// Page 2+ of the previous events list?
+		if ( $past && 1 < $page ) {
+			$next_page = trailingslashit( get_timeline_url() ) . 'page/' . ( $page - 1 );
+			return add_query_arg( 'tribe_event_display', 'past', $next_page );
+		}
+
+		// Page 1 of the previous events list?
+		if ( $past && 1 == $page ) {
+			return get_timeline_url();
+		}
+
+		// Within the present+future list?
+		if ( ! $past ) {
+			return trailingslashit( get_timeline_url() ) . 'page/' . ( $page + 1 );
+		}
+	}
 }

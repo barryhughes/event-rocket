@@ -96,3 +96,35 @@ function get_timeline_url( array $properties = array() ){
 	$url = get_site_url() . '/' . $tec->rewriteSlug . '/' . trailingslashit( eventrocket()->timeline->slug() );
 	return $url;
 }
+
+/**
+ * @return bool
+ */
+function timeline_has_previous_page() {
+	return eventrocket()->timeline->has_previous_page();
+}
+
+/**
+ * Returns a URL pointing to the previous page of results for timeline view.
+ *
+ * @return string
+ */
+function get_timeline_prev_page_url() {
+	return eventrocket()->timeline->previous_page_url();
+}
+
+/**
+ * @return bool
+ */
+function timeline_has_next_page() {
+	return tribe_has_next_event();
+}
+
+/**
+ * Returns a URL pointing to the next page of results for timeline view.
+ *
+ * @return string
+ */
+function get_timeline_next_page_url() {
+	return eventrocket()->timeline->next_page_url();
+}

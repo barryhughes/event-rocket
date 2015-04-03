@@ -1,0 +1,116 @@
+.timeline .tribe-events-loop {
+	display: table;
+}
+
+.timeline .tribe-events-loop > div {
+	display: table-row;
+}
+
+.timeline .tribe-events-loop > div .date-info,
+.timeline .tribe-events-loop > div .event-info {
+	display: table-cell;
+}
+
+.timeline .tribe-events-loop > div .date-info {
+	padding-left: 15px;
+	padding-right: 32px;
+	position: relative;
+	z-index: 0;
+}
+
+.timeline .tribe-events-loop > div .event-info {
+	padding-bottom: 12px;
+}
+
+.timeline .tribe-events-loop div.event-info .tribe-events-content {
+	float: none;
+}
+
+.timeline .tribe-events-loop > div .event-info .detail {
+	float: right;
+}
+
+.timeline .tribe-events-loop > div .event-info .detail .tribe-events-event-image {
+	margin-left: 15px;
+	width: 200px;
+}
+
+.timeline .tribe-events-loop > div .date-info .date-container,
+.timeline .tribe-events-loop > div .date-info .time-container,
+.timeline .tribe-events-loop > div .date-info .nav-container {
+	background: #21759b;
+	box-shadow: 0 1px 1px 1px #bebebe;
+	color: white;
+	display: block;
+	line-height: 1.2;
+	margin-bottom: 2px;
+	margin-top: 15px;
+	padding: 5px;
+	position: relative;
+	text-align: center;
+	width: 64px;
+	z-index: 10;
+}
+
+.timeline .tribe-events-loop > div .date-info .date-container {
+	border-radius: 48px;
+	height: 64px;
+}
+
+.timeline .tribe-events-loop > div .date-info .date-container > span,
+.timeline .tribe-events-loop > div .date-info .time-container,
+.timeline .tribe-events-loop > div .date-info .nav-container {
+	display: block;
+	font-size: 12px;
+	margin: 0;
+	text-transform: uppercase;
+}
+
+.timeline .tribe-events-loop > div .date-info .time-container,
+.timeline .tribe-events-loop > div .date-info .nav-container {
+	margin-top: 2px;
+}
+
+.timeline .tribe-events-loop > div .date-info .nav-container a {
+	color: white;
+}
+
+.timeline .tribe-events-loop > div .date-info .nav-container:hover {
+	background: #4290a5;
+}
+
+.timeline .tribe-events-loop > div .date-info .date-container > span.date {
+	font-size: 19px;
+	margin-right: 0;
+}
+
+.timeline .tribe-events-loop > div .date-info .date-container > span.date sup {
+	font-size: 14px;
+	text-transform: lowercase;
+}
+
+.timeline .tribe-events-loop > div .date-info span.running-line {
+	border-left: 1px dotted #a5adbb;
+	opactiy: 0.6;
+	position: absolute;
+	bottom: 0px;
+	left: 51px;
+	top: 0px;
+	z-index: 0;
+}
+
+/*.timeline .tribe-events-loop > div:first-child .date-info span.running-line,*/
+.timeline .tribe-events-loop > div .date-info span.running-line.first {
+	top: 20px;
+}
+
+.timeline .tribe-events-loop > div .date-info span.running-line.last {
+	top: 0px;
+	height: 20px;
+}
+/**
+ * THEME COMPATIBILITY
+ * -------------------
+ */
+
+.tribe-theme-responsive .date-container .day { padding-top: 4px }
