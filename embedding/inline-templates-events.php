@@ -21,6 +21,7 @@ class EventRocket_EmbeddedEventTemplateParser implements EventRocket_iInlinePars
 			'{link}'               => 'get_permalink',
 			'{url}'                => 'get_permalink',
 			'{title}'              => 'get_the_title',
+			'{title:linked}'       => array( $this, 'linked_title' ),
 			'{name}'               => 'get_the_title',
 			'{content}'            => array( $this, 'content' ),
 			'{content:unfiltered}' => 'get_the_content',
@@ -99,5 +100,9 @@ class EventRocket_EmbeddedEventTemplateParser implements EventRocket_iInlinePars
 
 	public function tribe_get_organizer_url() {
 		return tribe_get_organizer_link( null, false, false );
+	}
+
+	public function linked_title() {
+		return '<a href="' . get_permalink() . '">' . get_the_title() . '</a>';
 	}
 }
