@@ -36,6 +36,8 @@ class EventRocket_EmbeddedEventTemplateParser implements EventRocket_iInlinePars
 			'{venue:name}'         => 'tribe_get_venue',
 			'{venue:link}'         => array( $this, 'tribe_get_venue_link' ),
 			'{venue:url}'          => array( $this, 'tribe_get_venue_url' ),
+			'{venue:map}'          => 'tribe_get_embedded_map',
+			'{venue:details}'      => 'tribe_get_venue_details',
 			'{organizer}'          => 'tribe_get_organizer',
 			'{organizer:link}'     => array( $this, 'tribe_get_organizer_link' ),
 			'{organizer:url}'      => array( $this, 'tribe_get_organizer_url' )
@@ -46,7 +48,7 @@ class EventRocket_EmbeddedEventTemplateParser implements EventRocket_iInlinePars
 		$this->output = ''; // Reset
 		foreach ( $this->placeholders as $tag => $handler ) {
 			if ( false === strpos( $content, $tag ) ) continue;
-			$value = call_user_func( $handler );
+			$value = is_callable( $handler ) ? call_user_func( $handler ) : '';
 			$content = str_replace( $tag, $value, $content );
 		}
 		$this->output = apply_filters( 'eventrocket_embedded_event_output', $content );
