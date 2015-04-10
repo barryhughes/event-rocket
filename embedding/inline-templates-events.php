@@ -28,7 +28,10 @@ class EventRocket_EmbeddedEventTemplateParser implements EventRocket_iInlinePars
 		'{venue}'              => 'tribe_get_venue',
 		'{venue:name}'         => 'tribe_get_venue',
 		'{venue:link}'         => array( '__this__', 'tribe_get_venue_link' ),
-		'{venue:url}'          => array( '__this__', 'tribe_get_venue_url' )
+		'{venue:url}'          => array( '__this__', 'tribe_get_venue_url' ),
+		'{organizer}'          => 'tribe_get_organizer',
+		'{organizer:link}'     => array( '__this__', 'tribe_get_organizer_link' ),
+		'{organizer:url}'      => array( '__this__', 'tribe_get_organizer_url' )
 	);
 
 
@@ -82,12 +85,20 @@ class EventRocket_EmbeddedEventTemplateParser implements EventRocket_iInlinePars
 		// to the screen but we want to return it; setting its optional $display arg to false returns
 		// the URL, but not as well formed HTML
 		ob_start();
-		tribe_get_venue_link();
+		tribe_get_venue_link( null, true );
 		return ob_get_clean();
 	}
 
 	/** @see $this->tribe_get_venue_link() */
 	public function tribe_get_venue_url() {
 		return tribe_get_venue_link( null, false );
+	}
+
+	public function tribe_get_organizer_link() {
+		return tribe_get_organizer_link( null, true, false );
+	}
+
+	public function tribe_get_organizer_url() {
+		return tribe_get_organizer_link( null, false, false );
 	}
 }
