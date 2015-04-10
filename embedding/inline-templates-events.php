@@ -8,41 +8,38 @@ defined( 'ABSPATH' ) or exit();
  */
 class EventRocket_EmbeddedEventTemplateParser implements EventRocket_iInlineParser
 {
-	protected $output = '';
-
-	protected $placeholders = array(
-		'{link}'               => 'get_permalink',
-		'{url}'                => 'get_permalink',
-		'{title}'              => 'get_the_title',
-		'{name}'               => 'get_the_title',
-		'{content}'            => array( '__this__', 'content' ),
-		'{content:unfiltered}' => 'get_the_content',
-		'{description}'        => array( '__this__', 'content' ),
-		'{excerpt}'            => 'get_the_excerpt',
-		'{thumbnail}'          => 'tribe_event_featured_image',
-		'{author}'             => 'get_the_author',
-		'{start_date}'         => array( '__this__', 'start_date' ),
-		'{start_time}'         => array( '__this__', 'start_time' ),
-		'{end_date}'           => array( '__this__', 'end_date' ),
-		'{end_time}'           => array( '__this__', 'end_time' ),
-		'{venue}'              => 'tribe_get_venue',
-		'{venue:name}'         => 'tribe_get_venue',
-		'{venue:link}'         => array( '__this__', 'tribe_get_venue_link' ),
-		'{venue:url}'          => array( '__this__', 'tribe_get_venue_url' ),
-		'{organizer}'          => 'tribe_get_organizer',
-		'{organizer:link}'     => array( '__this__', 'tribe_get_organizer_link' ),
-		'{organizer:url}'      => array( '__this__', 'tribe_get_organizer_url' )
-	);
+	protected $output       = '';
+	protected $placeholders = array();
 
 
 	public function __construct() {
-		$this->placeholders = apply_filters( 'eventrocket_embedded_event_placeholders', $this->placeholders );
-		$this->adjust_callbacks();
+		$this->placeholders = apply_filters( 'eventrocket_embedded_event_placeholders', $this->placeholders() );
 	}
 
-	protected function adjust_callbacks() {
-		foreach ( $this->placeholders as &$callback )
-			if ( is_array( $callback ) && '__this__' === $callback[0] ) $callback[0] = $this;
+	protected function placeholders() {
+		return array(
+			'{link}'               => 'get_permalink',
+			'{url}'                => 'get_permalink',
+			'{title}'              => 'get_the_title',
+			'{name}'               => 'get_the_title',
+			'{content}'            => array( $this, 'content' ),
+			'{content:unfiltered}' => 'get_the_content',
+			'{description}'        => array( $this, 'content' ),
+			'{excerpt}'            => 'get_the_excerpt',
+			'{thumbnail}'          => 'tribe_event_featured_image',
+			'{author}'             => 'get_the_author',
+			'{start_date}'         => array( $this, 'start_date' ),
+			'{start_time}'         => array( $this, 'start_time' ),
+			'{end_date}'           => array( $this, 'end_date' ),
+			'{end_time}'           => array( $this, 'end_time' ),
+			'{venue}'              => 'tribe_get_venue',
+			'{venue:name}'         => 'tribe_get_venue',
+			'{venue:link}'         => array( $this, 'tribe_get_venue_link' ),
+			'{venue:url}'          => array( $this, 'tribe_get_venue_url' ),
+			'{organizer}'          => 'tribe_get_organizer',
+			'{organizer:link}'     => array( $this, 'tribe_get_organizer_link' ),
+			'{organizer:url}'      => array( $this, 'tribe_get_organizer_url' )
+		);
 	}
 
 	public function process( $content ) {
