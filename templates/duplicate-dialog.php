@@ -1,6 +1,12 @@
 <div id="eventrocket_duplication_dialog" style="display: none">
 	<div class="modal-form">
 		<form method="post">
+			<div class="title">
+				<p>
+					<?php _ex( 'Duplicate event', 'dialog title', 'eventrocket' ) ?>
+					<span class="close-btn">&#10060;</span>
+				</p>
+			</div>
 			<p>
 				<label for="duplicate_title"> Set the new event title (or leave blank for default) </label>
 				<input id="duplicate_title" name="duplicate_title" type="text">
@@ -20,9 +26,12 @@
 				</select>
 			</p>
 
-			<p>
+			<p class="action-btns">
 				<button id="do_duplicate" type="submit" class="button primary">
 					<?php _ex( 'Duplicate', 'button label', 'eventrocket' ) ?>
+				</button>
+				<button id="cancel_duplication" type="submit" class="button secondary">
+					<?php _ex( 'Cancel', 'button label', 'eventrocket' ) ?>
 				</button>
 			</p>
 		</form>

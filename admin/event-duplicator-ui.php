@@ -17,7 +17,6 @@ class EventRocket_EventDuplicatorUI
 
 	protected function js_object() {
 		return array(
-			'dialog_title' => _x( 'Duplicate event', 'dialog title', 'eventrocket' ),
 			'dialog_template' => $this->dialog_template()
 		);
 	}

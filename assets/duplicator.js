@@ -19,6 +19,10 @@ function eventrocket_duplicator( $ ) {
 		template = $( "#eventrocket_duplication_dialog" );
 		datepicker = template.find( "#duplicate_start" );
 		datepicker.datepicker();
+
+		// Capture cancel/close button clicks
+		$( "button#cancel_duplication" ).click( on_close );
+		$( "#eventrocket_duplication_dialog .close-btn" ).click( on_close );
 	}
 
 	function show_dialog() {
@@ -29,6 +33,12 @@ function eventrocket_duplicator( $ ) {
         datepicker.datepicker( "option", "defaultDate", new Date( dup_link.data( "date" ) ) );
         template.find( "form" ).attr( "action", dup_link.attr( "href" ) );
     }
+
+	function on_close( event ) {
+		event.stopImmediatePropagation();
+		template.fadeOut( "fast" );
+		return false;
+	}
 
 	// Capture clicks on "duplicate event" links
 	$( "a.eventrocket_duplicate" ).click( on_click );
