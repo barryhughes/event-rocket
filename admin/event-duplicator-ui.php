@@ -9,7 +9,7 @@ class EventRocket_EventDuplicatorUI
 		global $post;
 		if ( 'edit.php' !== $page_hook || Tribe__Events__Events::POSTTYPE !== get_post_type( $post ) ) return;
 
-		$deps = array( 'jquery-ui-dialog', 'jquery-ui-datepicker', 'jquery-ui-resizable' );
+		$deps = array( 'jquery', 'jquery-ui-datepicker' );
 		wp_enqueue_script( 'eventrocket_duplicator_ui', EVENTROCKET_URL . 'assets/duplicator.js', $deps );
 		wp_localize_script( 'eventrocket_duplicator_ui', 'eventrocket_dup', $this->js_object() );
 		wp_enqueue_style( 'eventrocket_duplicator_style', EVENTROCKET_URL . 'assets/duplicator.css' );

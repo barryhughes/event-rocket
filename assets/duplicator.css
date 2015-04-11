@@ -1,3 +1,44 @@
+#eventrocket_duplication_dialog {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	text-align: center;
+	z-index: 100000; /* exceed 99999, as used by the WP menu elements */
+}
+
+#eventrocket_duplication_dialog > .back-screen {
+	background: black;
+	height: 100%;
+	opacity: 0.7;
+	position: relative;
+	width: 100%;
+}
+
+#eventrocket_duplication_dialog > .modal-form {
+	height: 100%;
+	position: absolute;
+	width: 100%;
+	z-index: 10;
+}
+
+#eventrocket_duplication_dialog > .modal-form > form {
+	background: white;
+	box-shadow: 0 0 4px #151515;
+	display: block;
+	height: 20rem;
+	margin: auto;
+	padding: 1rem 2rem;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 30rem;
+	text-align: left;
+}
+
 #eventrocket_duplication_dialog label {
 	display: block;
 }
