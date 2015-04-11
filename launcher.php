@@ -30,7 +30,6 @@ function eventrocket_launch() {
 	require_once EVENTROCKET_INC . '/admin/admin.php';
 	require_once EVENTROCKET_INC . '/misc/load.php';
 	require_once EVENTROCKET_INC . '/rsvp/rsvp.php';
-	require_once EVENTROCKET_INC . '/eventviews/views.php';
 }
 
 function eventrocket_abort_launch() {
