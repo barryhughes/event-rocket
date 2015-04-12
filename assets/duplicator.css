@@ -11,7 +11,7 @@
 #eventrocket_duplication_dialog > .back-screen {
 	background: black;
 	height: 100%;
-	opacity: 0.7;
+	opacity: 0.84;
 	position: relative;
 	width: 100%;
 }
@@ -52,18 +52,19 @@
 }
 
 #eventrocket_duplication_dialog > .modal-form div.title span.close-btn {
-	color: #aaa;
-	display: none;
+	color: #fff;
 	float: right;
+	opacity: 0;
+	transition: opacity 360ms
 }
 
 #eventrocket_duplication_dialog > .modal-form form:hover div.title span.close-btn {
-	display: inline;
+	opacity: 0.66;
 }
 
 #eventrocket_duplication_dialog > .modal-form form:hover div.title span.close-btn:hover {
-	color: white;
 	cursor: pointer;
+	opacity: 1;
 }
 
 #eventrocket_duplication_dialog > .modal-form p {
