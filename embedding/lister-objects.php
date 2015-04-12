@@ -318,18 +318,18 @@ abstract class EventRocket_ObjectLister
 	 */
 	protected function parse_post_refs( &$list, $type = Tribe__Events__Events::POSTTYPE )
 	{
-		foreach ($list as $index => $reference) {
-			$this->typify($reference);
-			if (!is_string($reference)) continue;
+		foreach ( $list as $index => $reference ) {
+			$this->typify( $reference );
+			if ( ! is_string( $reference ) ) continue;
 
-			$event = get_posts(array(
+			$event = get_posts( array(
 				'name' => $reference,
 				'post_type' => $type,
 				'eventDisplay' => 'custom',
 				'posts_per_page' => 1
-			));
+			) );
 
-			if (empty($event) || !is_array($event)) $list[$index] = 0;
+			if ( empty( $event ) || ! is_array( $event ) ) $list[$index] = 0;
 			else $list[$index] = $event[0]->ID;
 		}
 	}
