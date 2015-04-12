@@ -23,6 +23,9 @@ abstract class EventRocket_ObjectLister
 	protected $cache_key_data = '';
 	protected $cache_expiry   = 0;
 
+	// Other conditions
+	protected $limit  = 20;
+	protected $author = -1;
 
 	public function __construct( array $params, $content ) {
 		$this->params  = $params;
@@ -222,12 +225,19 @@ abstract class EventRocket_ObjectLister
 	}
 
 	/**
-	 * Set the number of posts to retreive
+	 * Set the number of posts to retreive.
 	 */
 	protected function set_limit() {
 		$this->limit = isset( $this->params['limit'] )
 			? (int) $this->params['limit']
 			: (int) get_option( 'posts_per_page', 20 );
+	}
+
+	/**
+	 * Set the author ID.
+	 */
+	protected function set_author() {
+		$this->author = isset( $this->params['author'] ) ? (int) $this->params['author'] : -1;
 	}
 
 	/**
@@ -252,6 +262,10 @@ abstract class EventRocket_ObjectLister
 
 	protected function args_limit() {
 		$this->args['posts_per_page'] = $this->limit;
+	}
+
+	protected function args_author() {
+		if ( $this->author > 0 ) $this->args['author'] = $this->author;
 	}
 
 	/**

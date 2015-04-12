@@ -19,7 +19,6 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	protected $tax_logic = 'OR';
 	protected $from = '';
 	protected $to = '';
-	protected $limit = 20;
 	protected $template = '';
 	protected $order = 'ASC';
 	protected $where = '';
@@ -39,6 +38,7 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		$this->parse_post_tax_refs();
 		$this->set_time_constraints();
 		$this->set_limit();
+		$this->set_author();
 		$this->set_template();
 		$this->set_fallbacks();
 		$this->set_order();
@@ -203,6 +203,7 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		$this->args_post_tax();
 		$this->args_venue_organizer();
 		$this->args_time();
+		$this->args_author();
 		$this->args_limit();
 		$this->args_display_type();
 		$this->args_order();
