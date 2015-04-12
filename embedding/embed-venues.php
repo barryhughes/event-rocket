@@ -17,8 +17,8 @@ class EventRocket_EmbedVenuesShortcode
 	 * the eventrocket_embed_events_shortcode_name filter.
 	 */
 	public function __construct() {
-		$shortcode = apply_filters( 'eventrocket_embed_venues_shortcode_name', 'venue_embed' );
-		add_shortcode( $shortcode, array( $this, 'embed' ) );
+		$shortcodes = (array) apply_filters( 'eventrocket_embed_venues_shortcode_name', array( 'venue_embed', 'embed_venue' ) );
+		foreach ( $shortcodes as $shortcode ) add_shortcode( $shortcode, array( $this, 'embed' ) );
 	}
 
 	/**
