@@ -41,7 +41,9 @@ class EventRocket_EmbeddedEventTemplateParser implements EventRocket_iInlinePars
 			'{venue:details}'      => 'tribe_get_venue_details',
 			'{organizer}'          => 'tribe_get_organizer',
 			'{organizer:link}'     => array( $this, 'tribe_get_organizer_link' ),
-			'{organizer:url}'      => array( $this, 'tribe_get_organizer_url' )
+			'{organizer:url}'      => array( $this, 'tribe_get_organizer_url' ),
+			'{cost}'               => 'tribe_get_cost',
+			'{cost:formatted}'     => array( $this, 'tribe_get_cost' )
 		);
 	}
 
@@ -104,5 +106,12 @@ class EventRocket_EmbeddedEventTemplateParser implements EventRocket_iInlinePars
 
 	public function linked_title() {
 		return '<a href="' . get_permalink() . '">' . get_the_title() . '</a>';
+	}
+
+	/**
+	 * Returns the cost with the formatting flag set to true.
+	 */
+	public function tribe_get_cost() {
+		return tribe_get_cost( null, true );
 	}
 }
