@@ -30,18 +30,27 @@ class EventRocket_RSVPAttendance
 	}
 
 	public function set_to_attend( $user_id ) {
+		$user = new EventRocket_RSVPUser( $user_id );
+		$user->set_to_attend( $this->event_id );
+
 		$user_id = absint( $user_id );
 		$this->attendees[$user_id] = 1;
 		$this->save();
 	}
 
 	public function set_to_not_attend( $user_id ) {
+		$user = new EventRocket_RSVPUser( $user_id );
+		$user->set_to_not_attend( $this->event_id );
+
 		$user_id = absint( $user_id );
 		$this->attendees[$user_id] = 0;
 		$this->save();
 	}
 
 	public function clear_from_list( $user_id  ) {
+		$user = new EventRocket_RSVPUser( $user_id );
+		$user->clear_from_list( $this->event_id );
+
 		$user_id = absint( $user_id );
 		unset( $this->attendees[$user_id] );
 		$this->save();
