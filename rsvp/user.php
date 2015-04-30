@@ -46,14 +46,21 @@ class EventRocket_RSVPUser
 		$event_list = array();
 
 		foreach ( $this->attendance as $event_id => $flag ) {
+			// Filter out events based on the attendance flag
 			if ( $flag != $attendance_flag && -1 !== $flag ) continue;
-			$args = array( 'post_id' => $event_id );
-			if ( $only_upcoming ) $args['eventDisplay'] = 'list';
-			$events = tribe_get_event( $args );
-			if ( isset( $events[0] ) ) $event_list[] = absint( $event_id );
+
+			// Get the event
+			$events = tribe_get_event( array( 'post_id' => $event_id ) );
+			$event  = isset( $events[0] ) ? $events[0] : null;
+
+			// If we could not load it (or if it has expired and $only_upcoming is true), skip
+			if ( null === $event || $this->has_expired( $event_id ) ) continue;
+
+			// Otherwise, add it!
+			$event_list[] = absint( $event_id );
 		}
 
-		return $event_id;
+		return $event_list;
 	}
 
 	/**
@@ -66,13 +73,16 @@ class EventRocket_RSVPUser
 
 	public function clear_expired_responses() {
 		$all_events = $this->confirmed_attendances( false, -1 );
-		$now        = date_i18n( 'Y-m-d H:i:s' );
 
-		foreach ( $all_events as $event_id ) {
-			$ended = tribe_get_end_date( $event_id, false, 'Y-m-d H:i:s' );
-			if ( $ended < $now ) $this->clear_from_list( $event_id);
-		}
+		foreach ( $all_events as $event_id )
+			if ( $this->has_expired( $event_id ) ) $this->clear_from_list( $event_id);
 
 		$this->save();
+	}
+
+	protected function has_expired( $event_id ) {
+		$now   = date_i18n( 'Y-m-d H:i:s' );
+		$ended = tribe_get_end_date( $event_id, false, 'Y-m-d H:i:s' );
+		return ( $ended < $now );
 	}
 }
