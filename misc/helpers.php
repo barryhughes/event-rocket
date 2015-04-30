@@ -44,7 +44,7 @@ function eventrocket_template( $template ) {
  * @return bool
  */
 function event_is_tagged( $tag, $event_id = null ) {
-	$event_id = Tribe__Events__Events::postIdHelper( $event_id );
+	$event_id = Tribe__Events__Main::postIdHelper( $event_id );
 
 	foreach ( wp_get_post_terms( $event_id ) as $term ) {
 		if ( is_int( $tag ) && $tag === $term->term_id ) return true;
@@ -63,7 +63,7 @@ function event_is_tagged( $tag, $event_id = null ) {
  * @return mixed bool|WP_Post
  */
 function next_tagged_event( $tag, $event_id = null ) {
-	$event_id = Tribe__Events__Events::postIdHelper( $event_id );
+	$event_id = Tribe__Events__Main::postIdHelper( $event_id );
 
 	$current_event = get_post( $event_id );
 	if ( null === $current_event ) return false;
@@ -92,7 +92,7 @@ function is_timeline_view() {
  * @return string
  */
 function get_timeline_url( array $properties = array() ){
-	$tec = Tribe__Events__Events::instance();
+	$tec = Tribe__Events__Main::instance();
 	$url = get_site_url() . '/' . $tec->rewriteSlug . '/' . trailingslashit( eventrocket()->timeline->slug() );
 	return $url;
 }

@@ -81,7 +81,7 @@ class EventRocket_VenueLister extends EventRocket_ObjectLister
 	protected function query() {
 		$this->enter_blog();
 		$this->args = array(
-			'post_type' => Tribe__Events__Events::VENUE_POST_TYPE,
+			'post_type' => Tribe__Events__Main::VENUE_POST_TYPE,
 			'suppress_filters' => false // We may need to modify the where clause
 		);
 

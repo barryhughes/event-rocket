@@ -7,7 +7,7 @@ class EventRocket_EventDuplicatorUI
 
 	public function add_ui_assets( $page_hook ) {
 		global $post;
-		if ( 'edit.php' !== $page_hook || Tribe__Events__Events::POSTTYPE !== get_post_type( $post ) ) return;
+		if ( 'edit.php' !== $page_hook || Tribe__Events__Main::POSTTYPE !== get_post_type( $post ) ) return;
 
 		$deps = array( 'jquery', 'jquery-ui-datepicker' );
 		wp_enqueue_script( 'eventrocket_duplicator_ui', EVENTROCKET_URL . 'assets/duplicator.js', $deps );
