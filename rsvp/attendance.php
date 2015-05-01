@@ -48,10 +48,10 @@ class EventRocket_RSVPAttendance
 	}
 
 	public function clear_from_list( $user_id  ) {
+		$user_id = absint( $user_id );
 		$user = new EventRocket_RSVPUser( $user_id );
 		$user->clear_from_list( $this->event_id );
 
-		$user_id = absint( $user_id );
 		unset( $this->attendees[$user_id] );
 		$this->save();
 	}
