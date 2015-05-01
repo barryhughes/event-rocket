@@ -27,3 +27,27 @@ function eventrocket_rsvp_user_has_declined( $event_id = null, $user_id = null )
 	return eventrocket_rsvp()->attendance( $event_id )->is_user_not_attending( $user_id );
 }
 
+/**
+ * Returns a list of upcoming events the specified user has confirmed attendance for (if
+ * no user is specified, it defaults to the currently logged in user).
+ *
+ * @param  int   $user_id
+ * @return array
+ */
+function eventrocket_rsvp_all_upcoming_attendances( $user_id = 0 ) {
+	$user = new EventRocket_RSVPUser( $user_id );
+	return $user->confirmed_attendances();
+}
+
+/**
+ * Returns a list of upcoming events the specified user has confirmed they will not
+ * be in attendance for (if no user is specified, it defaults to the currently logged
+ * in user).
+ *
+ * @param  int   $user_id
+ * @return array
+ */
+function eventrocket_rsvp_all_upcoming_refusals( $user_id = 0 ) {
+	$user = new EventRocket_RSVPUser( $user_id );
+	return $user->confirmed_non_attendances();
+}
