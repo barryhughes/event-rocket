@@ -10,9 +10,9 @@ class EventRocket_RSVPUser
 	protected $attendance = array();
 
 
-	public function __construct( $user_id ) {
-		$this->user_id = $user_id;
-		$this->attendance = (array) get_user_meta( $this->user_id, self::ATTENDANCE );
+	public function __construct( $user_id = 0 ) {
+		$this->user_id = ( $user_id === 0 ) ? get_current_user_id() : absint( $user_id );
+		$this->attendance = (array) get_user_meta( $this->user_id, self::ATTENDANCE, true );
 	}
 
 	public function set_to_attend( $event_id ) {
@@ -49,12 +49,9 @@ class EventRocket_RSVPUser
 			// Filter out events based on the attendance flag
 			if ( $flag != $attendance_flag && -1 !== $flag ) continue;
 
-			// Get the event
-			$events = tribe_get_event( array( 'post_id' => $event_id ) );
-			$event  = isset( $events[0] ) ? $events[0] : null;
-
-			// If we could not load it (or if it has expired and $only_upcoming is true), skip
-			if ( null === $event || $this->has_expired( $event_id ) ) continue;
+			// Get the event: skip if it does not exist/has expired (only if $only_upcoming is true)
+			$event = get_post( $event_id );
+			if ( null === $event || ( $only_upcoming && $this->has_expired( $event_id ) ) ) continue;
 
 			// Otherwise, add it!
 			$event_list[] = absint( $event_id );
