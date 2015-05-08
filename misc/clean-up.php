@@ -41,7 +41,7 @@ class EventRocket_CleanUpTool
 	}
 
 	public function screen() {
-		wp_enqueue_script( 'eventrocket_cleanup', EVENTROCKET_URL . '/inc/assets/cleanup.js', 'jquery', false, true );
+		wp_enqueue_script( 'eventrocket_cleanup', EVENTROCKET_URL . '/assets/cleanup.js', 'jquery', false, true );
 		$current_data = $this->existing_data();
 		$action_url = $this->action_url();
 		$in_progress = $this->in_progress;
