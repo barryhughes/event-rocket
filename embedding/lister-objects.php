@@ -69,7 +69,7 @@ abstract class EventRocket_ObjectLister
 		foreach ( $values as $value ) {
 			$value = trim( $value );
 			if ( ! empty($value) && ! in_array( $value, $result_set ) )
-				$result_set[] = trim($value);
+				$result_set[] = $value;
 		}
 
 		return $result_set;
