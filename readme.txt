@@ -145,6 +145,7 @@ required).
 * Improve compatibility of event duplicator with other plugins using custom list tables etc
 * Add a variety of new inline template placeholders, including author and venue related tags
 * Fix bug in cleanup tool preventing proper operation (props: Richard Miller)
+* Venue embedding now supports filtering by country, city, state and zip/postal code (props to JamesWemyss for the suggestion)
 
 = 2.5 =
 * Adds simple RSVP facilities
