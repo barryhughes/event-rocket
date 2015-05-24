@@ -121,11 +121,11 @@ class EventRocket_OrganizerLister extends EventRocket_ObjectLister
 			SELECT DISTINCT
 			    organizer_meta.meta_value
 			FROM
-			    wp_posts
+			    $wpdb->posts
 			        JOIN
-			    wp_postmeta AS organizer_meta ON organizer_meta.post_id = ID
+			    $wpdb->postmeta AS organizer_meta ON organizer_meta.post_id = ID
 			        JOIN
-			    wp_postmeta AS date_meta ON date_meta.post_id = ID
+			    $wpdb->postmeta AS date_meta ON date_meta.post_id = ID
 			WHERE
 			    (organizer_meta.meta_key = '_EventOrganizerID'
 			        AND organizer_meta.meta_value > 0)
@@ -134,7 +134,7 @@ class EventRocket_OrganizerLister extends EventRocket_ObjectLister
 		";
 
 		$subquery = $wpdb->prepare( $subquery, $right_now );
-		return $where_sql . " AND wp_posts.ID IN ( $subquery ) ";
+		return $where_sql . " AND $wpdb->posts.ID IN ( $subquery ) ";
 	}
 
 	protected function get_inline_parser() {
