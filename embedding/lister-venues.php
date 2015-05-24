@@ -12,10 +12,10 @@ class EventRocket_VenueLister extends EventRocket_ObjectLister
 	protected $ignore_venues = array();
 
 	// Other conditions
-	protected $city = '';
-	protected $state_province = '';
-	protected $post_code = '';
-	protected $country = '';
+	protected $city = array();
+	protected $state_province = array();
+	protected $post_code = array();
+	protected $country = array();
 	protected $with_events = true;
 
 	// Caching
@@ -102,6 +102,7 @@ class EventRocket_VenueLister extends EventRocket_ObjectLister
 
 		$this->args_post_tax();
 		$this->args_with_events();
+		$this->args_geo_query();
 		$this->args = apply_filters( 'eventrocket_embed_venue_args', $this->args, $this->params );
 		$this->results = get_posts( $this->args );
 	}
@@ -150,6 +151,33 @@ class EventRocket_VenueLister extends EventRocket_ObjectLister
 
 		$subquery = $wpdb->prepare( $subquery, $right_now );
 		return $where_sql . " AND $wpdb->posts.ID IN ( $subquery ) ";
+	}
+
+	/**
+	 * Adds meta queries needed to restrict the result set to specific countries/states/etc.
+	 */
+	protected function args_geo_query() {
+		$meta_queries = array();
+		if ( ! isset( $this->args['meta_query'] ) ) $this->args['meta_query'] = array();
+
+		// City
+		if ( ! empty( $this->city ) )
+			$meta_queries[] = array( 'key' => '_VenueCity', 'value' => $this->city, 'compare' => 'IN' );
+
+		// State/province
+		if ( ! empty( $this->state_province ) )
+			$meta_queries[] = array( 'key' => '_VenueStateProvince', 'value' => $this->state_province, 'compare' => 'IN' );
+
+		// Country
+		if ( ! empty( $this->country ) )
+			$meta_queries[] = array( 'key' => '_VenueCountry', 'value' => $this->country, 'compare' => 'IN' );
+
+		// Postcode (broken into multiple meta queries to allow for "fuzzy" matching, ie "902*")
+		if ( ! empty( $this->post_code ) ) foreach ( $this->post_code as $postcode_match )
+			$meta_queries[] = array( 'key' => '_VenueZip', 'value' => $postcode_match, 'compare' => 'LIKE' );
+
+		// Merge in
+		$this->args['meta_query'] = array_merge( $this->args['meta_query'], $meta_queries );
 	}
 
 	protected function get_inline_parser() {
