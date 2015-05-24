@@ -51,20 +51,19 @@ abstract class EventRocket_ObjectLister
 	abstract protected function get_inline_parser();
 
 	/**
-	 * Inspect the properties array for values assigned with either the $singular or $plural
-	 * key: combine and extract the values, returning them as an array (may be empty if
+	 * Inspect the properties array for values assigned with any of the provided keys:
+	 * combines and extracts the values, returning them as an array (may be empty if
 	 * for instance no such shortcode params were supplied).
 	 *
-	 * @param $singular
-	 * @param $plural
 	 * @return array
 	 */
-	protected function plural_prop_csv( $singular, $plural ) {
-		$singular = isset( $this->params[$singular] ) ? (string) $this->params[$singular] : '';
-		$plural = isset( $this->params[$plural] ) ? (string) $this->params[$plural] : '';
-		$combined = "$singular,$plural";
+	protected function prop_from_csv() {
+		$accumulator = '';
 
-		$values = explode( ',', $combined );
+		foreach ( func_get_args() as $key )
+			$accumulator = isset( $this->params[$key] ) ? $this->params[$key] . ',' : '';
+
+		$values = explode( ',', $accumulator );
 		$result_set = array();
 
 		foreach ( $values as $value ) {
