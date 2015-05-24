@@ -61,7 +61,7 @@ abstract class EventRocket_ObjectLister
 		$accumulator = '';
 
 		foreach ( func_get_args() as $key )
-			$accumulator = isset( $this->params[$key] ) ? $this->params[$key] . ',' : '';
+			$accumulator .= isset( $this->params[$key] ) ? $this->params[$key] . ',' : '';
 
 		$values = explode( ',', $accumulator );
 		$result_set = array();
