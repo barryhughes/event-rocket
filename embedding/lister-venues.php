@@ -12,6 +12,10 @@ class EventRocket_VenueLister extends EventRocket_ObjectLister
 	protected $ignore_venues = array();
 
 	// Other conditions
+	protected $city = '';
+	protected $state_province = '';
+	protected $post_code = '';
+	protected $country = '';
 	protected $with_events = true;
 
 	// Caching
@@ -51,11 +55,22 @@ class EventRocket_VenueLister extends EventRocket_ObjectLister
 		$this->set_limit();
 		$this->set_template();
 		$this->set_with_events();
+		$this->set_geo_query();
 	}
 
 	protected function set_with_events() {
 		if ( ! isset( $this->params['with_events'] ) ) return;
 		$this->with_events = $this->is_on( $this->params['with_events'] );
+	}
+
+	/**
+	 * Allows for restriction of events by city, state/province and so on.
+	 */
+	protected function set_geo_query() {
+		$this->state_province = $this->prop_from_csv( 'state', 'states', 'province', 'provinces' );
+		$this->city           = $this->prop_from_csv( 'city', 'cities' );
+		$this->post_code      = $this->prop_from_csv( 'postcode', 'postcodes', 'zip', 'zips' );
+		$this->country        = $this->prop_from_csv( 'country', 'countries' );
 	}
 
 	/**
@@ -66,7 +81,7 @@ class EventRocket_VenueLister extends EventRocket_ObjectLister
 	 * code to collect taxonomy params in here, too, as some future point.
 	 */
 	protected function collect_post_tax_refs() {
-		$this->venues = $this->plural_prop_csv( 'venue', 'venues' );
+		$this->venues = $this->prop_from_csv( 'venue', 'venues' );
 	}
 
 	/**

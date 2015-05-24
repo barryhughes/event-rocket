@@ -66,7 +66,7 @@ class EventRocket_OrganizerLister extends EventRocket_ObjectLister
 	 * code to collect taxonomy params in here, too, as some future point.
 	 */
 	protected function collect_post_tax_refs() {
-		$this->organizers = $this->plural_prop_csv( 'organizer', 'organizers' );
+		$this->organizers = $this->prop_from_csv( 'organizer', 'organizers' );
 	}
 
 	/**

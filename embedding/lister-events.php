@@ -53,11 +53,11 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	 * for one or other - or both - and forms a single list of each.
 	 */
 	protected function collect_post_tax_refs() {
-		$this->events = $this->plural_prop_csv( 'event', 'events' );
-		$this->venues = $this->plural_prop_csv( 'venue', 'venues' );
-		$this->organizers = $this->plural_prop_csv( 'organizer', 'organizers' );
-		$this->categories = $this->plural_prop_csv( 'category', 'categories' );
-		$this->tags = $this->plural_prop_csv( 'tag', 'tags' );
+		$this->events = $this->prop_from_csv( 'event', 'events' );
+		$this->venues = $this->prop_from_csv( 'venue', 'venues' );
+		$this->organizers = $this->prop_from_csv( 'organizer', 'organizers' );
+		$this->categories = $this->prop_from_csv( 'category', 'categories' );
+		$this->tags = $this->prop_from_csv( 'tag', 'tags' );
 	}
 
 	/**
