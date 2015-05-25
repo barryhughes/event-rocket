@@ -144,9 +144,9 @@ required).
 * Enhance event duplicator tool - make it easy to define the duplicate's title, date etc and ensure taxonomy terms are also carried over
 * Improve compatibility of event duplicator with other plugins using custom list tables etc
 * Add a variety of new inline template placeholders, including author and venue related tags
-* Fix bug in cleanup tool preventing proper operation (props: Richard Miller)
+* Fix bug in cleanup tool preventing proper operation (props to Richard Miller)
 * Venue embedding now supports filtering by country, city, state and zip/postal code (props to JamesWemyss for the suggestion)
-* Embedded event engine now supports more natural use of recurring event slugs (thanks to anderscarlen on the wp forums for the idea)
+* Embedded event engine now supports more natural use of recurring event slugs (thanks to anderscarlen on the WP forums for the idea)
 
 = 2.5 =
 * Adds simple RSVP facilities
