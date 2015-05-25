@@ -287,9 +287,9 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		$condition     = '';
 
 		// Post ID include/exclude conditions
-		if ( ! empty( $include_posts ) ) $post_level .= " ( $wpdb->posts.ID IN ( $include_posts ) ";
+		if ( ! empty( $include_posts ) ) $post_level .= " $wpdb->posts.ID IN ( $include_posts ) ";
 		if ( ! empty( $include_posts ) && ! empty( $exclude_posts ) ) $post_level .= " AND ";
-		if ( ! empty( $exclude_posts ) ) $post_level .= " ( $wpdb->posts.ID NOT IN ( $exclude_posts ) ";
+		if ( ! empty( $exclude_posts ) ) $post_level .= " $wpdb->posts.ID NOT IN ( $exclude_posts ) ";
 		if ( ! empty( $include_posts ) || ! empty( $exclude_posts ) ) $post_level = " ( $post_level ) ";
 
 		// Parent ID include/exclude conditions
