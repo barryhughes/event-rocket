@@ -146,6 +146,7 @@ required).
 * Add a variety of new inline template placeholders, including author and venue related tags
 * Fix bug in cleanup tool preventing proper operation (props: Richard Miller)
 * Venue embedding now supports filtering by country, city, state and zip/postal code (props to JamesWemyss for the suggestion)
+* Embedded event engine now supports more natural use of recurring event slugs (thanks to anderscarlen on the wp forums for the idea)
 
 = 2.5 =
 * Adds simple RSVP facilities
