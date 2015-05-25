@@ -50,6 +50,7 @@ class EventRocket_RSVPUser
 			if ( $flag != $attendance_flag && -1 !== $flag ) continue;
 
 			// Get the event: skip if it does not exist/has expired (only if $only_upcoming is true)
+			if ( absint( $event_id ) <= 0 ) continue;
 			$event = get_post( $event_id );
 			if ( null === $event || ( $only_upcoming && $this->has_expired( $event_id ) ) ) continue;
 
