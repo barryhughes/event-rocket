@@ -3,6 +3,7 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 {
 	// Positive posts/terms to query against
 	protected $events = array();
+	protected $parent_events = array();
 	protected $venues = array();
 	protected $organizers = array();
 	protected $categories = array();
@@ -10,13 +11,14 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 
 	// Negative posts/terms to query against
 	protected $ignore_events = array();
+	protected $ignore_parent_events = array();
 	protected $ignore_venues = array();
 	protected $ignore_organizers = array();
 	protected $ignore_categories = array();
 	protected $ignore_tags = array();
 
 	// Recurring event handling
-	protected $children_of = array();
+	protected $recurring_events = array();
 
 	// Miscellaneous conditions
 	protected $tax_logic = 'OR';
@@ -83,6 +85,7 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	protected function parse_post_tax_refs() {
 		$this->parse_post_refs( $this->events );
 		$this->parse_post_refs( $this->ignore_events );
+		$this->rebuild_event_lists();
 
 		$this->parse_post_refs( $this->venues, Tribe__Events__Main::VENUE_POST_TYPE );
 		$this->parse_post_refs( $this->ignore_venues, Tribe__Events__Main::VENUE_POST_TYPE );
@@ -99,6 +102,23 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		// Default to an "OR" relationship between different tax queries, but allow for "AND"
 		if ( isset( $this->params['logic'] ) && 'and' === strtolower( $this->params['logic'] ) )
 			$this->tax_logic = 'AND';
+	}
+
+	/**
+	 * Copies recurring event parent IDs into lists of their own.
+	 */
+	protected function rebuild_event_lists() {
+		// Inclusive
+		foreach ( $this->events as $index => $event_id ) {
+			if ( ! in_array( $event_id, $this->recurring_events ) ) continue;
+			$this->parent_events[] = $event_id;
+		}
+
+		// Exclusive
+		foreach ( $this->ignore_events as $index => $event_id ) {
+			if ( ! in_array( $event_id, $this->recurring_events ) ) continue;
+			$this->ignore_parent_events[] = $event_id;
+		}
 	}
 
 	/**
@@ -158,8 +178,10 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		// If this specific event is not in fact recurring in nature, let's do nothing more
 		if ( ! tribe_is_recurring_event( $event->ID ) ) return $event;
 
-		// Add parent ID to list
-		$this->children_of[] = $event->post_parent ? $event->post_parent : $event->ID;
+		// Add to list of recurring events before returning parent ID
+		$rec_id = $event->post_parent ? $event->post_parent : $event->ID;
+		$this->recurring_events[] = $rec_id;
+		return $event;
 	}
 
 	/**
@@ -248,7 +270,7 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	protected function args_post_tax() {
 		$tax_args = array();
 
-		add_filter( 'posts_where', array( $this, 'post_filtering' ), 50, 2 );
+		add_filter( 'posts_where', array( $this, 'event_filtering' ), 50, 2 );
 
 		if ( ! empty( $this->categories ) )
 			$this->build_tax_args( $tax_args, Tribe__Events__Main::TAXONOMY, $this->categories );
@@ -273,34 +295,40 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	 * post__not_in, post_parent__in arguments, etc, however in anything but simple cases
 	 * this fails - and so we implement our own where clause to handle this.
 	 */
-	public function post_filtering( $where_sql ) {
+	public function event_filtering( $where_sql ) {
 		global $wpdb;
 
 		// We don't want this to impact other queries that might run later
 		remove_filter( 'posts_where', array( $this, 'post_filtering' ), 50 );
 
-		$include_posts = join( ' , ', $this->events );
-		$exclude_posts = join( ' , ', $this->ignore_events );
-		$children_of   = join( ' , ', $this->children_of );
-		$post_level    = '';
-		$parent_level  = '';
-		$condition     = '';
+		// Refine event lists to
+		$include_posts    = join( ' , ', $this->events );
+		$exclude_posts    = join( ' , ', $this->ignore_events );
+		$include_children = join( ' , ', $this->parent_events );
+		$exclude_children = join( ' , ', $this->ignore_parent_events );
+		$positives = '';
+		$negatives = '';
+		$condition = '';
 
-		// Post ID include/exclude conditions
-		if ( ! empty( $include_posts ) ) $post_level .= " $wpdb->posts.ID IN ( $include_posts ) ";
-		if ( ! empty( $include_posts ) && ! empty( $exclude_posts ) ) $post_level .= " AND ";
-		if ( ! empty( $exclude_posts ) ) $post_level .= " $wpdb->posts.ID NOT IN ( $exclude_posts ) ";
-		if ( ! empty( $include_posts ) || ! empty( $exclude_posts ) ) $post_level = " ( $post_level ) ";
+		// Positives/inclusions
+		if ( ! empty( $include_posts ) ) $positives .= " $wpdb->posts.ID IN ( $include_posts ) ";
+		if ( ! empty( $include_posts ) && ! empty( $include_children ) ) $positives .= " OR ";
+		if ( ! empty( $include_children ) ) $positives .= " $wpdb->posts.post_parent IN ( $include_children ) ";
+		if ( ! empty( $include_posts ) || ! empty( $include_children ) ) $positives = " ( $positives ) ";
 
-		// Parent ID include/exclude conditions
-		if ( ! empty( $children_of ) ) $parent_level .= " ( $wpdb->posts.post_parent IN ( $children_of ) ) ";
+		// Negatives/exclusions
+		if ( ! empty( $exclude_posts ) ) $negatives .= " $wpdb->posts.ID NOT IN ( $exclude_posts ) ";
+		if ( ! empty( $exclude_posts ) && ! empty( $exclude_children ) ) $negatives .= " AND ";
+		if ( ! empty( $exclude_children ) ) $negatives .= " $wpdb->posts.post_parent NOT IN ( $exclude_children ) ";
+		if ( ! empty( $exclude_posts ) || ! empty( $exclude_children ) ) $negatives = " ( $negatives ) ";
 
 		// Join both sets of conditions
-		if ( ! empty( $post_level ) && ! empty( $parent_level ) ) $condition = " ( $post_level OR $parent_level ) ";
-		elseif ( ! empty( $post_level ) && empty( $parent_level ) ) $condition = $post_level;
-		elseif ( ! empty( $parent_level ) && empty( $post_level ) ) $condition = $parent_level;
+		if ( ! empty( $positives ) && ! empty( $negatives ) ) $condition = " ( $positives AND $negatives ) ";
+		elseif ( ! empty( $positives ) && empty( $negatives ) ) $condition = $positives;
+		elseif ( ! empty( $negatives ) && empty( $positives ) ) $condition = $negatives;
 
-		return " $where_sql AND $condition ";
+		// If we have a condition to add, let's add it!
+		return empty( $condition ) ? $where_sql : " $where_sql AND $condition ";
 	}
 
 	/**
