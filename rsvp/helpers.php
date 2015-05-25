@@ -51,3 +51,19 @@ function eventrocket_rsvp_all_upcoming_refusals( $user_id = 0 ) {
 	$user = new EventRocket_RSVPUser( $user_id );
 	return $user->confirmed_non_attendances();
 }
+
+/**
+ * Evaluates $value and determines if it represents a positive or negative.
+ *
+ * @param  mixed $value
+ * @return boolean
+ */
+function eventrocket_yes( $value ) {
+	$pos_terms = apply_filters( 'eventrocket_positive_strs', array( 'on', 'true', 'yes', 'y' ) );
+
+	if ( in_array( strtolower( $value ), $pos_terms ) ) return true;
+	if ( is_numeric( $value ) && $value ) return true;
+	if ( is_bool( $value ) ) return $value;
+
+	return false;
+}

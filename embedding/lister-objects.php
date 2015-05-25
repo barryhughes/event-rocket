@@ -283,11 +283,7 @@ abstract class EventRocket_ObjectLister
 	 * @return bool
 	 */
 	protected function is_on( $param ) {
-		$on_vals = apply_filters( 'eventrocket_embedded_posts_positive_strs', array( 'on', 'true', 'yes', 'y' ) );
-
-		if ( in_array( strtolower( $param ), $on_vals ) ) return true;
-		if ( is_numeric( $param ) && $param ) return true;
-		return false;
+		return eventrocket_yes( $param );
 	}
 
 	/**
