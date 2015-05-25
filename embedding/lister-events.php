@@ -15,6 +15,9 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	protected $ignore_categories = array();
 	protected $ignore_tags = array();
 
+	// Recurring event handling
+	protected $children_of = array();
+
 	// Miscellaneous conditions
 	protected $tax_logic = 'OR';
 	protected $from = '';
@@ -133,6 +136,33 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	}
 
 	/**
+	 * We override the parent load_post_by_slug() method in order to better support recurring
+	 * events.
+	 *
+	 * It appears to an end user that a recurring event has a slug like "my-event", as they
+	 * have URLs in the form "example.com/events/my-event/(date)". However, the true slug/post
+	 * name is actually more like "my-event-yyyy-mm-dd".
+	 *
+	 * This causes a bit of a disconnect which this method tries to solve.
+	 *
+	 * @param  $slug
+	 * @param  $post_type
+	 * @return array
+	 */
+	protected function load_post_by_slug( $slug, $post_type ) {
+		$event = parent::load_post_by_slug( $slug, $post_type );
+
+		// If PRO is not activated/there are no recurrence facilities, let's do nothing more
+		if ( ! function_exists( 'tribe_is_recurring_event' ) ) return $event;
+
+		// If this specific event is not in fact recurring in nature, let's do nothing more
+		if ( ! tribe_is_recurring_event( $event->ID ) ) return $event;
+
+		// Add parent ID to list
+		$this->children_of[] = $event->post_parent ? $event->post_parent : $event->ID;
+	}
+
+	/**
 	 * Looks for time (from/to) parameters, ensuring they are in a form we like.
 	 */
 	protected function set_time_constraints() {
@@ -218,8 +248,7 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	protected function args_post_tax() {
 		$tax_args = array();
 
-		if ( ! empty( $this->events ) ) $this->args['post__in'] = $this->events;
-		if ( ! empty( $this->ignore_events ) ) $this->args['post__not_in'] = $this->ignore_events;
+		add_filter( 'posts_where', array( $this, 'post_filtering' ), 50, 2 );
 
 		if ( ! empty( $this->categories ) )
 			$this->build_tax_args( $tax_args, Tribe__Events__Main::TAXONOMY, $this->categories );
@@ -237,6 +266,41 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 			$tax_args['relation'] = $this->tax_logic;
 			$this->args['tax_query'] = $tax_args;
 		}
+	}
+
+	/**
+	 * Including and excluding normal and recurring events could be done with post__in,
+	 * post__not_in, post_parent__in arguments, etc, however in anything but simple cases
+	 * this fails - and so we implement our own where clause to handle this.
+	 */
+	public function post_filtering( $where_sql ) {
+		global $wpdb;
+
+		// We don't want this to impact other queries that might run later
+		remove_filter( 'posts_where', array( $this, 'post_filtering' ), 50 );
+
+		$include_posts = join( ' , ', $this->events );
+		$exclude_posts = join( ' , ', $this->ignore_events );
+		$children_of   = join( ' , ', $this->children_of );
+		$post_level    = '';
+		$parent_level  = '';
+		$condition     = '';
+
+		// Post ID include/exclude conditions
+		if ( ! empty( $include_posts ) ) $post_level .= " ( $wpdb->posts.ID IN ( $include_posts ) ";
+		if ( ! empty( $include_posts ) && ! empty( $exclude_posts ) ) $post_level .= " AND ";
+		if ( ! empty( $exclude_posts ) ) $post_level .= " ( $wpdb->posts.ID NOT IN ( $exclude_posts ) ";
+		if ( ! empty( $include_posts ) || ! empty( $exclude_posts ) ) $post_level = " ( $post_level ) ";
+
+		// Parent ID include/exclude conditions
+		if ( ! empty( $children_of ) ) $parent_level .= " ( $wpdb->posts.post_parent IN ( $children_of ) ) ";
+
+		// Join both sets of conditions
+		if ( ! empty( $post_level ) && ! empty( $parent_level ) ) $condition = " ( $post_level OR $parent_level ) ";
+		elseif ( ! empty( $post_level ) && empty( $parent_level ) ) $condition = $post_level;
+		elseif ( ! empty( $parent_level ) && empty( $post_level ) ) $condition = $parent_level;
+
+		return " $where_sql AND $condition ";
 	}
 
 	/**

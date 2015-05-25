@@ -311,24 +311,35 @@ abstract class EventRocket_ObjectLister
 	 * @param string $type
 	 */
 	protected function parse_post_refs( &$list, $type = Tribe__Events__Main::POSTTYPE ) {
+		$new_list = array();
+
 		foreach ( $list as $index => $reference ) {
 			$this->typify( $reference );
 			if ( ! is_string( $reference ) ) continue;
 
 			$event = $this->load_post_by_slug( $reference, $type );
 
-			if ( empty( $event ) || ! is_array( $event ) ) $list[$index] = 0;
-			else $list[$index] = $event[0]->ID;
+			if ( $event ) $new_list[$index] = $event->ID;
 		}
+
+		$list = $new_list;
 	}
 
+	/**
+	 * @param  $slug
+	 * @param  $post_type
+	 * @return array
+	 */
 	protected function load_post_by_slug( $slug, $post_type ) {
-		return get_posts( array(
+		$event_set = get_posts( array(
 			'name'           => $slug,
 			'post_type'      => $post_type,
 			'eventDisplay'   => 'custom',
 			'posts_per_page' => 1
 		) );
+
+		if ( empty( $event_set ) ) return false;
+		return current( $event_set );
 	}
 
 	/**
