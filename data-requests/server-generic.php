@@ -9,7 +9,8 @@ abstract class EventRocket_GenericDataRequests {
 		'category'   => '',
 		'categories' => '',
 		'tag'        => '',
-		'tags'       => ''
+		'tags'       => '',
+		'limit'      => '-1'
 	);
 
 
@@ -47,6 +48,10 @@ abstract class EventRocket_GenericDataRequests {
 			case 'tag':
 			case 'tags':
 				return preg_replace( '#[^a-zA-Z0-9\.-_ ]#', '', $value );
+			break;
+
+			case 'limit':
+				return absint( $value );
 			break;
 		}
 
