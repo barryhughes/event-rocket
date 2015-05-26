@@ -147,6 +147,7 @@ required).
 * Fix bug in cleanup tool preventing proper operation (props to Richard Miller)
 * Venue embedding now supports filtering by country, city, state and zip/postal code (props to JamesWemyss for the suggestion)
 * Embedded event engine now supports more natural use of recurring event slugs (thanks to anderscarlen on the WP forums for the idea)
+* New shortcodes to provide iCal and CSV download links (props to @louking for the idea)
 
 = 2.5 =
 * Adds simple RSVP facilities
