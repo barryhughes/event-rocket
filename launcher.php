@@ -27,6 +27,7 @@ function eventrocket_launch() {
 	}
 
 	require_once EVENTROCKET_INC . '/embedding/embedding.php';
+	require_once EVENTROCKET_INC . '/data-requests/data-requests.php';
 	require_once EVENTROCKET_INC . '/admin/admin.php';
 	require_once EVENTROCKET_INC . '/misc/load.php';
 	require_once EVENTROCKET_INC . '/rsvp/rsvp.php';
