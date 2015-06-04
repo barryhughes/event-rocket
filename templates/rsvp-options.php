@@ -10,6 +10,7 @@
  *
  * @var bool $enabled
  * @var bool $restricted
+ * @var bool $show_attendees
  * @var EventRocket_RSVPAttendance $attendance
  */
 
@@ -44,5 +45,9 @@ defined( 'ABSPATH' ) or die();
 	<tr>
 		<td> <?php _e( 'Restrict to logged in users:', 'eventrocket' ) ?> </td>
 		<td> <input type="checkbox" name="<?php esc_attr_e( EventRocket_RSVPManager::RESTRICT_RSVP ) ?>" <?php checked( $restricted ) ?>/> </td>
+	</tr>
+	<tr>
+		<td> <?php _e( 'Show attendees:', 'eventrocket' ) ?> </td>
+		<td> <input type="checkbox" name="<?php esc_attr_e( EventRocket_RSVPManager::SHOW_ATTENDEES_RSVP ) ?>" <?php checked( $show_attendees ) ?>/> </td>
 	</tr>
 </table>

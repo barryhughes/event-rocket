@@ -3,6 +3,7 @@ class EventRocket_RSVPManager
 {
 	const ENABLE_RSVP   = '_eventrocket_enable_rsvp';
 	const RESTRICT_RSVP = '_eventrocket_restrict_rsvp';
+	const SHOW_ATTENDEES_RSVP = '_eventrocket_show_attendees_rsvp';
 
 	/** @var  EventRocket_AttendeeList */
 	protected $attendee_list;
@@ -29,6 +30,7 @@ class EventRocket_RSVPManager
 
 		$enabled    = get_post_meta( $post_id, self::ENABLE_RSVP, true );
 		$restricted = get_post_meta( $post_id, self::RESTRICT_RSVP, true );
+		$show_attendees = get_post_meta( $post_id, self::SHOW_ATTENDEES_RSVP, true );
 		$attendance = $this->attendance( $post_id );
 
 		include EVENTROCKET_INC . '/templates/rsvp-options.php';
@@ -46,9 +48,11 @@ class EventRocket_RSVPManager
 	public function save_options( $event_id, array $data ) {
 		$enable   = isset( $data[self::ENABLE_RSVP] ) && $data[self::ENABLE_RSVP];
 		$restrict = isset( $data[self::RESTRICT_RSVP] ) && $data[self::RESTRICT_RSVP];
+		$show_attendees = isset( $data[self::SHOW_ATTENDEES_RSVP] ) && $data[self::SHOW_ATTENDEES_RSVP];
 
 		update_post_meta( $event_id, self::ENABLE_RSVP, $enable );
 		update_post_meta( $event_id, self::RESTRICT_RSVP, $restrict );
+		update_post_meta( $event_id, self::SHOW_ATTENDEES_RSVP, $show_attendees );
 	}
 
 	/**
