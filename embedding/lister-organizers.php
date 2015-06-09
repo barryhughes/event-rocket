@@ -66,7 +66,7 @@ class EventRocket_OrganizerLister extends EventRocket_ObjectLister
 	 * code to collect taxonomy params in here, too, as some future point.
 	 */
 	protected function collect_post_tax_refs() {
-		$this->organizers = $this->plural_prop_csv( 'organizer', 'organizers' );
+		$this->organizers = $this->prop_from_csv( 'organizer', 'organizers' );
 	}
 
 	/**
@@ -81,7 +81,7 @@ class EventRocket_OrganizerLister extends EventRocket_ObjectLister
 	protected function query() {
 		$this->enter_blog();
 		$this->args = array(
-			'post_type' => TribeEvents::ORGANIZER_POST_TYPE,
+			'post_type' => Tribe__Events__Main::ORGANIZER_POST_TYPE,
 			'suppress_filters' => false // We may need to modify the where clause
 		);
 
@@ -111,7 +111,7 @@ class EventRocket_OrganizerLister extends EventRocket_ObjectLister
 
 	public function add_where_events_clause( $where_sql ) {
 		global $wpdb;
-		$right_now = date_i18n( TribeDateUtils::DBDATETIMEFORMAT );
+		$right_now = date_i18n( Tribe__Events__Date_Utils::DBDATETIMEFORMAT );
 
 		// We don't want this filter to be reused repeatedly
 		remove_filter( 'posts_where', array( $this, 'add_where_events_clause' ) );
@@ -121,11 +121,11 @@ class EventRocket_OrganizerLister extends EventRocket_ObjectLister
 			SELECT DISTINCT
 			    organizer_meta.meta_value
 			FROM
-			    wp_posts
+			    $wpdb->posts
 			        JOIN
-			    wp_postmeta AS organizer_meta ON organizer_meta.post_id = ID
+			    $wpdb->postmeta AS organizer_meta ON organizer_meta.post_id = ID
 			        JOIN
-			    wp_postmeta AS date_meta ON date_meta.post_id = ID
+			    $wpdb->postmeta AS date_meta ON date_meta.post_id = ID
 			WHERE
 			    (organizer_meta.meta_key = '_EventOrganizerID'
 			        AND organizer_meta.meta_value > 0)
@@ -134,7 +134,7 @@ class EventRocket_OrganizerLister extends EventRocket_ObjectLister
 		";
 
 		$subquery = $wpdb->prepare( $subquery, $right_now );
-		return $where_sql . " AND wp_posts.ID IN ( $subquery ) ";
+		return $where_sql . " AND $wpdb->posts.ID IN ( $subquery ) ";
 	}
 
 	protected function get_inline_parser() {

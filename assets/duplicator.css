@@ -1,0 +1,81 @@
+#eventrocket_duplication_dialog {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	text-align: center;
+	z-index: 100000; /* exceed 99999, as used by the WP menu elements */
+}
+
+#eventrocket_duplication_dialog > .back-screen {
+	background: black;
+	height: 100%;
+	opacity: 0.84;
+	position: relative;
+	width: 100%;
+}
+
+#eventrocket_duplication_dialog > .modal-form {
+	height: 100%;
+	position: absolute;
+	width: 100%;
+	z-index: 10;
+}
+
+#eventrocket_duplication_dialog > .modal-form > form {
+	background:#fafafa;
+	box-shadow: 0 0 4px #151515;
+	display: block;
+	height: 20rem;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 30rem;
+	text-align: left;
+}
+
+#eventrocket_duplication_dialog label {
+	display: block;
+}
+
+#eventrocket_duplication_dialog > .modal-form div.title {
+	background: black;
+	color: white;
+	font-weight: bold;
+	margin: 0;
+	padding: 0.06rem 0;
+	width: 100%;
+}
+
+#eventrocket_duplication_dialog > .modal-form div.title span.close-btn {
+	color: #fff;
+	float: right;
+	opacity: 0;
+	transition: opacity 360ms
+}
+
+#eventrocket_duplication_dialog > .modal-form form:hover div.title span.close-btn {
+	opacity: 0.66;
+}
+
+#eventrocket_duplication_dialog > .modal-form form:hover div.title span.close-btn:hover {
+	cursor: pointer;
+	opacity: 1;
+}
+
+#eventrocket_duplication_dialog > .modal-form p {
+	padding: 0 2rem;
+}
+
+#eventrocket_duplication_dialog p.action-btns button {
+	margin: 0 0.12rem;
+}
+
+#eventrocket_duplication_dialog #duplicate_start {
+	position: relative;
+	z-index: 200000; /* Encourage the datepicker dialog to use an appropriate z-index */
+}

@@ -4,11 +4,11 @@ Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes, The Events Calendar, duplicate, rsvp
 Requires at least: 4.0
 Tested up to: 4.0
-Stable tag: 2.5.2
+Stable tag: 3.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Experimental extension for The Events Calendar and Events Calendar PRO adding shortcodes, front page events and more.
+Experimental extensions for The Events Calendar and Events Calendar PRO adding shortcodes, front page events and more to really help your event-based website blast off!
 
 == Description ==
 
@@ -20,23 +20,20 @@ This is an add-on that builds on top of the following wonderful plugins:
 
 * [The Events Calendar](http://wordpress.org/plugins/the-events-calendar/) (required)
 * [Events Calendar PRO](http://tri.be/shop/wordpress-events-calendar-pro/) (optional but recommended)
-* Version 3.8 or greater for both of the above are suggested
+* Version 3.10 or greater for both of the above are suggested
 
 So if you don't already have them installed it behooves you to do so now. This plugin then adds the following power-ups:
 
-* Event widgets can be deployed as shortcodes (PRO users can position the calendar widget right inside pages and posts,
-  for instance)
-* Embed events *anywhere* using the `[event_embed]` shortcode - includes powerful cross-blog capabilities and
-  support for special conditions - plus an API to let developers leverage this flexible system programmatically
-* Venues and organizers can also be embedded anywhere (new in 2.4)
-* Want to place the main events page on the front page of your blog? Event Rocket makes it easy to do so
-* Precise editing of venue coordinates becomes possible for when street addresses just don't cut it
-* A 404 Laser has been added to help blast away pesky 404 issues
-* Clean up and remove events data if you decide you don't need it any longer
-* Duplicate events with a single click
-* Simple RSVP system - allow users to indicate if they will or will not attend an event
+* Embed events *anywhere* using the `[event_embed]` shortcode
+* Venues and organizers can also be embedded anywhere
+* Place the main events page on the front page of your blog
+* Precise editing of venue coordinates (sometimes street addresses just don't cut it!)
+* Clean up and remove events data if you decide you don't need them any longer
+* Duplicate events with a single click and optionally set the duplicated event's new date
+* Simple but very flexible RSVP system - allow users to indicate if they will or will not attend an event
 
-Check out the FAQs and screenshots for more examples.
+Check out the FAQs and screenshots for more examples. A wealth of information and context as to why things work the
+way they do can also be found within the forum.
 
 == Installation ==
 
@@ -70,10 +67,10 @@ and is often worth looking at if you need more information.
 
 = What are the shortcodes used to embed different widgets in pages/posts? =
 
-* `[event_rocket_calendar]` embeds the calendar widget
-* `[event_rocket_list]` embeds the list widget
-* `[event_rocket_countdown]` embeds the event countdown widget
-* `[event_rocket_venue]` embeds the featured venue widget
+* `[event_rocket_list]` embeds the list widget _(should be considered deprecated if you are an ECP user)_
+* `[event_rocket_calendar]` embeds the calendar widget _(deprecated)_
+* `[event_rocket_countdown]` embeds the event countdown widget _(deprecated)_
+* `[event_rocket_venue]` embeds the featured venue widget _(deprecated)_
 
 Please note however that if you are not using Events Calendar PRO then any widgets specific to that plugin (such as the
 countdown and calendar widget) will *not* be available.
@@ -96,21 +93,6 @@ examples of acceptable ways to pass this information:
 * `[event_rocket_countdown id="789"]` this time the ID relates to the event
 * `[event_rocket_countdown event_id="789"]` again you can be more explicit if you wish
 
-= How do I specify a category (when embedding the list widget)? =
-
-The list widget allows you to specify a category of events. This is also possible via the corresponding shortcode,
-simply do this:
-
-`[event_rocket_list category="987"]`
-
-Where 987 would be replaced with the actual category ID you wish to use.
-
-= How can I make the countdown widget display seconds? =
-
-You can let it know you want the seconds to be displayed by using the `show_seconds` attribute, something like this:
-
-`[event_rocket_countdown id="789" show_seconds="true"]`
-
 = How can I cleanup events data? =
 
 A new menu option will appear in the WordPress _tools_ menu labelled 'Cleanup events data' - by default this *only*
@@ -128,7 +110,7 @@ _restrict to logged in users_ option, otherwise you run the potential of dealing
 == Screenshots ==
 
 1. Here you can see the new _Main Events Page_ entry in the Reading Settings screen.
-2. Example of embedding a widget - in this case, the countdown widget - within a page or post.
+2. Duplicating an event - simply click the duplicate link in the admin events list and this convenient modal window appears
 3. The actual output with the countdown widget embedded in the page. A great example as it also shows the sort of flaws
 in terms of styling that can occur theme to theme (ie, to make things super-seamless some CSS knowledge is going to be
 required).
@@ -139,11 +121,17 @@ required).
 
 == Changelog ==
 
-= 2.5.2 =
-* Fix bug relating to the obtain() method of the event_embed object (with thanks to @makcooney for highlighting this)
-
-= 2.5.1 =
-* Fix event cleanup utility
+= 3.0 =
+* Min requirements bump: PHP 5.3, TEC 3.10, WP 4.0 all now expected
+* Enhance event duplicator tool - make it easy to define the duplicate's title, date etc and ensure taxonomy terms are also carried over
+* Improve compatibility of event duplicator with other plugins using custom list tables etc
+* Add a variety of new inline template placeholders, including author and venue related tags
+* Fix bug in cleanup tool preventing proper operation (props to Richard Miller)
+* Venue embedding now supports filtering by country, city, state and zip/postal code (props to JamesWemyss for the suggestion)
+* Embedded event engine now supports more natural use of recurring event slugs (thanks to anderscarlen on the WP forums for the idea)
+* New shortcodes to provide iCal and CSV download links (props to @louking for the idea)
+* Improvements to the RSVP system - it is now easier (and more efficient) to retrieve user-by-user attendance information
+* Shortcodes used to embed Events Calendar PRO widgets are now deprecated as this facility is now provided by ECP itself
 
 = 2.5 =
 * Adds simple RSVP facilities

@@ -17,8 +17,8 @@ class EventRocket_EmbedEventsShortcode
 	 * the eventrocket_embed_events_shortcode_name filter.
 	 */
 	public function __construct() {
-		$shortcode = apply_filters( 'eventrocket_embed_events_shortcode_name', 'event_embed' );
-		add_shortcode( $shortcode, array( $this, 'embed' ) );
+		$shortcodes = (array) apply_filters( 'eventrocket_embed_events_shortcode_name', array( 'event_embed', 'embed_event' ) );
+		foreach ( $shortcodes as $shortcode ) add_shortcode( $shortcode, array( $this, 'embed' ) );
 	}
 
 	/**

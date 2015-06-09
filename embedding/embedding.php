@@ -24,8 +24,8 @@ require_once EVENTROCKET_INC . '/embedding/embed-organizers.php';
  * be registered with WordPress. If PRO *is* enabled, the PRO list widget supercedes the
  * core equivalent.
  */
-new EventRocket_WidgetShortcodes( 'TribeEventsMiniCalendarWidget', 'event_rocket_calendar' );
-new EventRocket_WidgetShortcodes( 'TribeEventsListWidget', 'event_rocket_list' );
-new EventRocket_WidgetShortcodes( 'TribeEventsAdvancedListWidget', 'event_rocket_list' );
-new EventRocket_WidgetShortcodes( 'TribeCountdownWidget', 'event_rocket_countdown' );
-new EventRocket_WidgetShortcodes( 'TribeVenueWidget', 'event_rocket_venue' );
+new EventRocket_WidgetShortcodes( 'Tribe__Events__Pro__Mini_Calendar_Widget', 'event_rocket_calendar' );
+new EventRocket_WidgetShortcodes( 'Tribe__Events__List_Widget', 'event_rocket_list' );
+new EventRocket_WidgetShortcodes( 'Tribe__Events__Pro__Advanced_List_Widget', 'event_rocket_list' );
+new EventRocket_WidgetShortcodes( 'Tribe__Events__Pro__Countdown_Widget', 'event_rocket_countdown' );
+new EventRocket_WidgetShortcodes( 'Tribe__Events__Pro__Venue_Widget', 'event_rocket_venue' );

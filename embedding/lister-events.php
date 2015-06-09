@@ -3,6 +3,7 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 {
 	// Positive posts/terms to query against
 	protected $events = array();
+	protected $parent_events = array();
 	protected $venues = array();
 	protected $organizers = array();
 	protected $categories = array();
@@ -10,16 +11,19 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 
 	// Negative posts/terms to query against
 	protected $ignore_events = array();
+	protected $ignore_parent_events = array();
 	protected $ignore_venues = array();
 	protected $ignore_organizers = array();
 	protected $ignore_categories = array();
 	protected $ignore_tags = array();
 
+	// Recurring event handling
+	protected $recurring_events = array();
+
 	// Miscellaneous conditions
 	protected $tax_logic = 'OR';
 	protected $from = '';
 	protected $to = '';
-	protected $limit = 20;
 	protected $template = '';
 	protected $order = 'ASC';
 	protected $where = '';
@@ -39,6 +43,7 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		$this->parse_post_tax_refs();
 		$this->set_time_constraints();
 		$this->set_limit();
+		$this->set_author();
 		$this->set_template();
 		$this->set_fallbacks();
 		$this->set_order();
@@ -53,11 +58,11 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	 * for one or other - or both - and forms a single list of each.
 	 */
 	protected function collect_post_tax_refs() {
-		$this->events = $this->plural_prop_csv( 'event', 'events' );
-		$this->venues = $this->plural_prop_csv( 'venue', 'venues' );
-		$this->organizers = $this->plural_prop_csv( 'organizer', 'organizers' );
-		$this->categories = $this->plural_prop_csv( 'category', 'categories' );
-		$this->tags = $this->plural_prop_csv( 'tag', 'tags' );
+		$this->events = $this->prop_from_csv( 'event', 'events' );
+		$this->venues = $this->prop_from_csv( 'venue', 'venues' );
+		$this->organizers = $this->prop_from_csv( 'organizer', 'organizers' );
+		$this->categories = $this->prop_from_csv( 'category', 'categories' );
+		$this->tags = $this->prop_from_csv( 'tag', 'tags' );
 	}
 
 	/**
@@ -80,15 +85,16 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	protected function parse_post_tax_refs() {
 		$this->parse_post_refs( $this->events );
 		$this->parse_post_refs( $this->ignore_events );
+		$this->rebuild_event_lists();
 
-		$this->parse_post_refs( $this->venues, TribeEvents::VENUE_POST_TYPE );
-		$this->parse_post_refs( $this->ignore_venues, TribeEvents::VENUE_POST_TYPE );
+		$this->parse_post_refs( $this->venues, Tribe__Events__Main::VENUE_POST_TYPE );
+		$this->parse_post_refs( $this->ignore_venues, Tribe__Events__Main::VENUE_POST_TYPE );
 
-		$this->parse_post_refs( $this->organizers, TribeEvents::ORGANIZER_POST_TYPE );
-		$this->parse_post_refs( $this->ignore_organizers, TribeEvents::ORGANIZER_POST_TYPE );
+		$this->parse_post_refs( $this->organizers, Tribe__Events__Main::ORGANIZER_POST_TYPE );
+		$this->parse_post_refs( $this->ignore_organizers, Tribe__Events__Main::ORGANIZER_POST_TYPE );
 
-		$this->parse_tax_refs( $this->categories, TribeEvents::TAXONOMY );
-		$this->parse_tax_refs( $this->ignore_categories, TribeEvents::TAXONOMY );
+		$this->parse_tax_refs( $this->categories, Tribe__Events__Main::TAXONOMY );
+		$this->parse_tax_refs( $this->ignore_categories, Tribe__Events__Main::TAXONOMY );
 
 		$this->parse_tax_refs( $this->tags, 'post_tag' );
 		$this->parse_tax_refs( $this->ignore_tags, 'post_tag' );
@@ -96,6 +102,23 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		// Default to an "OR" relationship between different tax queries, but allow for "AND"
 		if ( isset( $this->params['logic'] ) && 'and' === strtolower( $this->params['logic'] ) )
 			$this->tax_logic = 'AND';
+	}
+
+	/**
+	 * Copies recurring event parent IDs into lists of their own.
+	 */
+	protected function rebuild_event_lists() {
+		// Inclusive
+		foreach ( $this->events as $index => $event_id ) {
+			if ( ! in_array( $event_id, $this->recurring_events ) ) continue;
+			$this->parent_events[] = $event_id;
+		}
+
+		// Exclusive
+		foreach ( $this->ignore_events as $index => $event_id ) {
+			if ( ! in_array( $event_id, $this->recurring_events ) ) continue;
+			$this->ignore_parent_events[] = $event_id;
+		}
 	}
 
 	/**
@@ -130,6 +153,35 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 				}
 			}
 		}
+	}
+
+	/**
+	 * We override the parent load_post_by_slug() method in order to better support recurring
+	 * events.
+	 *
+	 * It appears to an end user that a recurring event has a slug like "my-event", as they
+	 * have URLs in the form "example.com/events/my-event/(date)". However, the true slug/post
+	 * name is actually more like "my-event-yyyy-mm-dd".
+	 *
+	 * This causes a bit of a disconnect which this method tries to solve.
+	 *
+	 * @param  $slug
+	 * @param  $post_type
+	 * @return array
+	 */
+	protected function load_post_by_slug( $slug, $post_type ) {
+		$event = parent::load_post_by_slug( $slug, $post_type );
+
+		// If PRO is not activated/there are no recurrence facilities, let's do nothing more
+		if ( ! function_exists( 'tribe_is_recurring_event' ) ) return $event;
+
+		// If this specific event is not in fact recurring in nature, let's do nothing more
+		if ( ! tribe_is_recurring_event( $event->ID ) ) return $event;
+
+		// Add to list of recurring events before returning parent ID
+		$rec_id = $event->post_parent ? $event->post_parent : $event->ID;
+		$this->recurring_events[] = $rec_id;
+		return $event;
 	}
 
 	/**
@@ -199,10 +251,11 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	 */
 	protected function query() {
 		$this->enter_blog();
-		$this->args = array( 'post_type' => TribeEvents::POSTTYPE ); // Reset
+		$this->args = array( 'post_type' => Tribe__Events__Main::POSTTYPE ); // Reset
 		$this->args_post_tax();
 		$this->args_venue_organizer();
 		$this->args_time();
+		$this->args_author();
 		$this->args_limit();
 		$this->args_display_type();
 		$this->args_order();
@@ -217,14 +270,13 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	protected function args_post_tax() {
 		$tax_args = array();
 
-		if ( ! empty( $this->events ) ) $this->args['post__in'] = $this->events;
-		if ( ! empty( $this->ignore_events ) ) $this->args['post__not_in'] = $this->ignore_events;
+		add_filter( 'posts_where', array( $this, 'event_filtering' ), 50, 2 );
 
 		if ( ! empty( $this->categories ) )
-			$this->build_tax_args( $tax_args, TribeEvents::TAXONOMY, $this->categories );
+			$this->build_tax_args( $tax_args, Tribe__Events__Main::TAXONOMY, $this->categories );
 
 		if ( ! empty( $this->ignore_categories ) )
-			$this->build_tax_args( $tax_args, TribeEvents::TAXONOMY, $this->ignore_categories, true );
+			$this->build_tax_args( $tax_args, Tribe__Events__Main::TAXONOMY, $this->ignore_categories, true );
 
 		if ( ! empty( $this->tags) )
 			$this->build_tax_args( $tax_args, 'post_tag', $this->tags );
@@ -236,6 +288,47 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 			$tax_args['relation'] = $this->tax_logic;
 			$this->args['tax_query'] = $tax_args;
 		}
+	}
+
+	/**
+	 * Including and excluding normal and recurring events could be done with post__in,
+	 * post__not_in, post_parent__in arguments, etc, however in anything but simple cases
+	 * this fails - and so we implement our own where clause to handle this.
+	 */
+	public function event_filtering( $where_sql ) {
+		global $wpdb;
+
+		// We don't want this to impact other queries that might run later
+		remove_filter( 'posts_where', array( $this, 'post_filtering' ), 50 );
+
+		// Refine event lists to
+		$include_posts    = join( ' , ', $this->events );
+		$exclude_posts    = join( ' , ', $this->ignore_events );
+		$include_children = join( ' , ', $this->parent_events );
+		$exclude_children = join( ' , ', $this->ignore_parent_events );
+		$positives = '';
+		$negatives = '';
+		$condition = '';
+
+		// Positives/inclusions
+		if ( ! empty( $include_posts ) ) $positives .= " $wpdb->posts.ID IN ( $include_posts ) ";
+		if ( ! empty( $include_posts ) && ! empty( $include_children ) ) $positives .= " OR ";
+		if ( ! empty( $include_children ) ) $positives .= " $wpdb->posts.post_parent IN ( $include_children ) ";
+		if ( ! empty( $include_posts ) || ! empty( $include_children ) ) $positives = " ( $positives ) ";
+
+		// Negatives/exclusions
+		if ( ! empty( $exclude_posts ) ) $negatives .= " $wpdb->posts.ID NOT IN ( $exclude_posts ) ";
+		if ( ! empty( $exclude_posts ) && ! empty( $exclude_children ) ) $negatives .= " AND ";
+		if ( ! empty( $exclude_children ) ) $negatives .= " $wpdb->posts.post_parent NOT IN ( $exclude_children ) ";
+		if ( ! empty( $exclude_posts ) || ! empty( $exclude_children ) ) $negatives = " ( $negatives ) ";
+
+		// Join both sets of conditions
+		if ( ! empty( $positives ) && ! empty( $negatives ) ) $condition = " ( $positives AND $negatives ) ";
+		elseif ( ! empty( $positives ) && empty( $negatives ) ) $condition = $positives;
+		elseif ( ! empty( $negatives ) && empty( $positives ) ) $condition = $negatives;
+
+		// If we have a condition to add, let's add it!
+		return empty( $condition ) ? $where_sql : " $where_sql AND $condition ";
 	}
 
 	/**
@@ -325,7 +418,7 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	 */
 	public function force_ongoing( $where_sql ) {
 		global $wpdb;
-		$now = date_i18n( TribeDateUtils::DBDATETIMEFORMAT, time() );
+		$now = date_i18n( Tribe__Events__Date_Utils::DBDATETIMEFORMAT, time() );
 
 		// Tear this filter down, we don't want it running on subsequent event queries unless explicitly set up
 		remove_filter( 'posts_where', array( $this, 'force_ongoing' ), 50, 2 );

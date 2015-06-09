@@ -23,6 +23,9 @@ abstract class EventRocket_ObjectLister
 	protected $cache_key_data = '';
 	protected $cache_expiry   = 0;
 
+	// Other conditions
+	protected $limit  = 20;
+	protected $author = -1;
 
 	public function __construct( array $params, $content ) {
 		$this->params  = $params;
@@ -48,26 +51,24 @@ abstract class EventRocket_ObjectLister
 	abstract protected function get_inline_parser();
 
 	/**
-	 * Inspect the properties array for values assigned with either the $singular or $plural
-	 * key: combine and extract the values, returning them as an array (may be empty if
+	 * Inspect the properties array for values assigned with any of the provided keys:
+	 * combines and extracts the values, returning them as an array (may be empty if
 	 * for instance no such shortcode params were supplied).
 	 *
-	 * @param $singular
-	 * @param $plural
 	 * @return array
 	 */
-	protected function plural_prop_csv( $singular, $plural ) {
-		$singular = isset( $this->params[$singular] ) ? (string) $this->params[$singular] : '';
-		$plural = isset( $this->params[$plural] ) ? (string) $this->params[$plural] : '';
-		$combined = "$singular,$plural";
+	protected function prop_from_csv() {
+		$accumulator = '';
 
-		$values = explode( ',', $combined );
+		foreach ( func_get_args() as $key )
+			$accumulator .= isset( $this->params[$key] ) ? $this->params[$key] . ',' : '';
+
+		$values = explode( ',', $accumulator );
 		$result_set = array();
 
 		foreach ( $values as $value ) {
 			$value = trim( $value );
-			if ( ! empty($value) && ! in_array( $value, $result_set ) )
-				$result_set[] = trim($value);
+			if ( ! empty($value) && ! in_array( $value, $result_set ) ) $result_set[] = $value;
 		}
 
 		return $result_set;
@@ -214,7 +215,7 @@ abstract class EventRocket_ObjectLister
 
 		// If not an absolute filepath use Tribe's template finder
 		if (isset($this->params['template']) && 0 !== strpos($this->params['template'], '/'))
-			$this->template = TribeEventsTemplates::getTemplateHierarchy($this->params['template']);
+			$this->template = Tribe__Events__Templates::getTemplateHierarchy($this->params['template']);
 
 		// Ensure the template exists
 		if (!$this->template && file_exists($this->params['template']))
@@ -222,12 +223,19 @@ abstract class EventRocket_ObjectLister
 	}
 
 	/**
-	 * Set the number of posts to retreive
+	 * Set the number of posts to retreive.
 	 */
 	protected function set_limit() {
 		$this->limit = isset( $this->params['limit'] )
 			? (int) $this->params['limit']
 			: (int) get_option( 'posts_per_page', 20 );
+	}
+
+	/**
+	 * Set the author ID.
+	 */
+	protected function set_author() {
+		$this->author = isset( $this->params['author'] ) ? (int) $this->params['author'] : -1;
 	}
 
 	/**
@@ -243,7 +251,7 @@ abstract class EventRocket_ObjectLister
 
 		// If not an absolute filepath use Tribe's template finder
 		if ( isset( $this->params['nothing_found_template'] ) && 0 !== strpos( $this->params['nothing_found_template'], '/' ) )
-			$this->nothing_found_template = TribeEventsTemplates::getTemplateHierarchy( $this->params['nothing_found_template'] );
+			$this->nothing_found_template = Tribe__Events__Templates::getTemplateHierarchy( $this->params['nothing_found_template'] );
 
 		// Ensure the template exists
 		if ( ! $this->nothing_found_template && file_exists( $this->params['nothing_found_template'] ) )
@@ -252,6 +260,10 @@ abstract class EventRocket_ObjectLister
 
 	protected function args_limit() {
 		$this->args['posts_per_page'] = $this->limit;
+	}
+
+	protected function args_author() {
+		if ( $this->author > 0 ) $this->args['author'] = $this->author;
 	}
 
 	/**
@@ -271,11 +283,7 @@ abstract class EventRocket_ObjectLister
 	 * @return bool
 	 */
 	protected function is_on( $param ) {
-		$on_vals = apply_filters( 'eventrocket_embedded_posts_positive_strs', array( 'on', 'true', 'yes', 'y' ) );
-
-		if ( in_array( strtolower( $param ), $on_vals ) ) return true;
-		if ( is_numeric( $param ) && $param ) return true;
-		return false;
+		return eventrocket_yes( $param );
 	}
 
 	/**
@@ -302,22 +310,36 @@ abstract class EventRocket_ObjectLister
 	 * @param $list
 	 * @param string $type
 	 */
-	protected function parse_post_refs( &$list, $type = TribeEvents::POSTTYPE )
-	{
-		foreach ($list as $index => $reference) {
-			$this->typify($reference);
-			if (!is_string($reference)) continue;
+	protected function parse_post_refs( &$list, $type = Tribe__Events__Main::POSTTYPE ) {
+		$new_list = array();
 
-			$event = get_posts(array(
-				'name' => $reference,
-				'post_type' => $type,
-				'eventDisplay' => 'custom',
-				'posts_per_page' => 1
-			));
+		foreach ( $list as $index => $reference ) {
+			$this->typify( $reference );
+			if ( ! is_string( $reference ) ) continue;
 
-			if (empty($event) || !is_array($event)) $list[$index] = 0;
-			else $list[$index] = $event[0]->ID;
+			$event = $this->load_post_by_slug( $reference, $type );
+
+			if ( $event ) $new_list[$index] = $event->ID;
 		}
+
+		$list = $new_list;
+	}
+
+	/**
+	 * @param  $slug
+	 * @param  $post_type
+	 * @return array
+	 */
+	protected function load_post_by_slug( $slug, $post_type ) {
+		$event_set = get_posts( array(
+			'name'           => $slug,
+			'post_type'      => $post_type,
+			'eventDisplay'   => 'custom',
+			'posts_per_page' => 1
+		) );
+
+		if ( empty( $event_set ) ) return false;
+		return current( $event_set );
 	}
 
 	/**
@@ -362,6 +384,6 @@ abstract class EventRocket_ObjectLister
 	 * @return array
 	 */
 	public function results() {
-		return (array) $this->results;
+		return $this->results;
 	}
 }

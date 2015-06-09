@@ -85,7 +85,7 @@ class EventRocket_FrontPageEvents
 
 		// Let's set the relevant flags in order to cause the main events page to show
 		$query->set( 'page_id', 0 );
-		$query->set( 'post_type', TribeEvents::POSTTYPE );
+		$query->set( 'post_type', Tribe__Events__Main::POSTTYPE );
 		$query->set( 'eventDisplay', 'default' );
 		$query->set( 'eventrocket_frontpage', true );
 
@@ -140,7 +140,7 @@ class EventRocket_FrontPageEvents
 	 * @return string
 	 */
 	protected function get_main_events_url() {
-		$tribe_events = TribeEvents::instance();
+		$tribe_events = Tribe__Events__Main::instance();
 
 		if ( false !== strpos( get_option( 'permalink_structure' ), 'index.php' ) )
 			return trailingslashit( home_url() . '/index.php/' . sanitize_title( $tribe_events->getOption( 'eventsSlug', 'events' ) ) );
@@ -167,7 +167,7 @@ class EventRocket_FrontPageEvents
 		if ( ! ( $events_frontpage && $is_list && $single_template_chosen )	) return $template;
 
 		// Otherwise, try to enforce use of the list view template
-		return TribeEventsTemplates::getTemplateHierarchy( 'list', array( 'disable_view_check' => true ) );
+		return Tribe__Events__Templates::getTemplateHierarchy( 'list', array( 'disable_view_check' => true ) );
 	}
 }
 
