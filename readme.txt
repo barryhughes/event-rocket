@@ -15,6 +15,9 @@ Experimental extensions for The Events Calendar and Events Calendar PRO adding s
 > *Need help?* Please do take the time to read through our [FAQs](https://wordpress.org/plugins/event-rocket/faq/),
 > [wiki](https://github.com/barryhughes/event-rocket/wiki) and
 > [previous forum replies](https://wordpress.org/support/plugin/event-rocket) before asking for help!
+>
+> A new set of docs is also being compiled at [eventrocket.wordpress.com](https://eventrocket.wordpress.com/) &hellip;
+> this will likely replace the existing GitHub wiki in time.
 
 This is an add-on that builds on top of the following wonderful plugins:
 
