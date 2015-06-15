@@ -26,11 +26,13 @@ class EventRocket_VenuePositioning
 	 * Set up meta box and listeners for updates.
 	 */
 	public function __construct() {
-		$this->coords_metabox();
+		add_action( 'init', array( $this, 'coords_metabox' ), 5 );
 	}
 
-	protected function coords_metabox() {
+	public function coords_metabox() {
+		if ( class_exists( 'Tribe__Events__Pro__Main' ) ) return;
 		if ( ! apply_filters( 'eventrocket_venue_positioning_metabox', true ) ) return;
+
 		add_action( 'add_meta_boxes', array( $this, 'setup_metabox' ) );
 		add_action( 'init', array( $this, 'set_long_lat_keys' ) );
 		add_action( 'tribe_events_venue_created', array( $this, 'save' ), 4 );
@@ -128,6 +130,7 @@ class EventRocket_VenuePositioning
 	protected function valid_coords( $lat, $lng ) {
 		if ( ! is_numeric( $lat ) || $lat < -90  || $lat > 90 )  return false;
 		if ( ! is_numeric( $lng ) || $lng < -180 || $lng > 180 ) return false;
+		if ( 0 == $lat || 0 == $lng ) return false;
 		return true;
 	}
 }
