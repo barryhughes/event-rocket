@@ -4,11 +4,11 @@ Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes, The Events Calendar, duplicate, rsvp
 Requires at least: 4.0
 Tested up to: 4.0
-Stable tag: 3.0
+Stable tag: 3.1dev
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Experimental extensions for The Events Calendar and Events Calendar PRO adding shortcodes, front page events and more to really help your event-based website blast off!
+Experimental extensions, hacks and gadgetry for The Events Calendar
 
 == Description ==
 
