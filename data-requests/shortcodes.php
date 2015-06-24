@@ -51,4 +51,4 @@ add_shortcode( 'eventrocket_csv_link', 'eventrocket_csv_link' );
  *
  * Creates a link allowing users to download 1 week of upcoming event data in iCal format.
  */
-	add_shortcode( 'eventrocket_ical_link', 'eventrocket_ical_link' );
+add_shortcode( 'eventrocket_ical_link', 'eventrocket_ical_link' );
