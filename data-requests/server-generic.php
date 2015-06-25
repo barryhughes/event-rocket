@@ -1,6 +1,7 @@
 <?php
 abstract class EventRocket_GenericDataRequests {
 	protected $key;
+	protected $check  = false;
 	protected $events = array();
 	protected $params = array(
 		'from'       => '',
@@ -26,8 +27,16 @@ abstract class EventRocket_GenericDataRequests {
 	}
 
 	protected function populate() {
+		$this->security_check();
+
 		foreach ( $this->params as $key => $value )
 			$this->params[$key] = $this->get_sanitized_field( $key );
+	}
+
+	protected function security_check() {
+		$args = array_map( 'urldecode', array_intersect_key( $_REQUEST, $this->params ) );
+		$check = hash( 'md5', join( '|', $args ) . eventrocket_data_security_token() );
+		if ( $check === @$_REQUEST['check'] ) $this->check = true;
 	}
 
 	protected function get_sanitized_field( $key ) {
@@ -59,7 +68,9 @@ abstract class EventRocket_GenericDataRequests {
 	}
 
 	protected function query() {
-		$this->events = event_embed()->obtain( $this->params );
+		$this->events = $this->check
+			? event_embed()->obtain( $this->params )
+			: array();
 	}
 
 	abstract protected function present();
