@@ -124,6 +124,9 @@ required).
 
 == Changelog ==
 
+= 3.1dev =
+* Protective measures added to prevent/limit abuse of data shortcodes
+
 = 3.0 =
 * Min requirements bump: PHP 5.3, TEC 3.10, WP 4.0 all now expected
 * Enhance event duplicator tool - make it easy to define the duplicate's title, date etc and ensure taxonomy terms are also carried over
