@@ -126,6 +126,7 @@ required).
 
 = 3.1dev =
 * Protective measures added to prevent/limit abuse of data shortcodes
+* Resolve bug in [event_embed]'s handling of post IDs
 
 = 3.0 =
 * Min requirements bump: PHP 5.3, TEC 3.10, WP 4.0 all now expected
