@@ -322,7 +322,7 @@ abstract class EventRocket_ObjectLister
 			if ( $event ) $new_list[$index] = $event->ID;
 		}
 
-		$list = $new_list;
+		$list = array_merge( $list, $new_list );
 	}
 
 	/**
