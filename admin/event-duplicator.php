@@ -32,7 +32,7 @@ class EventRocket_EventDuplicator
 		add_filter( 'post_row_actions', array( $this, 'add_duplicate_action'), 20, 2 );
 	}
 
-	public function	add_duplicate_action( $actions, $post) {
+	public function add_duplicate_action( $actions, $post) {
 		// Not a post? Bail (we aren't using a typehint since some plugins may pass in something a stdClass object etc)
 		if ( ! is_a( $post, 'WP_Post' ) )
 			return $actions;
@@ -46,10 +46,15 @@ class EventRocket_EventDuplicator
 			return $actions;
 
 		// Form the link
-		$url  = $this->duplication_link_url( $post->ID );
-		$text = __( 'Duplicate', 'eventrocket' );
-		$date = tribe_get_start_date( $post->ID, false, DateTime::ISO8601 );
-		$link = '<a href="'. $url . '" class="eventrocket_duplicate" data-date="' . $date . '">' . $text . '</a>';
+		$url   = $this->duplication_link_url( $post->ID );
+		$text  = __( 'Duplicate', 'eventrocket' );
+		$date  = tribe_get_start_date( $post->ID, false, DateTime::ISO8601 );
+		$title = $this->get_duplicate_post_title( $post );
+
+		$link = '<a href="'. $url . '" class="eventrocket_duplicate" '
+		      . 'data-date="' . $date . '" '
+		      . 'data-title="' . $title . '" '
+		      . '>' . $text . '</a>';
 
 		// Add to the list of actions
 		$actions['duplicate'] = $link;
@@ -94,7 +99,7 @@ class EventRocket_EventDuplicator
 		$post_meta = get_post_meta( $this->src_post->ID );
 
 		$post_data['post_status'] = apply_filters( 'eventrocket_duplicated_post_status', 'draft' );
-		$post_data['post_title'] = $this->get_duplicate_post_title();
+		$post_data['post_title'] = $this->get_duplicate_post_title( get_post( $this->src_post->ID ) );
 		$post_data = (array) apply_filters( 'eventrocket_duplicated_post_data', $post_data, $this->src_post );
 
 		unset( $post_data['ID'] );
@@ -128,10 +133,10 @@ class EventRocket_EventDuplicator
 		return ( false !== $data ) ? $data : $value;
 	}
 
-	protected function get_duplicate_post_title() {
+	protected function get_duplicate_post_title( $post ) {
 		$default = __( 'Copy of %s', 'eventrocket' );
-		$template = apply_filters( 'eventrocket_duplicated_post_title_template', $default, $this->src_post );
-		return sprintf( $template, $this->src_post->post_title );
+		$template = apply_filters( 'eventrocket_duplicated_post_title_template', $default, $post );
+		return sprintf( $template, $post->post_title );
 	}
 
 	/**
