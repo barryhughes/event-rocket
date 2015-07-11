@@ -18,7 +18,6 @@ function eventrocket_duplicator( $ ) {
 
 		template = $( "#eventrocket_duplication_dialog" );
 		datepicker = template.find( "#duplicate_start" );
-		datepicker.datepicker();
 
 		// Capture cancel/close button clicks
 		$( "button#cancel_duplication" ).click( on_close );
@@ -30,7 +29,13 @@ function eventrocket_duplicator( $ ) {
     }
 
     function init_fields() {
-        datepicker.datepicker( "option", "defaultDate", new Date( dup_link.data( "date" ) ) );
+	    var date =  new Date( dup_link.data( "date" ) )
+
+        datepicker.datepicker( {
+	        "defaultDate": date
+        } );
+
+	    datepicker.datepicker( "setDate", date );
         template.find( "form" ).attr( "action", dup_link.attr( "href" ) );
     }
 
