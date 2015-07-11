@@ -82,8 +82,9 @@ class EventRocket_EventDuplicator
 	protected function cookie_statuses() {
 		// Check for status messages conveyed via cookies
 		if ( isset( $_COOKIE['eventrocket_dup_status'] ) && ! empty( $_COOKIE['eventrocket_dup_status'] ) ) {
-			foreach ( (array) @unserialize( $_COOKIE['eventrocket_dup_status'] ) as $code )
-				$this->status[] = absint( $code );
+			$information     = (array) json_decode( stripslashes( $_COOKIE['eventrocket_dup_status'] ) );
+			$this->status    = isset( $information['status'] ) ? (int) $information['status'] : 0;
+			$this->duplicate = isset( $information['event'] )  ? (int) $information['event']  : 0;
 			setcookie( 'eventrocket_dup_status', 0 );
 		}
 	}
@@ -101,7 +102,7 @@ class EventRocket_EventDuplicator
 		$this->duplicate = wp_insert_post( $post_data );
 
 		if ( ! $this->duplicate  || is_wp_error( $this->duplicate ) ) {
-			$this->status[] = self::POST_CREATION_FAILED;
+			$this->status = self::POST_CREATION_FAILED;
 			return;
 		}
 
@@ -117,7 +118,7 @@ class EventRocket_EventDuplicator
 
 		$this->apply_terms();
 
-		$this->status[] = self::POST_CREATION_SUCCESSFUL;
+		$this->status = self::POST_CREATION_SUCCESSFUL;
 		$this->redirect();
 	}
 
@@ -163,7 +164,7 @@ class EventRocket_EventDuplicator
 	}
 
 	public function notices() {
-		if ( in_array( self::POST_CREATION_SUCCESSFUL, $this->status ) ) {
+		if ( self::POST_CREATION_SUCCESSFUL === $this->status ) {
 			$edit = get_admin_url( null, 'post.php?post=' . $this->duplicate . '&action=edit' );
 			$view = get_permalink( $this->duplicate );
 			echo '<div class="updated"> <p> '
@@ -171,7 +172,7 @@ class EventRocket_EventDuplicator
 				. '</p> </div>';
 		}
 
-		elseif ( in_array( self::POST_CREATION_WARNING, $this->status ) ) {
+		elseif ( self::POST_CREATION_WARNING === $this->status ) {
 			$edit = get_admin_url( null, 'post.php?post=' . $this->duplicate . '&action=edit' );
 			$view = get_permalink( $this->duplicate );
 			echo '<div class="error"> <p>'
@@ -179,7 +180,7 @@ class EventRocket_EventDuplicator
 				. '</p> </div>';
 		}
 
-		elseif ( in_array( self::POST_CREATION_FAILED, $this->status ) ) {
+		elseif ( self::POST_CREATION_FAILED === $this->status ) {
 			echo '<div class="error"> <p>'
 				. __( 'Sorry! The event could not be duplicated. Please try again or speak to your administrator or developer for further assistance.', 'eventrocket' )
 				. '</p> </div>';
@@ -188,7 +189,10 @@ class EventRocket_EventDuplicator
 
 	protected function redirect() {
 		$sendback = remove_query_arg( array(), wp_get_referer() );
-		setcookie( 'eventrocket_dup_status', serialize( $this->status ) );
+		setcookie( 'eventrocket_dup_status', json_encode( array(
+			'status' => (int) $this->status,
+			'event'  => (int) $this->duplicate
+		) ) );
 		exit( wp_safe_redirect( $sendback ) );
 	}
 }
