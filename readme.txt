@@ -30,7 +30,6 @@ So if you don't already have them installed it behooves you to do so now. This p
 * Embed events *anywhere* using the `[event_embed]` shortcode
 * Venues and organizers can also be embedded anywhere
 * Place the main events page on the front page of your blog
-* Precise editing of venue coordinates (sometimes street addresses just don't cut it!)
 * Clean up and remove events data if you decide you don't need them any longer
 * Duplicate events with a single click and optionally set the duplicated event's new date
 * Simple but very flexible RSVP system - allow users to indicate if they will or will not attend an event
@@ -117,7 +116,7 @@ _restrict to logged in users_ option, otherwise you run the potential of dealing
 3. The actual output with the countdown widget embedded in the page. A great example as it also shows the sort of flaws
 in terms of styling that can occur theme to theme (ie, to make things super-seamless some CSS knowledge is going to be
 required).
-4. Editing venue coordinates
+4. Editing venue coordinates (only applicable to users without Events Calendar PRO)
 5. Cleanup tools menu entry (will not normally appear unless The Events Calendar has been deactivated)
 6. The actual cleanup screen
 7. RSVP admin user interface - allow RSVPs on a per-event basis, restrict to logged in users only and view confirmation totals
