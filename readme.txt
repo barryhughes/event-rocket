@@ -4,7 +4,7 @@ Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes, The Events Calendar, duplicate, rsvp
 Requires at least: 4.0
 Tested up to: 4.0
-Stable tag: 3.1
+Stable tag: 3.2dev
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -122,6 +122,9 @@ required).
 7. RSVP admin user interface - allow RSVPs on a per-event basis, restrict to logged in users only and view confirmation totals
 
 == Changelog ==
+
+= 3.2 =
+* Further fix in [event_embed]'s query building
 
 = 3.1 =
 * Protective measures added to prevent/limit abuse of data shortcodes
