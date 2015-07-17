@@ -299,7 +299,7 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		global $wpdb;
 
 		// We don't want this to impact other queries that might run later
-		remove_filter( 'posts_where', array( $this, 'post_filtering' ), 50 );
+		remove_filter( 'posts_where', array( $this, 'event_filtering' ), 50 );
 
 		// Refine event lists to
 		$include_posts    = join( ' , ', $this->events );
@@ -388,8 +388,13 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 	 * Set the eventDisplay query argument appropriately.
 	 */
 	protected function args_display_type() {
-		$this->args['eventDisplay'] = ( isset( $this->args['start_date'] ) || isset( $this->args['end_date'] ) || isset( $this->args['post__in'] ) )
-			? 'custom' : 'list';
+		$has_start    = isset( $this->args['start_date'] );
+		$has_end      = isset( $this->args['end_date'] );
+		$specific_ids = ! empty( $this->events );
+
+		$this->args['eventDisplay'] = ( $has_start || $has_end || $specific_ids )
+			? 'custom'
+			: 'list';
 	}
 
 	/**
