@@ -10,6 +10,7 @@
  *
  * @var bool $enabled
  * @var bool $restricted
+ * @var number $limited
  * @var EventRocket_RSVPAttendance $attendance
  */
 
@@ -27,7 +28,7 @@ defined( 'ABSPATH' ) or die();
 		<td> <input type="checkbox" name="<?php esc_attr_e( EventRocket_RSVPManager::ENABLE_RSVP ) ?>" <?php checked( $enabled ) ?>/> </td>
 
 		<!-- Summary -->
-		<td rowspan="2">
+		<td rowspan="3">
 			<table>
 				<tr>
 					<td class="eventrocket_rsvp_attending"> <?php _e( 'Attending:', 'eventrocket' ) ?> </td>
@@ -41,8 +42,13 @@ defined( 'ABSPATH' ) or die();
 		</td>
 	</tr>
 
-	<tr>
+	<tr class="eventrocket_additionaloptions">
 		<td> <?php _e( 'Restrict to logged in users:', 'eventrocket' ) ?> </td>
 		<td> <input type="checkbox" name="<?php esc_attr_e( EventRocket_RSVPManager::RESTRICT_RSVP ) ?>" <?php checked( $restricted ) ?>/> </td>
+	</tr>
+
+	<tr class="eventrocket_additionaloptions">
+		<td> <?php _e( 'Limit attendance ', 'eventrocket' ) ?> <i><?php _e( '(-1 for unlimited)', 'eventrocket' ) ?></i>: </td>
+		<td> <input type="number" name="<?php esc_attr_e( EventRocket_RSVPManager::LIMIT_RSVP ) ?>" value="<?php echo $limited ?>" min="-1" /> </td>
 	</tr>
 </table>
