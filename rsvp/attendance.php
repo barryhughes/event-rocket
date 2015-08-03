@@ -197,4 +197,21 @@ class EventRocket_RSVPAttendance
 
 		return $user_list;
 	}
+
+	public function email_positives( $subject, $body ) {
+
+		// registered
+		foreach ( $attendees as $user_id => $is_attending ) {
+			if ( ! $is_attending ) continue;
+			if ( ! ( $user = get_user_by( 'id', $user_id ) ) ) continue;
+			wp_mail( $user->user_email, $subject, $body );
+
+		}
+
+		// unregistered
+		foreach ( $this->attendees[self::ANONYMOUS] as $attendee => $is_attending ) {
+			if ( ! $is_attending ) continue;
+			wp_mail( $attendee, $subject, $body );
+		}
+	}
 }

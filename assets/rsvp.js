@@ -7,6 +7,7 @@ if ( "function" === typeof jQuery ) jQuery( document ).ready( function( $ ) {
 		dialog,
 		attendee_tab,
 		non_attendee_tab,
+		email_form,
 		current_list_type;
 
 	function show( type ) {
@@ -55,6 +56,31 @@ if ( "function" === typeof jQuery ) jQuery( document ).ready( function( $ ) {
 	}
 
 	/**
+	 * Handles attendee emailing form
+	 *
+	 * @param event
+	 */
+	function send_email( e ){
+		e.preventDefault();
+
+		var msg = {
+			"action":   "rsvp_email",
+			"check":    eventrocket_rsvp.check,
+			"event_id": eventrocket_rsvp.event_id,
+			"subject":  $("#eventrocket_subject").val(),
+			"body":		$("#eventrocket_body").val()
+		};
+
+		$.post( ajaxurl, msg, function(){
+
+			alert( "Email sent!" );
+
+		}, "json" );
+
+
+	}
+
+	/**
 	 * Handles attendee data and passing it across for display.
 	 *
 	 * @param data
@@ -66,6 +92,12 @@ if ( "function" === typeof jQuery ) jQuery( document ).ready( function( $ ) {
 		dialog.html( '<div id="rsvp-attendee-tab">'
 			+ "<h4>" + eventrocket_rsvp.attending_title + "</h4>"
 			+ to_list( data.attendees )
+			+ '<form id="email-attendees">'
+			+ '<h4>' + eventrocket_rsvp.email_title + '</h4>'
+			+ '<input type="text" style="width: 95%" placeholder="' + eventrocket_rsvp.email_subject + '" id="eventrocket_subject" />'
+			+ '<textarea  style="width: 95%; height: 8em;" placeholder="' + eventrocket_rsvp.email_body + '" id="eventrocket_body"></textarea>'
+			+ '<input type="submit" id="eventrocket_email_send" value="' + eventrocket_rsvp.email_send + '" />'
+			+ '</form>'
 			+ '</div>'
 			+ '<div id="rsvp-non-attendee-tab">'
 			+ "<h4>" + eventrocket_rsvp.not_attending_title + "</h4>"
@@ -75,6 +107,8 @@ if ( "function" === typeof jQuery ) jQuery( document ).ready( function( $ ) {
 
 		attendee_tab     = $( "#rsvp-attendee-tab" );
 		non_attendee_tab = $( "#rsvp-non-attendee-tab" );
+		email_form 		 = $( "#email-attendees" );
+		email_form.submit( send_email );
 		set_list();
 	}
 
