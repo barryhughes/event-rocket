@@ -2,6 +2,7 @@
 /**
  * @var bool $enabled
  * @var bool $restricted
+ * @var bool $limited
  * @var bool $anon_accepted
  * @var EventRocket_RSVPAttendance $attendance
  */
@@ -27,7 +28,11 @@ $user_id = get_current_user_id();
 		<?php endif ?>
 
 		<?php if ( is_user_logged_in() ): ?>
-			<?php if ( $attendance->is_user_attending( $user_id ) ): ?>
+			<?php if ( $limited > 0 && $attendance->count_total_positive_responses() >= $limited && $attendance->is_user_undetermined( $user_id ) ): ?>
+				<p>
+					<?php _e( 'This event is full', 'eventrocket' ) ?>
+				</p>
+			<?php elseif ( $attendance->is_user_attending( $user_id ) ): ?>
 				<p>
 					<?php _e( 'You have indicated that you are attending this event!', 'eventrocket' ) ?> <br />
 					<button class="eventrocket rsvp withdraw" name="rsvp_withdraw" value="<?php esc_attr_e( $user_id ) ?>">
@@ -37,9 +42,11 @@ $user_id = get_current_user_id();
 			<?php elseif ( $attendance->is_user_not_attending( $user_id ) ): ?>
 				<p>
 					<?php _e( 'You have indicated that you will not be attending this event!', 'eventrocket' ) ?> <br />
-					<button class="eventrocket rsvp attend" name="rsvp_attend" value="<?php esc_attr_e( $user_id ) ?>">
-						<?php _e( 'Actually &hellip; I will attend after all', 'eventrocket' ) ?>
-					</button>
+					<?php if ( $limited == 0 || $attendance->count_total_positive_responses() < $limited ): ?>
+						<button class="eventrocket rsvp attend" name="rsvp_attend" value="<?php esc_attr_e( $user_id ) ?>">
+							<?php _e( 'Actually &hellip; I will attend after all', 'eventrocket' ) ?>
+						</button>
+					<?php endif ?>
 				</p>
 			<?php elseif ( $attendance->is_user_undetermined( $user_id ) ): ?>
 				<p>
@@ -55,7 +62,11 @@ $user_id = get_current_user_id();
 		<?php endif ?>
 
 		<?php if ( ! is_user_logged_in() ): ?>
-			<?php if ( ! $restricted && ! $anon_accepted ): ?>
+			<?php if ( $limited > 0 && $attendance->count_total_positive_responses() >= $limited && ! $restricted && ! $anon_accepted ): ?>
+				<p>
+					<?php _e( 'This event is full', 'eventrocket' ) ?>
+				</p>
+			<?php elseif ( ! $restricted && ! $anon_accepted ): ?>
 				<p>
 					<?php _e( 'If you plan on attending please let us know by providing your email address.', 'eventrocket' ) ?> <br />
 

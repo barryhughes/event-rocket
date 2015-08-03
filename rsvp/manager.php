@@ -31,7 +31,7 @@ class EventRocket_RSVPManager
 		$enabled    = get_post_meta( $post_id, self::ENABLE_RSVP, true );
 		$restricted = get_post_meta( $post_id, self::RESTRICT_RSVP, true );
 		$limited 	= get_post_meta( $post_id, self::LIMIT_RSVP, true );
-		if($limited == "") $limited = -1;
+		if($limited == "") $limited = 0;
 
 		$attendance = $this->attendance( $post_id );
 
@@ -50,7 +50,7 @@ class EventRocket_RSVPManager
 	public function save_options( $event_id, array $data ) {
 		$enable   = isset( $data[self::ENABLE_RSVP] ) && $data[self::ENABLE_RSVP];
 		$restrict = isset( $data[self::RESTRICT_RSVP] ) && $data[self::RESTRICT_RSVP];
-		$limited  = isset( $data[self::LIMIT_RSVP] ) ? $data[self::LIMIT_RSVP] : -1;
+		$limited  = isset( $data[self::LIMIT_RSVP] ) ? $data[self::LIMIT_RSVP] : 0;
 
 		update_post_meta( $event_id, self::ENABLE_RSVP, $enable );
 		update_post_meta( $event_id, self::RESTRICT_RSVP, $restrict );
