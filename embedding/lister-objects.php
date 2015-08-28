@@ -210,15 +210,15 @@ abstract class EventRocket_ObjectLister
 	 */
 	protected function set_template() {
 		// If there is no template and no inner content, assume the regular single event template
-		if (!isset($this->params['template']) && empty($this->content)) $this->template = $this->fallback;
-		elseif (!isset($this->params['template'])) return;
+		if ( ! isset( $this->params['template'] ) && empty( $this->content ) ) $this->template = $this->fallback;
+		elseif ( ! isset( $this->params['template'] ) ) return;
 
 		// If not an absolute filepath use Tribe's template finder
-		if (isset($this->params['template']) && 0 !== strpos($this->params['template'], '/'))
-			$this->template = Tribe__Events__Templates::getTemplateHierarchy($this->params['template']);
+		if ( isset( $this->params['template'] ) && 0 !== strpos( $this->params['template'], '/' ) )
+			$this->template = eventrocket_template( $this->params['template'] );
 
 		// Ensure the template exists
-		if (!$this->template && file_exists($this->params['template']))
+		if ( ! $this->template && file_exists( $this->params['template'] ) )
 			$this->template = $this->params['template'];
 	}
 
