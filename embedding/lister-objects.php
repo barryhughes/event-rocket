@@ -118,7 +118,7 @@ abstract class EventRocket_ObjectLister
 
 		// Create the cache keys
 		$this->cache_key_data = 'EREmbedData' . hash( 'md5', join( '|', $this->params ) );
-		$this->cache_key_html = 'EREmbedData' . hash( 'md5', join( '|', $this->params ) );
+		$this->cache_key_html = 'EREmbedHtml' . hash( 'md5', join( '|', $this->params ) );
 	}
 
 	/**
