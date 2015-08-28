@@ -3,6 +3,7 @@
  * @var bool $enabled
  * @var bool $restricted
  * @var bool $limited
+ * @var bool $show_attendees
  * @var bool $anon_accepted
  * @var EventRocket_RSVPAttendance $attendance
  */
@@ -57,6 +58,16 @@ $user_id = get_current_user_id();
 					<button class="eventrocket rsvp withdraw" name="rsvp_withdraw" value="<?php esc_attr_e( $user_id ) ?>">
 						<?php _e( 'No, I will not', 'eventrocket' ) ?>
 					</button>
+				</p>
+			<?php endif ?>
+			<?php if ( $show_attendees ): ?>
+				<p><strong>Number Attending: <?php echo $attendance->count_total_positive_responses() ?> </strong><br>
+				<?php
+					foreach($attendance->list_positives() as $person)
+					{
+						echo strstr($person, "(", true) . "<br>";
+					}
+				?>
 				</p>
 			<?php endif ?>
 		<?php endif ?>

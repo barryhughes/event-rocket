@@ -1,9 +1,10 @@
 <?php
 class EventRocket_RSVPManager
 {
-	const ENABLE_RSVP   = '_eventrocket_enable_rsvp';
-	const RESTRICT_RSVP = '_eventrocket_restrict_rsvp';
-	const LIMIT_RSVP = '_eventrocket_limit_rsvp';
+	const ENABLE_RSVP         = '_eventrocket_enable_rsvp';
+	const RESTRICT_RSVP       = '_eventrocket_restrict_rsvp';
+	const LIMIT_RSVP          = '_eventrocket_limit_rsvp';
+	const SHOW_ATTENDEES_RSVP = '_eventrocket_show_attendees_rsvp';
 
 	/** @var  EventRocket_AttendeeList */
 	protected $attendee_list;
@@ -30,10 +31,12 @@ class EventRocket_RSVPManager
 
 		$enabled    = get_post_meta( $post_id, self::ENABLE_RSVP, true );
 		$restricted = get_post_meta( $post_id, self::RESTRICT_RSVP, true );
-		$limited 	= get_post_meta( $post_id, self::LIMIT_RSVP, true );
-		if($limited == "") $limited = 0;
 
-		$attendance = $this->attendance( $post_id );
+		$limited 	= get_post_meta( $post_id, self::LIMIT_RSVP, true );
+		$limited    = empty( $limited ) ? 0 : absint( $limited );
+
+		$show_attendees = get_post_meta( $post_id, self::SHOW_ATTENDEES_RSVP, true );
+		$attendance     = $this->attendance( $post_id );
 
 		include EVENTROCKET_INC . '/templates/rsvp-options.php';
 	}
@@ -48,13 +51,18 @@ class EventRocket_RSVPManager
 	 * @param array $data
 	 */
 	public function save_options( $event_id, array $data ) {
-		$enable   = isset( $data[self::ENABLE_RSVP] ) && $data[self::ENABLE_RSVP];
-		$restrict = isset( $data[self::RESTRICT_RSVP] ) && $data[self::RESTRICT_RSVP];
-		$limited  = isset( $data[self::LIMIT_RSVP] ) ? $data[self::LIMIT_RSVP] : 0;
+		$enable         = isset( $data[self::ENABLE_RSVP] ) && $data[self::ENABLE_RSVP];
+		$restrict       = isset( $data[self::RESTRICT_RSVP] ) && $data[self::RESTRICT_RSVP];
+		$limited        = isset( $data[self::LIMIT_RSVP] ) ? $data[self::LIMIT_RSVP] : 0;
+		$show_attendees = isset( $data[self::SHOW_ATTENDEES_RSVP] ) && $data[self::SHOW_ATTENDEES_RSVP];
 
 		update_post_meta( $event_id, self::ENABLE_RSVP, $enable );
 		update_post_meta( $event_id, self::RESTRICT_RSVP, $restrict );
 		update_post_meta( $event_id, self::LIMIT_RSVP, $limited );
+
+		update_post_meta( $event_id, self::ENABLE_RSVP, $enable );
+		update_post_meta( $event_id, self::RESTRICT_RSVP, $restrict );
+		update_post_meta( $event_id, self::SHOW_ATTENDEES_RSVP, $show_attendees );
 	}
 
 	/**

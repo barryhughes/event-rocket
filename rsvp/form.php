@@ -74,11 +74,14 @@ class EventRocket_RSVPForm
 		if ( ! $template || ! file_exists( $template ) ) $template = EVENTROCKET_INC . '/templates/rsvp-form.php';
 
 		// Load our settings
-		$enabled    = get_post_meta( get_the_ID(), EventRocket_RSVPManager::ENABLE_RSVP, true );
-		$restricted = get_post_meta( get_the_ID(), EventRocket_RSVPManager::RESTRICT_RSVP, true );
-		$limited 	= get_post_meta( get_the_ID(), EventRocket_RSVPManager::LIMIT_RSVP, true );
-		$attendance = eventrocket_rsvp()->attendance();
+		$enabled        = get_post_meta( get_the_ID(), EventRocket_RSVPManager::ENABLE_RSVP, true );
+		$restricted     = get_post_meta( get_the_ID(), EventRocket_RSVPManager::RESTRICT_RSVP, true );
+		$limited 	    = get_post_meta( get_the_ID(), EventRocket_RSVPManager::LIMIT_RSVP, true );
+		$show_attendees = get_post_meta( get_the_ID(), EventRocket_RSVPManager::SHOW_ATTENDEES_RSVP, true );
+
+		$attendance    = eventrocket_rsvp()->attendance();
 		$anon_accepted = ( get_the_ID() === $this->anon_sub_accepted );
+		$attendees     = eventrocket_rsvp()->attendance( $_POST['event_id'] );
 
 		include $template;
 	}

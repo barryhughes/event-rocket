@@ -11,6 +11,7 @@
  * @var bool $enabled
  * @var bool $restricted
  * @var number $limited
+ * @var bool $show_attendees
  * @var EventRocket_RSVPAttendance $attendance
  */
 
@@ -50,5 +51,10 @@ defined( 'ABSPATH' ) or die();
 	<tr class="eventrocket_additionaloptions">
 		<td> <?php _e( 'Limit attendance ', 'eventrocket' ) ?> <i><?php _e( '(-1 for unlimited)', 'eventrocket' ) ?></i>: </td>
 		<td> <input type="number" name="<?php esc_attr_e( EventRocket_RSVPManager::LIMIT_RSVP ) ?>" value="<?php echo $limited ?>" min="0" /> </td>
+	</tr>
+
+	<tr>
+		<td> <?php _e( 'Show attendees:', 'eventrocket' ) ?> </td>
+		<td> <input type="checkbox" name="<?php esc_attr_e( EventRocket_RSVPManager::SHOW_ATTENDEES_RSVP ) ?>" <?php checked( $show_attendees ) ?>/> </td>
 	</tr>
 </table>
