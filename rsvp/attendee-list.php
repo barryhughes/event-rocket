@@ -4,6 +4,7 @@ class EventRocket_RSVPAttendeeList
 	public function __construct() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_assets' ) );
 		add_action( 'wp_ajax_rsvp_attendance', array( $this, 'listen' ) );
+		add_action( 'wp_ajax_rsvp_email', array( $this, 'email' ) );
 	}
 
 	public function add_assets() {
@@ -26,6 +27,10 @@ class EventRocket_RSVPAttendeeList
 			'loading_msg'         => $this->dialog_placeholder(),
 			'attending_title'     => _x( 'Attending', 'tab title', 'eventrocket' ),
 			'not_attending_title' => _x( 'Not Attending', 'tab title', 'eventrocket' ),
+			'email_title'     	  => _x( 'Email attendees', 'dialog title', 'eventrocket' ),
+			'email_subject'       => _x( 'Subject', 'dialog text', 'eventrocket' ),
+			'email_body'          => _x( 'Body', 'dialog text', 'eventrocket' ),
+			'email_send'          => _x( 'Send', 'dialog text', 'eventrocket' ),
 			'none_found_text'     => _x( 'No matching responses yet.', 'attendee list', 'eventrocket' ),
 			'title'               => esc_attr( _x( 'RSVP Attendee List', 'dialog title', 'eventrocket' ) )
 		) );
@@ -46,6 +51,18 @@ class EventRocket_RSVPAttendeeList
 			'msg'           => 'success',
 			'attendees'     => $attendees->list_positives(),
 			'non_attendees' => $attendees->list_negatives()
+		) ) );
+	}
+
+	public function email() {
+		if ( ! wp_verify_nonce( @$_POST['check'], 'list_attendees_' . get_current_user_id() . @$_POST['event_id'] ) )
+			exit( json_encode( array( 'msg' => 'failure' ) ) );
+
+		$attendees = eventrocket_rsvp()->attendance( $_POST['event_id'] );
+		$attendees->email_positives( $_POST['subject'], $_POST['body'] );
+
+		exit( json_encode( array(
+			'msg'           => 'success'
 		) ) );
 	}
 }
