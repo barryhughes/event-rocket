@@ -76,6 +76,7 @@ class EventRocket_RSVPForm
 		// Load our settings
 		$enabled    = get_post_meta( get_the_ID(), EventRocket_RSVPManager::ENABLE_RSVP, true );
 		$restricted = get_post_meta( get_the_ID(), EventRocket_RSVPManager::RESTRICT_RSVP, true );
+		$limited 	= get_post_meta( get_the_ID(), EventRocket_RSVPManager::LIMIT_RSVP, true );
 		$attendance = eventrocket_rsvp()->attendance();
 		$anon_accepted = ( get_the_ID() === $this->anon_sub_accepted );
 
