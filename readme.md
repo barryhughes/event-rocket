@@ -1,5 +1,5 @@
 # Event Rocket
-Contributors: barry.hughes
+Contributors: barry.hughes, mikejanzen, mikevalstar 
 Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes, The Events Calendar, duplicate, rsvp
 Requires at least: 4.0
@@ -125,7 +125,11 @@ required).
 
 ### 3.2
 * Further fix in [event_embed]'s query building
-* Limited attendance option added
+* Limited attendance option added (props: mikevalstar)
+* Email attendees option added (props: mikevalstar)
+* Option to show attendees on the frontend added (props: mikejanzen)
+* Added .pot catalogue for translations
+* Resolved caching bug in [event_embed] system
 
 ### 3.1
 * Protective measures added to prevent/limit abuse of data shortcodes
