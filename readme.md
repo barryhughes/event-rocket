@@ -12,12 +12,13 @@ Experimental extensions, hacks and gadgetry for The Events Calendar
 
 ## Description
 
-> *Need help?* Please do take the time to read through our [FAQs](https://wordpress.org/plugins/event-rocket/faq/),
-> [wiki](https://github.com/barryhughes/event-rocket/wiki) and
-> [previous forum replies](https://wordpress.org/support/plugin/event-rocket) before asking for help!
+> *Simple steps to help you get the most out of Event Rocket* 
 >
-> A new set of docs is also being compiled at [eventrocket.wordpress.com](https://eventrocket.wordpress.com/) &hellip;
-> this will likely replace the existing GitHub wiki in time.
+> * Need to ask a question? Please don't be lazy! Search the [existing forum posts](https://wordpress.org/support/plugin/event-rocket) first of all
+> * Help yourself by helping others - this plugin costs you nothing and helping others makes a real difference
+> * Share what you've done - tweaked the RSVP form? Post a summary on the forum and let people know what's possible
+>
+> Important links: [docs](https://eventrocket.wordpress.com/) | [wiki](https://github.com/barryhughes/event-rocket/wiki) | [changelog](https://wordpress.org/plugins/event-rocket/changelog/)
 
 This is an add-on that builds on top of the following wonderful plugins:
 
@@ -58,7 +59,8 @@ When the time comes to upgrade you need take no special precautions :-)
 ### How can I find out more?
 
 [The wiki](https://github.com/barryhughes/event-rocket/wiki) contains more detail on various topics
-and is often worth looking at if you need more information.
+and is often worth looking at if you need more information. You can also find useful information
+at [eventrocket.wordpress.com](https://eventrocket.wordpress.com/).
 
 ### How do I put the main events page on the front page of my site/blog?
 
@@ -69,13 +71,10 @@ and is often worth looking at if you need more information.
 
 ### What are the shortcodes used to embed different widgets in pages/posts?
 
-* `[event_rocket_list]` embeds the list widget _(should be considered deprecated if you are an ECP user)_
-* `[event_rocket_calendar]` embeds the calendar widget _(deprecated)_
-* `[event_rocket_countdown]` embeds the event countdown widget _(deprecated)_
-* `[event_rocket_venue]` embeds the featured venue widget _(deprecated)_
+* `[event_rocket_list]` embeds the list widget _(should be considered deprecated if you are an Events Calendar *PRO* user)_
 
-Please note however that if you are not using Events Calendar PRO then any widgets specific to that plugin (such as the
-countdown and calendar widget) will *not* be available.
+The remaining "widget wrappers" have now been deprecated and should not be used. If you are currently using them,
+please transition to the official alternatives provided by Events Calendar PRO.
 
 ### Can I embed arbitrary events with a shortcode?
 
@@ -97,9 +96,9 @@ examples of acceptable ways to pass this information:
 
 ### How can I cleanup events data?
 
-A new menu option will appear in the WordPress _tools_ menu labelled 'Cleanup events data' - by default this *only*
-appears when The Events Calendar is deactivated. You are strongly cautioned to make a full and complete backup before
-using this tool (and, of course, should make yourself aware of the steps needed to restore that backup).
+A new menu option will appear in the WordPress _tools_ menu labelled 'Cleanup events data' -  please note that
+you are strongly cautioned to make a full and complete backup before using this tool (and, of course, should make 
+yourself aware of the steps needed to restore that backup).
 
 ### How do I enable RSVPs?
 
@@ -117,7 +116,7 @@ _restrict to logged in users_ option, otherwise you run the potential of dealing
 in terms of styling that can occur theme to theme (ie, to make things super-seamless some CSS knowledge is going to be
 required).
 4. Editing venue coordinates (only applicable to users without Events Calendar PRO)
-5. Cleanup tools menu entry (will not normally appear unless The Events Calendar has been deactivated)
+5. Cleanup tools menu entry
 6. The actual cleanup screen
 7. RSVP admin user interface - allow RSVPs on a per-event basis, restrict to logged in users only and view confirmation totals
 
