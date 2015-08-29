@@ -4,7 +4,7 @@ Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes, The Events Calendar, duplicate, rsvp
 Requires at least: 4.0
 Tested up to: 4.0
-Stable tag: 3.2dev
+Stable tag: 3.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -124,16 +124,16 @@ required).
 ## Changelog
 
 ### 3.2
-* Further fix in [event_embed]'s query building
+* Further fix in `[event_embed]`'s query building
 * Limited attendance option added (props: mikevalstar)
 * Email attendees option added (props: mikevalstar)
 * Option to show attendees on the frontend added (props: mikejanzen)
 * Added .pot catalogue for translations
-* Resolved caching bug in [event_embed] system
+* Resolved caching bug in `[event_embed]` system
 
 ### 3.1
 * Protective measures added to prevent/limit abuse of data shortcodes
-* Resolve bug in [event_embed]'s handling of post IDs
+* Resolve bug in `[event_embed]`'s handling of post IDs
 * Cleaned up some event duplicator issues ahead of further improvements
 
 ### 3.0
