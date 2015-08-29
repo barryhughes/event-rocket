@@ -134,15 +134,30 @@ class EventRocket_RSVPAttendance
 		else return $responses[0];
 	}
 
-	public function list_positives() {
-		return array_merge( $this->list_authed_positives(), $this->list_anon_positives() );
+	/**
+	 * @param bool $raw (if the raw user object should be returned instead of a formatted string)
+	 *
+	 * @return array
+	 */
+	public function list_positives( $raw = false ) {
+		return array_merge( $this->list_authed_positives( $raw ), $this->list_anon_positives( $raw ) );
 	}
 
-	public function list_negatives() {
-		return array_merge( $this->list_authed_negatives(), $this->list_anon_negatives() );
+	/**
+	 * @param bool $raw (if the raw user object should be returned instead of a formatted string)
+	 *
+	 * @return array
+	 */
+	public function list_negatives( $raw = false ) {
+		return array_merge( $this->list_authed_negatives( $raw ), $this->list_anon_negatives( $raw ) );
 	}
 
-	public function list_authed_positives() {
+	/**
+	 * @param bool $raw (if the raw user object should be returned instead of a formatted string)
+	 *
+	 * @return array
+	 */
+	public function list_authed_positives( $raw = false ) {
 		$attendees = $this->attendees;
 		$user_list = array();
 
@@ -152,25 +167,40 @@ class EventRocket_RSVPAttendance
 		foreach ( $attendees as $user_id => $is_attending ) {
 			if ( ! $is_attending ) continue;
 			if ( ! ( $user = get_user_by( 'id', $user_id ) ) ) continue;
-			$user_list[] = apply_filters( 'eventrocket_attendee_entry', "$user->display_name ($user->user_email)", $user, $this->event_id );
+
+			$user_list[] = $raw
+				? apply_filters( 'eventrocket_attendee_entry_raw', $user )
+				: apply_filters( 'eventrocket_attendee_entry', "$user->display_name ($user->user_email)", $user, $this->event_id );
 		}
 
 		return $user_list;
 	}
 
-	public function list_anon_positives() {
+	/**
+	 * @param bool $raw (if the raw user object should be returned instead of a formatted string)
+	 *
+	 * @return array
+	 */
+	public function list_anon_positives( $raw = false ) {
 		$user_list = array();
 		if ( ! isset($this->attendees[self::ANONYMOUS] ) ) return $user_list;
 
 		foreach ( $this->attendees[self::ANONYMOUS] as $attendee => $is_attending ) {
 			if ( ! $is_attending ) continue;
-			$user_list[] = apply_filters( 'eventrocket_anon_attendee_entry', sprintf( __( 'Anonymous (%s)', 'eventrocket' ), $attendee ) );
+			$user_list[] = $raw
+				? (object) apply_filters( 'eventrocket_anon_attendee_entry_raw', array( 'type' => 'anon', 'data' => $attendee ) )
+				: apply_filters( 'eventrocket_anon_attendee_entry', sprintf( __( 'Anonymous (%s)', 'eventrocket' ), $attendee ) );
 		}
 
 		return $user_list;
 	}
 
-	public function list_authed_negatives() {
+	/**
+	 * @param bool $raw (if the raw user object should be returned instead of a formatted string)
+	 *
+	 * @return array
+	 */
+	public function list_authed_negatives( $raw = false ) {
 		$attendees = $this->attendees;
 		$user_list = array();
 
@@ -180,19 +210,30 @@ class EventRocket_RSVPAttendance
 		foreach ( $attendees as $user_id => $is_attending ) {
 			if ( $is_attending ) continue;
 			if ( ! ( $user = get_user_by( 'id', $user_id ) ) ) continue;
-			$user_list[] = apply_filters( 'eventrocket_non_attendee_entry', "$user->display_name ($user->user_email)", $user, $this->event_id );
+
+			$user_list[] = $raw
+				? apply_filters( 'eventrocket_non_attendee_entry_raw', $user )
+				: apply_filters( 'eventrocket_non_attendee_entry', "$user->display_name ($user->user_email)", $user, $this->event_id );
 		}
 
 		return $user_list;
 	}
 
-	public function list_anon_negatives() {
+	/**
+	 * @param bool $raw (if the raw user object should be returned instead of a formatted string)
+	 *
+	 * @return array
+	 */
+	public function list_anon_negatives( $raw = false ) {
 		$user_list = array();
 		if ( ! isset($this->attendees[self::ANONYMOUS] ) ) return $user_list;
 
 		foreach ( $this->attendees[self::ANONYMOUS] as $attendee => $is_attending ) {
 			if ( $is_attending ) continue;
-			$user_list[] = apply_filters( 'eventrocket_anon_non_attendee_entry', sprintf( __( 'Anonymous (%s)', 'eventrocket' ), $attendee ) );
+
+			$user_list[] = $raw
+				? apply_filters( 'eventrocket_anon_non_attendee_entry_raw', array( 'type' => 'anon', 'data' => $attendee ) )
+				: apply_filters( 'eventrocket_anon_non_attendee_entry', sprintf( __( 'Anonymous (%s)', 'eventrocket' ), $attendee ) );
 		}
 
 		return $user_list;
@@ -201,7 +242,7 @@ class EventRocket_RSVPAttendance
 	public function email_positives( $subject, $body ) {
 
 		// registered
-		foreach ( $attendees as $user_id => $is_attending ) {
+		foreach ( $this->attendees as $user_id => $is_attending ) {
 			if ( ! $is_attending ) continue;
 			if ( ! ( $user = get_user_by( 'id', $user_id ) ) ) continue;
 			wp_mail( $user->user_email, $subject, $body );
