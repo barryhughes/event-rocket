@@ -29,7 +29,7 @@ defined( 'ABSPATH' ) or die();
 		<td> <input type="checkbox" name="<?php esc_attr_e( EventRocket_RSVPManager::ENABLE_RSVP ) ?>" <?php checked( $enabled ) ?>/> </td>
 
 		<!-- Summary -->
-		<td rowspan="3">
+		<td rowspan="4">
 			<table>
 				<tr>
 					<td class="eventrocket_rsvp_attending"> <?php _e( 'Attending:', 'eventrocket' ) ?> </td>
@@ -43,18 +43,18 @@ defined( 'ABSPATH' ) or die();
 		</td>
 	</tr>
 
-	<tr class="eventrocket_additionaloptions">
+	<tr class="eventrocket_additionaloptions restrict_to_authed">
 		<td> <?php _e( 'Restrict to logged in users:', 'eventrocket' ) ?> </td>
-		<td> <input type="checkbox" name="<?php esc_attr_e( EventRocket_RSVPManager::RESTRICT_RSVP ) ?>" <?php checked( $restricted ) ?>/> </td>
+		<td> <input type="checkbox" name="<?php echo esc_attr( EventRocket_RSVPManager::RESTRICT_RSVP ) ?>" <?php checked( $restricted ) ?>/> </td>
 	</tr>
 
-	<tr class="eventrocket_additionaloptions">
-		<td> <?php _e( 'Limit attendance ', 'eventrocket' ) ?> <i><?php _e( '(-1 for unlimited)', 'eventrocket' ) ?></i>: </td>
-		<td> <input type="number" name="<?php esc_attr_e( EventRocket_RSVPManager::LIMIT_RSVP ) ?>" value="<?php echo $limited ?>" min="0" /> </td>
-	</tr>
-
-	<tr>
+	<tr class="eventrocket_additionaloptions show_attendees">
 		<td> <?php _e( 'Show attendees:', 'eventrocket' ) ?> </td>
-		<td> <input type="checkbox" name="<?php esc_attr_e( EventRocket_RSVPManager::SHOW_ATTENDEES_RSVP ) ?>" <?php checked( $show_attendees ) ?>/> </td>
+		<td> <input type="checkbox" name="<?php echo esc_attr( EventRocket_RSVPManager::SHOW_ATTENDEES_RSVP ) ?>" <?php checked( $show_attendees ) ?>/> </td>
+	</tr>
+
+	<tr class="eventrocket_additionaloptions limit_attendees">
+		<td> <?php _e( 'Limit attendance ', 'eventrocket' ) ?> <i><?php _e( '(-1 for unlimited)', 'eventrocket' ) ?></i>: </td>
+		<td> <input type="number" name="<?php esc_attr_e( EventRocket_RSVPManager::LIMIT_RSVP ) ?>" value="<?php echo esc_attr( $limited ) ?>" min="0" /> </td>
 	</tr>
 </table>

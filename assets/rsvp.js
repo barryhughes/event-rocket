@@ -72,20 +72,20 @@ if ( "function" === typeof jQuery ) jQuery( document ).ready( function( $ ) {
 		};
 
 		$.post( ajaxurl, msg, function(){
-
 			alert( "Email sent!" );
-
 		}, "json" );
-
-
 	}
 
 	/**
-	 * Handles attendee data and passing it across for display.
+	 * Renders the attendee list.
+	 *
+	 * Soon after the user requests to see the attendee list, this function should receive
+	 * the data containing the attendee information, which it uses to form the actual list
+	 * (and email form).
 	 *
 	 * @param data
 	 */
-	function receive( data ) {
+	function render( data ) {
 		if ( "success" !== data.msg ) return;
 		loaded = true;
 
@@ -96,7 +96,7 @@ if ( "function" === typeof jQuery ) jQuery( document ).ready( function( $ ) {
 			+ '<h4>' + eventrocket_rsvp.email_title + '</h4>'
 			+ '<input type="text" style="width: 95%" placeholder="' + eventrocket_rsvp.email_subject + '" id="eventrocket_subject" />'
 			+ '<textarea  style="width: 95%; height: 8em;" placeholder="' + eventrocket_rsvp.email_body + '" id="eventrocket_body"></textarea>'
-			+ '<input type="submit" id="eventrocket_email_send" value="' + eventrocket_rsvp.email_send + '" />'
+			+ '<input type="submit" id="eventrocket_email_send" value="' + eventrocket_rsvp.email_send + '" class="button-secondary" />'
 			+ '</form>'
 			+ '</div>'
 			+ '<div id="rsvp-non-attendee-tab">'
@@ -108,6 +108,7 @@ if ( "function" === typeof jQuery ) jQuery( document ).ready( function( $ ) {
 		attendee_tab     = $( "#rsvp-attendee-tab" );
 		non_attendee_tab = $( "#rsvp-non-attendee-tab" );
 		email_form 		 = $( "#email-attendees" );
+
 		email_form.submit( send_email );
 		set_list();
 	}
@@ -137,7 +138,7 @@ if ( "function" === typeof jQuery ) jQuery( document ).ready( function( $ ) {
 			"type":     type
 		};
 
-		$.post( ajaxurl, msg, receive, "json" );
+		$.post( ajaxurl, msg, render, "json" );
 	}
 
 	// Look for the attendee count and convert to a link
