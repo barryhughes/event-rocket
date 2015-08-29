@@ -89,15 +89,21 @@ if ( "function" === typeof jQuery ) jQuery( document ).ready( function( $ ) {
 		if ( "success" !== data.msg ) return;
 		loaded = true;
 
-		dialog.html( '<div id="rsvp-attendee-tab">'
-			+ "<h4>" + eventrocket_rsvp.attending_title + "</h4>"
-			+ to_list( data.attendees )
-			+ '<form id="email-attendees">'
+		var email_form = '';
+
+		// Only add the email form if there are attendees to send emails to!
+		if ( data.attendees.length ) email_form =
+			  '<form id="email-attendees">'
 			+ '<h4>' + eventrocket_rsvp.email_title + '</h4>'
 			+ '<input type="text" style="width: 95%" placeholder="' + eventrocket_rsvp.email_subject + '" id="eventrocket_subject" />'
 			+ '<textarea  style="width: 95%; height: 8em;" placeholder="' + eventrocket_rsvp.email_body + '" id="eventrocket_body"></textarea>'
 			+ '<input type="submit" id="eventrocket_email_send" value="' + eventrocket_rsvp.email_send + '" class="button-secondary" />'
-			+ '</form>'
+			+ '</form>';
+
+		dialog.html( '<div id="rsvp-attendee-tab">'
+			+ "<h4>" + eventrocket_rsvp.attending_title + "</h4>"
+			+ to_list( data.attendees )
+			+ email_form
 			+ '</div>'
 			+ '<div id="rsvp-non-attendee-tab">'
 			+ "<h4>" + eventrocket_rsvp.not_attending_title + "</h4>"
