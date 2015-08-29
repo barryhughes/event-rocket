@@ -44,20 +44,20 @@ class EventRocket_RSVPAttendeeList
 
 	public function listen() {
 		if ( ! wp_verify_nonce( @$_POST['check'], 'list_attendees_' . get_current_user_id() . @$_POST['event_id'] ) )
-			exit( json_encode( array( 'msg' => 'failure' ) ) );
+			wp_send_json( array( 'msg' => 'failure' ) );
 
 		$attendees = eventrocket_rsvp()->attendance( $_POST['event_id'] );
 
-		exit( json_encode( array(
+		wp_send_json( array(
 			'msg'           => 'success',
 			'attendees'     => $attendees->list_positives(),
 			'non_attendees' => $attendees->list_negatives()
-		) ) );
+		) );
 	}
 
 	public function email() {
 		if ( ! wp_verify_nonce( @$_POST['check'], 'list_attendees_' . get_current_user_id() . @$_POST['event_id'] ) )
-			exit( json_encode( array( 'msg' => 'failure' ) ) );
+			wp_send_json( array( 'msg' => 'failure' ) );
 
 		$attendees = eventrocket_rsvp()->attendance( $_POST['event_id'] );
 		$emails    = $this->build_attendee_email_list_positives( $attendees );
