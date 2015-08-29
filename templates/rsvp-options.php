@@ -55,6 +55,6 @@ defined( 'ABSPATH' ) or die();
 
 	<tr class="eventrocket_additionaloptions limit_attendees">
 		<td> <?php _e( 'Limit attendance ', 'eventrocket' ) ?> <i><?php _e( '(-1 for unlimited)', 'eventrocket' ) ?></i>: </td>
-		<td> <input type="number" name="<?php esc_attr_e( EventRocket_RSVPManager::LIMIT_RSVP ) ?>" value="<?php echo esc_attr( $limited ) ?>" min="0" /> </td>
+		<td> <input type="number" name="<?php esc_attr_e( EventRocket_RSVPManager::LIMIT_RSVP ) ?>" value="<?php echo esc_attr( $limited ) ?>" min="-1" /> </td>
 	</tr>
 </table>
