@@ -61,14 +61,28 @@ $user_id = get_current_user_id();
 				</p>
 			<?php endif ?>
 			<?php if ( $show_attendees ): ?>
-				<p><strong>Number Attending: <?php echo $attendance->count_total_positive_responses() ?> </strong><br>
-				<?php
-					foreach($attendance->list_positives() as $person)
-					{
-						echo strstr($person, "(", true) . "<br>";
-					}
-				?>
-				</p>
+				<h5> <?php
+					$confirmed  = $attendance->count_total_positive_responses();
+					$count_text = sprintf( _n( '(%d attending)', '(%d attending)', $confirmed, 'eventrocket' ), $confirmed );
+					printf( __( 'Attendee list %1$s %2$s %3$s', 'eventrocket' ), '<i>', $count_text, '</i>' );
+				?> </h5>
+
+				<?php if ( 0 === $confirmed ): ?>
+					<p> <?php _e( 'No confirmations so far.', 'eventrocket' ) ?> </p>
+				<?php else: ?>
+					<?php
+					$anon_confirmations = $attendance->count_positive_anon_responses();
+					?>
+					<ul>
+						<?php if ( $anon_confirmations > 0 ): ?>
+							<li> <?php printf( _n( '%d anonymous attendee', '%d anonymous attendees', $anon_confirmations, 'eventrocket' ), $anon_confirmations ) ?> </li>
+						<?php endif ?>
+
+						<?php foreach ( $attendance->list_authed_positives( true ) as $user ): ?>
+							<li> <?php echo esc_html( $user->display_name ) ?> </li>
+						<?php endforeach ?>
+					</ul>
+				<?php endif ?>
 			<?php endif ?>
 		<?php endif ?>
 
