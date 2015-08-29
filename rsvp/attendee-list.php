@@ -5,6 +5,7 @@ class EventRocket_RSVPAttendeeList
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_assets' ) );
 		add_action( 'wp_ajax_rsvp_attendance', array( $this, 'listen' ) );
 		add_action( 'wp_ajax_rsvp_email', array( $this, 'email' ) );
+		add_action( 'eventrocket_dispatch_emails', array( $this, 'send_emails' ), 10, 3 );
 	}
 
 	public function add_assets() {
@@ -59,10 +60,58 @@ class EventRocket_RSVPAttendeeList
 			exit( json_encode( array( 'msg' => 'failure' ) ) );
 
 		$attendees = eventrocket_rsvp()->attendance( $_POST['event_id'] );
-		$attendees->email_positives( $_POST['subject'], $_POST['body'] );
+		$emails    = $this->build_attendee_email_list_positives( $attendees );
+		$subject   = filter_var( $_POST['subject'], FILTER_SANITIZE_STRING );
+		$body      = filter_var( $_POST['body'], FILTER_SANITIZE_STRING );
+		do_action( 'eventrocket_dispatch_emails', $emails, $subject, $body );
 
-		exit( json_encode( array(
+		wp_send_json( array(
 			'msg'           => 'success'
-		) ) );
+		) );
+	}
+
+	/**
+	 * Dispatch an email to confirmed attendees.
+	 *
+	 * @param EventRocket_RSVPAttendance $attendees
+	 *
+	 * @return array
+	 */
+	public function build_attendee_email_list_positives( EventRocket_RSVPAttendance $attendees ) {
+		$emails = array();
+
+		foreach ( $attendees->list_positives( true ) as $attendee ) {
+			$email = isset( $attendee->user_email )
+				? $attendee->user_email // authenticated users
+				: $attendee->identifier; // unauthenticated users
+
+			// Sanity check
+			if ( ! filter_var( $email, FILTER_VALIDATE_EMAIL ) ) continue;
+
+			$emails[] = $email;
+		}
+
+		return $emails;
+	}
+
+	/**
+	 * Dispatches emails to one or more addresses.
+	 *
+	 * This method can be unhooked from the eventrocket_dispatch_emails action and
+	 * replaced with an alternative: this makes it possible to send the emails by
+	 * different strategies such as a single wp_mail() call with many bcc entries,
+	 * if preferred.
+	 *
+	 * @param array|string $email_addresses
+	 * @param string       $subject
+	 * @param string       $body
+	 */
+	public function send_emails( $email_addresses, $subject, $body ) {
+		$email_addresses = is_array( $email_addresses )
+			? $email_addresses
+			: array( $email_addresses );
+
+		foreach ( $email_addresses as $to )
+			wp_mail( $to, $subject, $body );
 	}
 }
