@@ -29,6 +29,7 @@ $user_id = get_current_user_id();
 		<?php endif ?>
 
 		<?php if ( is_user_logged_in() ): ?>
+
 			<?php if ( $limited > 0 && $attendance->count_total_positive_responses() >= $limited && $attendance->is_user_undetermined( $user_id ) ): ?>
 				<p>
 					<?php _e( 'This event is full', 'eventrocket' ) ?>
@@ -60,6 +61,7 @@ $user_id = get_current_user_id();
 					</button>
 				</p>
 			<?php endif ?>
+
 			<?php if ( $show_attendees ): ?>
 				<h5> <?php
 					$confirmed  = $attendance->count_total_positive_responses();
@@ -82,9 +84,9 @@ $user_id = get_current_user_id();
 							<li> <?php echo esc_html( $user->display_name ) ?> </li>
 						<?php endforeach ?>
 					</ul>
-				<?php endif ?>
-			<?php endif ?>
-		<?php endif ?>
+				<?php endif // if we have confirmed attendees ?>
+			<?php endif // if show_attendees is enabled ?>
+		<?php endif // if the user is logged in ?>
 
 		<?php if ( ! is_user_logged_in() ): ?>
 			<?php if ( $limited > 0 && $attendance->count_total_positive_responses() >= $limited && ! $restricted && ! $anon_accepted ): ?>
@@ -109,6 +111,7 @@ $user_id = get_current_user_id();
 					<?php _e( 'Thank you for confirming your attendance.', 'eventrocket' ) ?> <br />
 				</p>
 			<?php endif ?>
-		<?php endif ?>
+		<?php endif // if the user is not logged in ?>
+
 	</form>
 </div>
