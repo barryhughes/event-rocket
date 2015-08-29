@@ -12,7 +12,7 @@ Experimental extensions, hacks and gadgetry for The Events Calendar
 
 ## Description
 
-> *Simple steps to help you get the most out of Event Rocket* 
+> *Simple steps to help you get the most out of Event Rocket:* 
 >
 > * Need to ask a question? Please don't be lazy! Search the [existing forum posts](https://wordpress.org/support/plugin/event-rocket) first of all
 > * Help yourself by helping others - this plugin costs you nothing and helping others makes a real difference
