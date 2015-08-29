@@ -188,7 +188,7 @@ class EventRocket_RSVPAttendance
 		foreach ( $this->attendees[self::ANONYMOUS] as $attendee => $is_attending ) {
 			if ( ! $is_attending ) continue;
 			$user_list[] = $raw
-				? (object) apply_filters( 'eventrocket_anon_attendee_entry_raw', array( 'type' => 'anon', 'data' => $attendee ) )
+				? (object) apply_filters( 'eventrocket_anon_attendee_entry_raw', array( 'type' => 'anon', 'identifier' => $attendee ) )
 				: apply_filters( 'eventrocket_anon_attendee_entry', sprintf( __( 'Anonymous (%s)', 'eventrocket' ), $attendee ) );
 		}
 
@@ -232,27 +232,10 @@ class EventRocket_RSVPAttendance
 			if ( $is_attending ) continue;
 
 			$user_list[] = $raw
-				? apply_filters( 'eventrocket_anon_non_attendee_entry_raw', array( 'type' => 'anon', 'data' => $attendee ) )
+				? apply_filters( 'eventrocket_anon_non_attendee_entry_raw', array( 'type' => 'anon', 'identifier' => $attendee ) )
 				: apply_filters( 'eventrocket_anon_non_attendee_entry', sprintf( __( 'Anonymous (%s)', 'eventrocket' ), $attendee ) );
 		}
 
 		return $user_list;
-	}
-
-	public function email_positives( $subject, $body ) {
-
-		// registered
-		foreach ( $this->attendees as $user_id => $is_attending ) {
-			if ( ! $is_attending ) continue;
-			if ( ! ( $user = get_user_by( 'id', $user_id ) ) ) continue;
-			wp_mail( $user->user_email, $subject, $body );
-
-		}
-
-		// unregistered
-		foreach ( $this->attendees[self::ANONYMOUS] as $attendee => $is_attending ) {
-			if ( ! $is_attending ) continue;
-			wp_mail( $attendee, $subject, $body );
-		}
 	}
 }
