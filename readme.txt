@@ -3,7 +3,7 @@ Contributors: barry.hughes, mikejanzen, mikevalstar
 Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes, The Events Calendar, duplicate, rsvp
 Requires at least: 4.0
-Tested up to: 4.0
+Tested up to: 4.3
 Stable tag: 3.3dev
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
