@@ -25,6 +25,8 @@ function eventrocket_launch() {
 		return;
 	}
 
+	load_plugin_textdomain( 'event-rocket', false, dirname( plugin_basename( __FILE__ ) ) . '/lang' );
+
 	require_once EVENTROCKET_INC . '/embedding/embedding.php';
 	require_once EVENTROCKET_INC . '/data-requests/data-requests.php';
 	require_once EVENTROCKET_INC . '/admin/admin.php';
