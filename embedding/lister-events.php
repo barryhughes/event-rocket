@@ -200,10 +200,10 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		if ( ! isset( $this->params['order'] ) ) return;
 
 		$keywords = array( 'desc', 'descending', 'backwards', 'reverse' );
-		$keywords[] = _x( 'desc', 'embedded event sequence', 'eventrocket' );
-		$keywords[] = _x( 'descending', 'embedded event sequence', 'eventrocket' );
-		$keywords[] = _x( 'backwards', 'embedded event sequence', 'eventrocket' );
-		$keywords[] = _x( 'reverse', 'embedded event sequence', 'eventrocket' );
+		$keywords[] = _x( 'desc', 'embedded event sequence', 'event-rocket' );
+		$keywords[] = _x( 'descending', 'embedded event sequence', 'event-rocket' );
+		$keywords[] = _x( 'backwards', 'embedded event sequence', 'event-rocket' );
+		$keywords[] = _x( 'reverse', 'embedded event sequence', 'event-rocket' );
 
 		$direction = strtolower( $this->params['order'] );
 		if ( in_array( $direction, $keywords ) ) $this->order = 'DESC';
@@ -217,10 +217,10 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		if ( ! isset( $this->params['where'] ) ) return;
 
 		$keywords = array( 'ongoing', 'current', 'in-progress', 'in progress' );
-		$keywords[] = _x( 'ongoing', 'embedded event condition', 'eventrocket' );
-		$keywords[] = _x( 'current', 'embedded event condition', 'eventrocket' );
-		$keywords[] = _x( 'in-progress', 'embedded event condition', 'eventrocket' );
-		$keywords[] = _x( 'in progress', 'embedded event condition', 'eventrocket' );
+		$keywords[] = _x( 'ongoing', 'embedded event condition', 'event-rocket' );
+		$keywords[] = _x( 'current', 'embedded event condition', 'event-rocket' );
+		$keywords[] = _x( 'in-progress', 'embedded event condition', 'event-rocket' );
+		$keywords[] = _x( 'in progress', 'embedded event condition', 'event-rocket' );
 
 		$where = strtolower( $this->params['where'] );
 		if ( in_array( $where, $keywords ) ) $this->where = 'ongoing';

@@ -44,11 +44,11 @@ class EventRocket_RSVPForm
 		$event_id = get_the_ID();
 
 		if ( get_post_meta( $event_id, EventRocket_RSVPManager::RESTRICT_RSVP, true ) ) {
-			$this->anon_submission_errors[ $event_id ][] = __( 'This event is not open to anonymous RSVP submissions', 'eventrocket' );
+			$this->anon_submission_errors[ $event_id ][] = __( 'This event is not open to anonymous RSVP submissions', 'event-rocket' );
 		}
 
 		if ( ! filter_var( $_POST['eventrocket_anon_id'], FILTER_VALIDATE_EMAIL ) ) {
-			$this->anon_submission_errors[ $event_id ][] = __( 'You must provide a valid email address!', 'eventrocket' );
+			$this->anon_submission_errors[ $event_id ][] = __( 'You must provide a valid email address!', 'event-rocket' );
 		}
 
 		if ( count( $this->anon_submission_errors[ $event_id ] ) > 0 ) return false;

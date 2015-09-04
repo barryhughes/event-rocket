@@ -14,7 +14,7 @@ if ( ! empty( $attending ) ): ?>
 	<?php foreach ( $attending as $event ): ?>
 		<li>
 			<a href="<?php echo get_permalink( $event ) ?>"><?php echo get_the_title( $event ) ?></a>
-			<?php printf( _x( 'on %s', 'user rsvp attendance', 'eventrocket' ), tribe_get_start_date( $event ) ) ?>
+			<?php printf( _x( 'on %s', 'user rsvp attendance', 'event-rocket' ), tribe_get_start_date( $event ) ) ?>
 		</li>
 	<?php endforeach ?>
 	</ul>
@@ -26,7 +26,7 @@ if ( ! empty( $attending ) ): ?>
 		<?php foreach ( $declines as $event ): ?>
 			<li>
 				<a href="<?php echo get_permalink( $event ) ?>"><?php echo get_the_title( $event ) ?></a>
-				<?php printf( _x( 'on %s', 'user rsvp attendance', 'eventrocket' ), tribe_get_start_date( $event ) ) ?>
+				<?php printf( _x( 'on %s', 'user rsvp attendance', 'event-rocket' ), tribe_get_start_date( $event ) ) ?>
 			</li>
 		<?php endforeach ?>
 	</ul>

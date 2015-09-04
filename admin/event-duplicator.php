@@ -47,7 +47,7 @@ class EventRocket_EventDuplicator
 
 		// Form the link
 		$url   = $this->duplication_link_url( $post->ID );
-		$text  = __( 'Duplicate', 'eventrocket' );
+		$text  = __( 'Duplicate', 'event-rocket' );
 		$date  = tribe_get_start_date( $post->ID, false, DateTime::ISO8601 );
 		$title = $this->get_duplicate_post_title( $post );
 
@@ -134,7 +134,7 @@ class EventRocket_EventDuplicator
 	}
 
 	protected function get_duplicate_post_title( $post ) {
-		$default = __( 'Copy of %s', 'eventrocket' );
+		$default = __( 'Copy of %s', 'event-rocket' );
 		$template = apply_filters( 'eventrocket_duplicated_post_title_template', $default, $post );
 		return sprintf( $template, $post->post_title );
 	}
@@ -173,7 +173,7 @@ class EventRocket_EventDuplicator
 			$edit = get_admin_url( null, 'post.php?post=' . $this->duplicate . '&action=edit' );
 			$view = get_permalink( $this->duplicate );
 			echo '<div class="updated"> <p> '
-				. sprintf( __('Event successfully duplicated! <br/> <a href="%s">Edit</a> | <a href="%s">View</a>', 'eventrocket' ), $edit, $view )
+				. sprintf( __('Event successfully duplicated! <br/> <a href="%s">Edit</a> | <a href="%s">View</a>', 'event-rocket' ), $edit, $view )
 				. '</p> </div>';
 		}
 
@@ -181,13 +181,13 @@ class EventRocket_EventDuplicator
 			$edit = get_admin_url( null, 'post.php?post=' . $this->duplicate . '&action=edit' );
 			$view = get_permalink( $this->duplicate );
 			echo '<div class="error"> <p>'
-				. sprintf( __( 'Event was duplicated but something went wrong! <br/> <a href="%s">Edit</a> | <a href="%s">View</a>', 'eventrocket' ), $edit, $view )
+				. sprintf( __( 'Event was duplicated but something went wrong! <br/> <a href="%s">Edit</a> | <a href="%s">View</a>', 'event-rocket' ), $edit, $view )
 				. '</p> </div>';
 		}
 
 		elseif ( self::POST_CREATION_FAILED === $this->status ) {
 			echo '<div class="error"> <p>'
-				. __( 'Sorry! The event could not be duplicated. Please try again or speak to your administrator or developer for further assistance.', 'eventrocket' )
+				. __( 'Sorry! The event could not be duplicated. Please try again or speak to your administrator or developer for further assistance.', 'event-rocket' )
 				. '</p> </div>';
 		}
 	}

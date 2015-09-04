@@ -41,7 +41,7 @@ function eventrocket_abort_launch() {
 
 function eventrocket_explain_failure() {
 	$msg =  __( 'Event Rocket requires a suitable version of The Events Calendar to be activated in order to provide '
-		. 'full functionality (data cleanup tools will still be available, though).', 'eventrocket' );
+		. 'full functionality (data cleanup tools will still be available, though).', 'event-rocket' );
 	echo '<div class="error"> <p> ' . $msg . ' </p> </div>';
 }
 

@@ -26,20 +26,20 @@ class EventRocket_RSVPAttendeeList
 			'check'               => wp_create_nonce( 'list_attendees_' . get_current_user_id() . $post->ID ),
 			'event_id'            => $post->ID,
 			'loading_msg'         => $this->dialog_placeholder(),
-			'attending_title'     => _x( 'Attending', 'tab title', 'eventrocket' ),
-			'not_attending_title' => _x( 'Not Attending', 'tab title', 'eventrocket' ),
-			'email_title'     	  => _x( 'Email attendees', 'dialog title', 'eventrocket' ),
-			'email_subject'       => _x( 'Subject', 'dialog text', 'eventrocket' ),
-			'email_body'          => _x( 'Body', 'dialog text', 'eventrocket' ),
-			'email_send'          => _x( 'Send', 'dialog text', 'eventrocket' ),
-			'none_found_text'     => _x( 'No matching responses yet.', 'attendee list', 'eventrocket' ),
-			'title'               => esc_attr( _x( 'RSVP Attendee List', 'dialog title', 'eventrocket' ) )
+			'attending_title'     => _x( 'Attending', 'tab title', 'event-rocket' ),
+			'not_attending_title' => _x( 'Not Attending', 'tab title', 'event-rocket' ),
+			'email_title'     	  => _x( 'Email attendees', 'dialog title', 'event-rocket' ),
+			'email_subject'       => _x( 'Subject', 'dialog text', 'event-rocket' ),
+			'email_body'          => _x( 'Body', 'dialog text', 'event-rocket' ),
+			'email_send'          => _x( 'Send', 'dialog text', 'event-rocket' ),
+			'none_found_text'     => _x( 'No matching responses yet.', 'attendee list', 'event-rocket' ),
+			'title'               => esc_attr( _x( 'RSVP Attendee List', 'dialog title', 'event-rocket' ) )
 		) );
 	}
 
 	protected function dialog_placeholder() {
 		$spinner = '<img src="' . get_admin_url( null, '/images/spinner.gif' ) . '" />';
-		return '<p class="aligncenter loading">' . $spinner . '<br/>' . __( 'Loading', 'eventrocket' ) .'</p>';
+		return '<p class="aligncenter loading">' . $spinner . '<br/>' . __( 'Loading', 'event-rocket' ) .'</p>';
 	}
 
 	public function listen() {

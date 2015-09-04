@@ -20,23 +20,23 @@ defined( 'ABSPATH' ) or die();
 <table class="eventtable eventrocket_rsvp">
 	<tr>
 		<td class="tribe_sectionheader" colspan="3">
-			<h4> <?php _e( 'RSVP', 'eventrocket' ) ?> </h4>
+			<h4> <?php _e( 'RSVP', 'event-rocket' ) ?> </h4>
 		</td>
 	</tr>
 
 	<tr>
-		<td style="width: 25%"> <?php _e( 'Enable RSVPs:', 'eventrocket' ) ?> </td>
+		<td style="width: 25%"> <?php _e( 'Enable RSVPs:', 'event-rocket' ) ?> </td>
 		<td> <input type="checkbox" name="<?php esc_attr_e( EventRocket_RSVPManager::ENABLE_RSVP ) ?>" <?php checked( $enabled ) ?>/> </td>
 
 		<!-- Summary -->
 		<td rowspan="4">
 			<table>
 				<tr>
-					<td class="eventrocket_rsvp_attending"> <?php _e( 'Attending:', 'eventrocket' ) ?> </td>
+					<td class="eventrocket_rsvp_attending"> <?php _e( 'Attending:', 'event-rocket' ) ?> </td>
 					<td> <strong> <?php echo $attendance->count_total_positive_responses() ?> </strong> </td>
 				</tr>
 			    <tr>
-				    <td class="eventrocket_rsvp_not_attending"> <?php _e( 'Not attending:', 'eventrocket' ) ?> </td>
+				    <td class="eventrocket_rsvp_not_attending"> <?php _e( 'Not attending:', 'event-rocket' ) ?> </td>
 				    <td> <strong> <?php echo $attendance->count_total_negative_responses() ?> </strong> </td>
 			    </tr>
 			</table>
@@ -44,17 +44,17 @@ defined( 'ABSPATH' ) or die();
 	</tr>
 
 	<tr class="eventrocket_additionaloptions restrict_to_authed">
-		<td> <?php _e( 'Restrict to logged in users:', 'eventrocket' ) ?> </td>
+		<td> <?php _e( 'Restrict to logged in users:', 'event-rocket' ) ?> </td>
 		<td> <input type="checkbox" name="<?php echo esc_attr( EventRocket_RSVPManager::RESTRICT_RSVP ) ?>" <?php checked( $restricted ) ?>/> </td>
 	</tr>
 
 	<tr class="eventrocket_additionaloptions show_attendees">
-		<td> <?php _e( 'Show attendees:', 'eventrocket' ) ?> </td>
+		<td> <?php _e( 'Show attendees:', 'event-rocket' ) ?> </td>
 		<td> <input type="checkbox" name="<?php echo esc_attr( EventRocket_RSVPManager::SHOW_ATTENDEES_RSVP ) ?>" <?php checked( $show_attendees ) ?>/> </td>
 	</tr>
 
 	<tr class="eventrocket_additionaloptions limit_attendees">
-		<td> <?php _e( 'Limit attendance ', 'eventrocket' ) ?> <i><?php _e( '(-1 for unlimited)', 'eventrocket' ) ?></i>: </td>
+		<td> <?php _e( 'Limit attendance ', 'event-rocket' ) ?> <i><?php _e( '(-1 for unlimited)', 'event-rocket' ) ?></i>: </td>
 		<td> <input type="number" name="<?php esc_attr_e( EventRocket_RSVPManager::LIMIT_RSVP ) ?>" value="<?php echo esc_attr( $limited ) ?>" min="-1" /> </td>
 	</tr>
 </table>

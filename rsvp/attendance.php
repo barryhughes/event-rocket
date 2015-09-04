@@ -189,7 +189,7 @@ class EventRocket_RSVPAttendance
 			if ( ! $is_attending ) continue;
 			$user_list[] = $raw
 				? (object) apply_filters( 'eventrocket_anon_attendee_entry_raw', array( 'type' => 'anon', 'identifier' => $attendee ) )
-				: apply_filters( 'eventrocket_anon_attendee_entry', sprintf( __( 'Anonymous (%s)', 'eventrocket' ), $attendee ) );
+				: apply_filters( 'eventrocket_anon_attendee_entry', sprintf( __( 'Anonymous (%s)', 'event-rocket' ), $attendee ) );
 		}
 
 		return $user_list;
@@ -233,7 +233,7 @@ class EventRocket_RSVPAttendance
 
 			$user_list[] = $raw
 				? apply_filters( 'eventrocket_anon_non_attendee_entry_raw', array( 'type' => 'anon', 'identifier' => $attendee ) )
-				: apply_filters( 'eventrocket_anon_non_attendee_entry', sprintf( __( 'Anonymous (%s)', 'eventrocket' ), $attendee ) );
+				: apply_filters( 'eventrocket_anon_non_attendee_entry', sprintf( __( 'Anonymous (%s)', 'event-rocket' ), $attendee ) );
 		}
 
 		return $user_list;

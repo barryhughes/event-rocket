@@ -4,17 +4,17 @@
  */
 
 $columns = array(
-	_x( 'ID', 'csv-data', 'eventrocket' ),
-	_x( 'Title', 'csv-data', 'eventrocket' ),
-	_x( 'Description', 'csv-data', 'eventrocket' ),
-	_x( 'Start Date', 'csv-data', 'eventrocket' ),
-	_x( 'Start Time', 'csv-data', 'eventrocket' ),
-	_x( 'End Date', 'csv-data', 'eventrocket' ),
-	_x( 'End Time', 'csv-data', 'eventrocket' ),
-	_x( 'Venue', 'csv-data', 'eventrocket' ),
-	_x( 'Organizer', 'csv-data', 'eventrocket' ),
-	_x( 'All Day', 'csv-data', 'eventrocket' ),
-	_x( 'Recurring', 'csv-data', 'eventrocket' )
+	_x( 'ID', 'csv-data', 'event-rocket' ),
+	_x( 'Title', 'csv-data', 'event-rocket' ),
+	_x( 'Description', 'csv-data', 'event-rocket' ),
+	_x( 'Start Date', 'csv-data', 'event-rocket' ),
+	_x( 'Start Time', 'csv-data', 'event-rocket' ),
+	_x( 'End Date', 'csv-data', 'event-rocket' ),
+	_x( 'End Time', 'csv-data', 'event-rocket' ),
+	_x( 'Venue', 'csv-data', 'event-rocket' ),
+	_x( 'Organizer', 'csv-data', 'event-rocket' ),
+	_x( 'All Day', 'csv-data', 'event-rocket' ),
+	_x( 'Recurring', 'csv-data', 'event-rocket' )
 );
 
 echo join( ', ', $columns ) . "\n";

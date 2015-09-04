@@ -34,7 +34,7 @@ class EventRocket_CleanUpTool
 	}
 
 	public function register_screen() {
-		$title = __( 'Event Data Cleanup', 'eventrocket' );
+		$title = __( 'Event Data Cleanup', 'event-rocket' );
 		$capability = $this->min_capability;
 		$callback = array( $this, 'screen' );
 		add_management_page( $title, $title, $capability, 'eventrocket_jettison', $callback );

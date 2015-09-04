@@ -3,7 +3,7 @@
 		<form method="post">
 			<div class="title">
 				<p>
-					<?php _ex( 'Duplicate event', 'dialog title', 'eventrocket' ) ?>
+					<?php _ex( 'Duplicate event', 'dialog title', 'event-rocket' ) ?>
 					<span class="close-btn">&#10060;</span>
 				</p>
 			</div>
@@ -28,10 +28,10 @@
 
 			<p class="action-btns">
 				<button id="do_duplicate" type="submit" class="button primary">
-					<?php _ex( 'Duplicate', 'button label', 'eventrocket' ) ?>
+					<?php _ex( 'Duplicate', 'button label', 'event-rocket' ) ?>
 				</button>
 				<button id="cancel_duplication" type="submit" class="button secondary">
-					<?php _ex( 'Cancel', 'button label', 'eventrocket' ) ?>
+					<?php _ex( 'Cancel', 'button label', 'event-rocket' ) ?>
 				</button>
 			</p>
 		</form>
