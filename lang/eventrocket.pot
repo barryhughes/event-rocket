@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Event Rocket 3.2\n"
-"POT-Creation-Date: 2015-08-27 17:01-0800\n"
-"PO-Revision-Date: 2015-08-27 17:02-0800\n"
+"POT-Creation-Date: 2015-09-04 16:18-0800\n"
+"PO-Revision-Date: 2015-09-04 16:18-0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -92,7 +92,7 @@ msgstr ""
 msgid "Main events page"
 msgstr ""
 
-#: rsvp/attendance.php:167 rsvp/attendance.php:195
+#: rsvp/attendance.php:192 rsvp/attendance.php:236
 #, php-format
 msgid "Anonymous (%s)"
 msgstr ""
@@ -105,23 +105,39 @@ msgstr ""
 msgid "You must provide a valid email address!"
 msgstr ""
 
-#: rsvp/attendee-list.php:27
+#: rsvp/attendee-list.php:29
 msgid "Attending"
 msgstr ""
 
-#: rsvp/attendee-list.php:28
+#: rsvp/attendee-list.php:30
 msgid "Not Attending"
 msgstr ""
 
-#: rsvp/attendee-list.php:29
+#: rsvp/attendee-list.php:31
+msgid "Email attendees"
+msgstr ""
+
+#: rsvp/attendee-list.php:32
+msgid "Subject"
+msgstr ""
+
+#: rsvp/attendee-list.php:33
+msgid "Body"
+msgstr ""
+
+#: rsvp/attendee-list.php:34
+msgid "Send"
+msgstr ""
+
+#: rsvp/attendee-list.php:35
 msgid "No matching responses yet."
 msgstr ""
 
-#: rsvp/attendee-list.php:30
+#: rsvp/attendee-list.php:36
 msgid "RSVP Attendee List"
 msgstr ""
 
-#: rsvp/attendee-list.php:36
+#: rsvp/attendee-list.php:42
 msgid "Loading"
 msgstr ""
 
@@ -188,24 +204,36 @@ msgstr ""
 msgid "on %s"
 msgstr ""
 
-#: templates/rsvp-options.php:21
+#: templates/rsvp-options.php:23
 msgid "RSVP"
 msgstr ""
 
-#: templates/rsvp-options.php:26
+#: templates/rsvp-options.php:28
 msgid "Enable RSVPs:"
 msgstr ""
 
-#: templates/rsvp-options.php:33
+#: templates/rsvp-options.php:35
 msgid "Attending:"
 msgstr ""
 
-#: templates/rsvp-options.php:37
+#: templates/rsvp-options.php:39
 msgid "Not attending:"
 msgstr ""
 
-#: templates/rsvp-options.php:45
+#: templates/rsvp-options.php:47
 msgid "Restrict to logged in users:"
+msgstr ""
+
+#: templates/rsvp-options.php:52
+msgid "Show attendees:"
+msgstr ""
+
+#: templates/rsvp-options.php:57
+msgid "Limit attendance "
+msgstr ""
+
+#: templates/rsvp-options.php:57
+msgid "(-1 for unlimited)"
 msgstr ""
 
 #: templates/cleanup-screen.php:9
@@ -268,43 +296,66 @@ msgstr ""
 msgid "Do cleanup"
 msgstr ""
 
-#: templates/rsvp-form.php:26
+#: templates/rsvp-form.php:28
 msgid "To RSVP to this event you must be logged in!"
 msgstr ""
 
-#: templates/rsvp-form.php:32
-msgid "You have indicated that you are attending this event!"
-msgstr ""
-
-#: templates/rsvp-form.php:34
-msgid "Withdraw from event"
+#: templates/rsvp-form.php:35 templates/rsvp-form.php:94
+msgid "This event is full"
 msgstr ""
 
 #: templates/rsvp-form.php:39
-msgid "You have indicated that you will not be attending this event!"
+msgid "You have indicated that you are attending this event!"
 msgstr ""
 
 #: templates/rsvp-form.php:41
-msgid "Actually &hellip; I will attend after all"
+msgid "Withdraw from event"
 msgstr ""
 
 #: templates/rsvp-form.php:46
+msgid "You have indicated that you will not be attending this event!"
+msgstr ""
+
+#: templates/rsvp-form.php:49
+msgid "Actually &hellip; I will attend after all"
+msgstr ""
+
+#: templates/rsvp-form.php:55
 msgid "Please indicate if you plan to attend this event."
 msgstr ""
 
-#: templates/rsvp-form.php:48
+#: templates/rsvp-form.php:57
 msgid "Yes! I will attend"
 msgstr ""
 
-#: templates/rsvp-form.php:51
+#: templates/rsvp-form.php:60
 msgid "No, I will not"
 msgstr ""
 
-#: templates/rsvp-form.php:60
+#: templates/rsvp-form.php:68
+#, php-format
+msgid "(%d attending)"
+msgstr ""
+
+#: templates/rsvp-form.php:69
+#, php-format
+msgid "Attendee list %1$s %2$s %3$s"
+msgstr ""
+
+#: templates/rsvp-form.php:73
+msgid "No confirmations so far."
+msgstr ""
+
+#: templates/rsvp-form.php:80
+#, php-format
+msgid "%d anonymous attendee"
+msgstr ""
+
+#: templates/rsvp-form.php:98
 msgid ""
 "If you plan on attending please let us know by providing your email address."
 msgstr ""
 
-#: templates/rsvp-form.php:73
+#: templates/rsvp-form.php:111
 msgid "Thank you for confirming your attendance."
 msgstr ""
