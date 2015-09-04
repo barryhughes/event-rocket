@@ -43,6 +43,8 @@ class EventRocket_EventLister extends EventRocket_ObjectLister
 		$this->parse_post_tax_refs();
 		$this->set_time_constraints();
 		$this->set_limit();
+		$this->set_offset();
+		$this->set_page();
 		$this->set_author();
 		$this->set_template();
 		$this->set_fallbacks();

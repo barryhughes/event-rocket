@@ -25,6 +25,8 @@ abstract class EventRocket_ObjectLister
 
 	// Other conditions
 	protected $limit  = 20;
+	protected $offset = 0;
+	protected $page   = 0; // Relates to the "paged" query var
 	protected $author = -1;
 
 	public function __construct( array $params, $content ) {
@@ -232,6 +234,29 @@ abstract class EventRocket_ObjectLister
 	}
 
 	/**
+	 * Set the page.
+	 */
+	protected function set_page() {
+		global $wp_query;
+
+		if ( ! isset( $this->params['page'] ) ) return;
+
+		if ( 'auto' === strtolower( $this->params['page'] ) && $wp_query->get( 'paged' ) )
+			$this->page = (int) $wp_query->get( 'paged' );
+
+		if ( (int) $this->params['page'] > 1 )
+			$this->page = (int) $this->params['page'];
+	}
+
+	/**
+	 * Set the offset: should not ordinarily be used in concert with the page param.
+	 */
+	protected function set_offset() {
+		if ( ! isset( $this->params['offset'] ) ) return;
+		$this->offset = (int) $this->params['offset'];
+	}
+
+	/**
 	 * Set the author ID.
 	 */
 	protected function set_author() {
@@ -260,6 +285,8 @@ abstract class EventRocket_ObjectLister
 
 	protected function args_limit() {
 		$this->args['posts_per_page'] = $this->limit;
+		if ( $this->page > 0 )    $this->args['paged'] = $this->page;
+		if ( $this->offset != 0 ) $this->args['offset'] = $this->offset;
 	}
 
 	protected function args_author() {
