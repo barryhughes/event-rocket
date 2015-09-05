@@ -122,6 +122,11 @@ required).
 
 ## Changelog
 
+### 3.3
+* Further improve localization support
+* Add basic offset and pagination capabilities to the event_embed framework
+* Improved event duplication (more efficient, plus supports multiple organizers)
+
 ### 3.2
 * Further fix in `[event_embed]`'s query building
 * Limited attendance option added (props: mikevalstar)
