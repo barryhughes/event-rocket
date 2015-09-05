@@ -117,7 +117,7 @@ class EventRocket_EventDuplicator
 			$value = (array) $value;
 			foreach ( $value as $meta_entry ) {
 				$meta_entry = $this->smart_unserialize( $meta_entry );
-				update_post_meta( $this->duplicate, $key, $meta_entry );
+				add_post_meta( $this->duplicate, $key, $meta_entry );
 			}
 		}
 
