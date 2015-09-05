@@ -123,7 +123,7 @@ required).
 ## Changelog
 
 ### 3.3
-* Further improve localization support
+* Further improve localization support and update textdomain to match plugin slug
 * Add basic offset and pagination capabilities to the event_embed framework
 * Improved event duplication (more efficient, plus supports multiple organizers)
 
