@@ -79,3 +79,7 @@
 	position: relative;
 	z-index: 200000; /* Encourage the datepicker dialog to use an appropriate z-index */
 }
+
+#ui-datepicker-div {
+	width: 320px;
+}

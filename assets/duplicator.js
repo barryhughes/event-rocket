@@ -34,11 +34,13 @@ function eventrocket_duplicator( $ ) {
 	    // Setup the datepicker
 	    var date =  new Date( dup_link.data( "date" ) )
 
-        datepicker.datepicker( {
-	        "defaultDate": date
+        datepicker.datetimepicker( {
+	        "defaultDate": date,
+	        "dateFormat":  eventrocket_dup.date_format,
+	        "timeFormat":  eventrocket_dup.time_format
         } );
 
-	    datepicker.datepicker( "setDate", date );
+	    datepicker.datetimepicker( "setDate", date );
 
 	    // Set the default title
 	    title.val( dup_link.data( "title" ) );
