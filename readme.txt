@@ -127,6 +127,7 @@ required).
 * Embedding: add basic offset and pagination capabilities to the event_embed framework
 * Duplication: improve meta data copying (ie support multiple organizers)
 * Duplication: add ability to specify a different time (not just a different date)
+* RSVP: fixes minor issue in loading of attendance data before displaying frontend form
 
 ### 3.2
 * Further fix in `[event_embed]`'s query building
