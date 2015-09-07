@@ -48,7 +48,7 @@ class EventRocket_EventDuplicator
 		// Form the link
 		$url   = $this->duplication_link_url( $post->ID );
 		$text  = __( 'Duplicate', 'event-rocket' );
-		$date  = tribe_get_start_date( $post->ID, false, DateTime::ISO8601 );
+		$date  = tribe_get_start_date( $post->ID, false, 'Y-m-d\TH:i:s' );
 		$title = $this->get_duplicate_post_title( $post );
 
 		$link = '<a href="'. $url . '" class="eventrocket_duplicate" '
@@ -81,6 +81,7 @@ class EventRocket_EventDuplicator
 		$this->src_post = get_post( $_GET['duplicate_event'] );
 		if ( Tribe__Events__Main::POSTTYPE !== $this->src_post->post_type ) return;
 
+		add_filter( 'eventrocket_duplicated_post_meta', array( $this, 'set_datetime' ) );
 		$this->duplicate();
 	}
 
@@ -99,7 +100,7 @@ class EventRocket_EventDuplicator
 		$post_meta = get_post_meta( $this->src_post->ID );
 
 		$post_data['post_status'] = apply_filters( 'eventrocket_duplicated_post_status', 'draft' );
-		$post_data['post_title'] = $this->get_duplicate_post_title( get_post( $this->src_post->ID ) );
+		unset( $post_data['post_name'] );#= $this->get_duplicate_post_title( get_post( $this->src_post->ID ) );
 		$post_data = (array) apply_filters( 'eventrocket_duplicated_post_data', $post_data, $this->src_post );
 
 		unset( $post_data['ID'] );
@@ -137,6 +138,30 @@ class EventRocket_EventDuplicator
 		$default = __( 'Copy of %s', 'event-rocket' );
 		$template = apply_filters( 'eventrocket_duplicated_post_title_template', $default, $post );
 		return sprintf( $template, $post->post_title );
+	}
+
+	/**
+	 * Try and set the duplicate start/end times, preserving the correct interval.
+	 *
+	 * @param  array $post_meta
+	 * @return array
+	 */
+	public function set_datetime( $post_meta ) {
+		$original_start = date_create( current( $post_meta['_EventStartDate'] ) );
+		$original_end   = date_create( current( $post_meta['_EventEndDate'] ) );
+		if ( ! $original_start || ! $original_end ) return $post_meta;
+
+		$new_start = date_create( $_POST['duplicate_datetime'] );
+		if ( ! $new_start ) return $post_meta;
+
+		$difference = $original_end->format( 'U' ) - $original_start->format( 'U' );
+		$start_date = $new_start->format( 'Y-m-d H:i:s' );
+		$end_date   = $new_start->modify( "+ $difference seconds" )->format( 'Y-m-d H:i:s' );
+
+		$post_meta['_EventStartDate'] = array( $start_date );
+		$post_meta['_EventEndDate']   = array( $end_date );
+
+		return $post_meta;
 	}
 
 	/**

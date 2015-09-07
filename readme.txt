@@ -123,9 +123,10 @@ required).
 ## Changelog
 
 ### 3.3
-* Further improve localization support and update textdomain to match plugin slug
-* Add basic offset and pagination capabilities to the event_embed framework
-* Improved event duplication (more efficient, plus supports multiple organizers)
+* Localization: further improve support and update textdomain to match plugin slug
+* Embedding: add basic offset and pagination capabilities to the event_embed framework
+* Duplication: improve meta data copying (ie support multiple organizers)
+* Duplication: add ability to specify a different time (not just a different date)
 
 ### 3.2
 * Further fix in `[event_embed]`'s query building

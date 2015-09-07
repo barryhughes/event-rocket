@@ -8,21 +8,22 @@
 				</p>
 			</div>
 			<p>
-				<label for="duplicate_title"> Set the new event title (or leave blank for default) </label>
+				<label for="duplicate_title"> <?php _e( 'Set the new event title (or leave blank for default)', 'event-rocket' ) ?> </label>
 				<input id="duplicate_title" name="duplicate_title" type="text">
 			</p>
 
 			<p>
-				<label for="duplicate_start"> Move to the following date (leave blank to use same date) </label>
-				<input id="duplicate_start" name="duplicate_start" type="text">
+				<label for="duplicate_datetimepicker"> <?php _e( 'Move to the following date (leave blank to use same date)', 'event-rocket' ) ?> </label>
+				<input id="duplicate_datetimepicker" name="duplicate_datetimepicker" type="text">
+				<input id="duplicate_datetime" name="duplicate_datetime" type="hidden">
 			</p>
 
 			<p>
-				<label for="duplicate_status"> Status for new event </label>
+				<label for="duplicate_status"> <?php _e( 'Status for new event', 'event-rocket' ) ?> </label>
 				<select id="duplicate_status" name="duplicate_status">
-					<option value="publish"> Published </option>
-					<option value="pending"> Pending review </option>
-					<option value="draft">   Draft </option>
+					<option value="publish"> <?php _ex( 'Published', 'duplicate post status', 'event-rocket' ) ?> </option>
+					<option value="pending"> <?php _ex( 'Pending review', 'duplicate post status', 'event-rocket' ) ?> </option>
+					<option value="draft"> <?php _ex( 'Draft', 'duplicate post status', 'event-rocket' ) ?> </option>
 				</select>
 			</p>
 

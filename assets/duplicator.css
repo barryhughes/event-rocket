@@ -75,7 +75,7 @@
 	margin: 0 0.12rem;
 }
 
-#eventrocket_duplication_dialog #duplicate_start {
+#eventrocket_duplication_dialog #duplicate_datetimepicker {
 	position: relative;
 	z-index: 200000; /* Encourage the datepicker dialog to use an appropriate z-index */
 }

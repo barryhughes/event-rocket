@@ -1,6 +1,7 @@
 function eventrocket_duplicator( $ ) {
 	var template;
 	var datepicker;
+	var datetime;
 	var title;
 	var dup_link;
 
@@ -18,7 +19,8 @@ function eventrocket_duplicator( $ ) {
 		$( "body" ).append( eventrocket_dup.dialog_template );
 
 		template   = $( "#eventrocket_duplication_dialog" );
-		datepicker = template.find( "#duplicate_start" );
+		datepicker = template.find( "#duplicate_datetimepicker" );
+		datetime   = template.find( "#duplicate_datetime" );
 		title      = template.find( "#duplicate_title" );
 
 		// Capture cancel/close button clicks
@@ -35,9 +37,14 @@ function eventrocket_duplicator( $ ) {
 	    var date =  new Date( dup_link.data( "date" ) )
 
         datepicker.datetimepicker( {
-	        "defaultDate": date,
-	        "dateFormat":  eventrocket_dup.date_format,
-	        "timeFormat":  eventrocket_dup.time_format
+	        "defaultDate":      date,
+	        "dateFormat":       eventrocket_dup.date_format,
+	        "timeFormat":       eventrocket_dup.time_format,
+	        "altField":         "#duplicate_datetime",
+	        "altFieldTimeOnly": false,
+	        "altFormat":        "yy-mm-dd",
+	        "altTimeFormat":    "HH:mm",
+	        "altSeparator":     " "
         } );
 
 	    datepicker.datetimepicker( "setDate", date );
