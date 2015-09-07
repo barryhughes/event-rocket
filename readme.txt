@@ -112,13 +112,10 @@ _restrict to logged in users_ option, otherwise you run the potential of dealing
 
 1. Here you can see the new _Main Events Page_ entry in the Reading Settings screen.
 2. Duplicating an event - simply click the duplicate link in the admin events list and this convenient modal window appears
-3. The actual output with the countdown widget embedded in the page. A great example as it also shows the sort of flaws
-in terms of styling that can occur theme to theme (ie, to make things super-seamless some CSS knowledge is going to be
-required).
-4. Editing venue coordinates (only applicable to users without Events Calendar PRO)
-5. Cleanup tools menu entry
-6. The actual cleanup screen
-7. RSVP admin user interface - allow RSVPs on a per-event basis, restrict to logged in users only and view confirmation totals
+3. Editing venue coordinates (only applicable to users without Events Calendar PRO)
+4. Cleanup tools menu entry
+5. The actual cleanup screen
+6. RSVP admin user interface - allow RSVPs on a per-event basis, restrict to logged in users only and view confirmation totals
 
 ## Changelog
 
