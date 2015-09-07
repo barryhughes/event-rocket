@@ -81,7 +81,7 @@ class EventRocket_RSVPForm
 
 		$attendance    = eventrocket_rsvp()->attendance();
 		$anon_accepted = ( get_the_ID() === $this->anon_sub_accepted );
-		$attendees     = eventrocket_rsvp()->attendance( $_POST['event_id'] );
+		$attendees     = eventrocket_rsvp()->attendance( get_the_ID() );
 
 		include $template;
 	}
