@@ -8,35 +8,19 @@ Stable tag: 3.3dev
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Experimental extensions, hacks and gadgetry for The Events Calendar
+Unsupported set of experimental extensions, hacks and gadgetry for The Events Calendar
 
 ## Description
 
-> *Simple steps to help you get the most out of Event Rocket:* 
+> As of October 2015, this plugin is largely unsupported and is unlikely to receive further bug fixes or
+> improvements. Please consider that before using it in new projects.
 >
-> * Need to ask a question? Please don't be lazy! Search the [existing forum posts](https://wordpress.org/support/plugin/event-rocket) first of all
-> * Help yourself by helping others - this plugin costs you nothing and helping others makes a real difference
-> * Share what you've done - tweaked the RSVP form? Post a summary on the forum and let people know what's possible
->
-> Important links: [docs](https://eventrocket.wordpress.com/) | [wiki](https://github.com/barryhughes/event-rocket/wiki) | [changelog](https://wordpress.org/plugins/event-rocket/changelog/)
+> [docs](https://eventrocket.wordpress.com/) | [wiki](https://github.com/barryhughes/event-rocket/wiki) | [changelog](https://wordpress.org/plugins/event-rocket/changelog/)
 
-This is an add-on that builds on top of the following wonderful plugins:
-
-* [The Events Calendar](http://wordpress.org/plugins/the-events-calendar/) (required)
-* [Events Calendar PRO](http://tri.be/shop/wordpress-events-calendar-pro/) (optional but recommended)
-* Version 3.10 or greater for both of the above are suggested
-
-So if you don't already have them installed it behooves you to do so now. This plugin then adds the following power-ups:
-
-* Embed events *anywhere* using the `[event_embed]` shortcode
-* Venues and organizers can also be embedded anywhere
-* Place the main events page on the front page of your blog
-* Clean up and remove events data if you decide you don't need them any longer
-* Duplicate events with a single click and optionally set the duplicated event's new date
-* Simple but very flexible RSVP system - allow users to indicate if they will or will not attend an event
-
-Check out the FAQs and screenshots for more examples. A wealth of information and context as to why things work the
-way they do can also be found within the forum.
+Event Rocket is a set of hacks and utilities that add some extra capabilities to
+[The Events Calendar](http://wordpress.org/plugins/the-events-calendar/) and
+[Events Calendar PRO](http://tri.be/shop/wordpress-events-calendar-pro/). *It is no longer supported* and is
+unlikely to receive further fixes.
 
 ## Installation
 
@@ -55,6 +39,10 @@ and, ideally, [Events Calendar PRO](http://tri.be/shop/wordpress-events-calendar
 When the time comes to upgrade you need take no special precautions :-)
 
 ## Frequently Asked Questions
+
+### Is this plugin actively supported/maintained?
+
+No.
 
 ### How can I find out more?
 
@@ -122,6 +110,7 @@ _restrict to logged in users_ option, otherwise you run the potential of dealing
 ### 3.3
 * Localization: further improve support and update textdomain to match plugin slug
 * Embedding: add basic offset and pagination capabilities to the event_embed framework
+* Embedding: logic for parsing IDs and slugs was fixed (thanks Christina for highlighting this!)
 * Duplication: improve meta data copying (ie support multiple organizers)
 * Duplication: add ability to specify a different time (not just a different date)
 * RSVP: fixes minor issue in loading of attendance data before displaying frontend form
