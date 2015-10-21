@@ -1,10 +1,10 @@
 # Event Rocket
-Contributors: barry.hughes, mikejanzen, mikevalstar 
+Contributors: barry.hughes, mikejanzen, mikevalstar
 Donate link: http://www.britishlegion.org.uk/get-involved/how-to-give
 Tags: events, shortcodes, The Events Calendar, duplicate, rsvp
 Requires at least: 4.0
 Tested up to: 4.3
-Stable tag: 3.3dev
+Stable tag: 3.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -85,7 +85,7 @@ examples of acceptable ways to pass this information:
 ### How can I cleanup events data?
 
 A new menu option will appear in the WordPress _tools_ menu labelled 'Cleanup events data' -  please note that
-you are strongly cautioned to make a full and complete backup before using this tool (and, of course, should make 
+you are strongly cautioned to make a full and complete backup before using this tool (and, of course, should make
 yourself aware of the steps needed to restore that backup).
 
 ### How do I enable RSVPs?
