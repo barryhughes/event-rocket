@@ -338,18 +338,14 @@ abstract class EventRocket_ObjectLister
 	 * @param string $type
 	 */
 	protected function parse_post_refs( &$list, $type = Tribe__Events__Main::POSTTYPE ) {
-		$new_list = array();
-
 		foreach ( $list as $index => $reference ) {
 			$this->typify( $reference );
 			if ( ! is_string( $reference ) ) continue;
 
 			$event = $this->load_post_by_slug( $reference, $type );
 
-			if ( $event ) $new_list[$index] = $event->ID;
+			if ( $event ) $list[$index] = $event->ID;
 		}
-
-		$list = array_merge( $list, $new_list );
 	}
 
 	/**
