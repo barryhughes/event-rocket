@@ -107,6 +107,11 @@ _restrict to logged in users_ option, otherwise you run the potential of dealing
 
 ## Changelog
 
+### 3.4
+
+* Update: bring Event Rocket broadly up-to-date with recent builds of The Events Calendar
+* Update: remove facilities where valid corresponding functionality now exists in The Events Calendar
+
 ### 3.3
 * Localization: further improve support and update textdomain to match plugin slug
 * Embedding: add basic offset and pagination capabilities to the event_embed framework

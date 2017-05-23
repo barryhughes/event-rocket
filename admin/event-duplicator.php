@@ -147,6 +147,10 @@ class EventRocket_EventDuplicator
 	 * @return array
 	 */
 	public function set_datetime( $post_meta ) {
+		if ( ! isset( $_POST['duplicate_datetime'] ) ) {
+			return $post_meta;
+		}
+
 		$original_start = date_create( current( $post_meta['_EventStartDate'] ) );
 		$original_end   = date_create( current( $post_meta['_EventEndDate'] ) );
 		if ( ! $original_start || ! $original_end ) return $post_meta;
